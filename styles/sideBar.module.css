@@ -1,0 +1,38 @@
+.sideBar{
+background-color: white;
+min-height: 100%;
+}
+
+
+.sideBar h2{
+    text-align: center;
+    line-height: 50px;
+}
+
+.sideBar input{
+    display: block;
+    margin: auto;
+    height: 40px;
+    width: 90%;
+    padding-left: 0.5rem;
+    font-size: 20px;
+
+}
+
+.sideBar ul > li{
+
+}
+
+.sideBar ul > a{
+    text-decoration: none;
+    line-height: 25px;
+    color: blue;
+}
+
+.sideBar li{
+    display: block;
+    margin: auto;
+    width: 90%;
+   line-height: 35px;
+
+}

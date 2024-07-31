@@ -1,0 +1,30 @@
+.search{
+    min-height: calc(100vh - 80px);
+}
+
+.search_results{
+  
+}
+
+.search_results .item{
+    height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.search_results .item .left img{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+
+.search .item .right a {
+    display: block;
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+    font-size: 20px;
+}

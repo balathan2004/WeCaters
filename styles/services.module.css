@@ -1,0 +1,162 @@
+.service {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: gray;
+}
+
+.inner {
+  height: 90%;
+  width: 60%;
+  margin: auto;
+  margin-top: 3%;
+  background-color: lightblue;
+}
+
+.inner footer {
+  height: 10%;
+  width: 100%;
+}
+
+.inner header {
+  min-height: 25%;
+  height: fit-content;
+
+  background-color: lightskyblue;
+  text-align: center;
+  padding: 1%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.inner .span {
+  line-height: 30px;
+  display: block;
+}
+
+.inner header .box {
+  border: 1px solid black;
+  min-height: 40px;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+
+.button_component {
+  min-width: auto;
+  cursor: pointer;
+  max-width: fit-content;
+  height: fit-content;
+  padding: 5px;
+  margin: 5px 5px;
+  background-color: red;
+  max-width: -moz-fit-content;
+  display: flex;
+  align-items: center;
+}
+
+.button_component button {
+  height: 20px;
+  background-color: transparent;
+  border: none;
+  font-size: 17px;
+}
+
+.button_component span {
+  margin-left: 10px;
+  text-align: center;
+  transform: translateY(1px);
+}
+
+.inner .content {
+    max-height: 70%;
+    height: fit-content;
+    position: relative;
+    background-color: lightblue;
+    border: 0.5px solid black;
+  }
+
+  .inner .content .text {
+    width: 90%;
+    font-size: 24px;
+    height: 40px;
+    margin: auto;
+    margin-top: 5px;
+    display: block;
+  }
+
+  .inner .content ul{
+    width: 90%;
+    margin: auto;
+    max-height: 300px;
+    overflow-x: auto;
+  }
+
+  .inner .content ul >li{
+    list-style: none;
+    height: 30px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    border-bottom: 0px;
+  }
+
+  .inner .content ul >li input{
+    height: 20px;
+    width: 20px;
+  
+  }
+
+  .inner .content ul >li label{
+   margin-left: 0.5rem;
+   flex: 1;
+  }
+
+
+
+  .inner footer{
+    height: 15%;
+    background-color: lightblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .inner footer button{
+    width: 90%;
+    height: 50%;
+    border-radius: 10px;
+    border: 1px solid black;
+
+  }
+
+
+  @media (max-width:600px){
+
+    .inner{
+      width: 95%;
+    }
+
+
+.button_component {
+  background-color: yellow ;
+}
+
+
+.button_component button {
+height: 15px;
+  font-size: 15px;
+}
+
+.button_component span {
+  margin-left: 5px;
+
+}
+
+  }

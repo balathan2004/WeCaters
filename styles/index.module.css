@@ -1,0 +1,215 @@
+.content{
+    min-height: calc(100vh - 80px);
+     position: relative;
+     width: 100vw;
+}
+
+
+.content .first , .content .second, .content .three ,.content .four{
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    display: flex;
+
+}
+
+.content .first .fill , .content .first .empty{
+    flex: 1;
+}
+
+.content .first .fill 
+    {
+    margin:15% 0 0 10%;
+}
+
+.content .first .fill .namespace{
+    color: black;
+    font-size: 50px;
+    font-weight: 1000;
+}
+
+.content .explain {
+    margin-top: 1rem;
+    font-size: 30px;
+    line-height: 40px;
+}
+
+.content  .firstLine{
+    display: block;
+}
+
+
+.content .first .fill .text{
+    margin-top: 2rem;
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.content .second .fill{
+margin: 10% 0 0 10%;
+}
+
+.content .second .fill .firstLine{
+font-size: 30px;
+font-weight: 600;
+}
+
+
+.content .second .fill .explain{
+font-size: 20px;
+}
+
+.content .second .fill .flex_box{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.content .second .fill .flex_box .flex_item{
+    width: 30%;
+    
+}
+
+
+.content .second .fill .flex_box .flex_item span{
+   font-size: 25px;
+   font-weight: 700;
+   line-height: 50px;
+}
+
+.content .second .fill .flex_box .flex_item p{
+    font-size: 18px;
+    line-height: 30px;
+    padding-right: 20%;
+}
+
+.content .three {
+    flex-direction: column;
+    
+}
+
+
+.content .three .top , .content .three .bottom {
+    min-height: 50%;
+    margin: 1% 5% 1rem 5%;
+}
+
+.content .three .top .three_one  {
+    background-color: rgb(204, 202, 202);
+}
+
+.content .three .three_one .box_title{
+    font-size: 30px;
+    font-weight: 600;
+    display: block;
+}
+
+
+.content .three .three_one .context{
+    font-size: 24px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.5rem;
+    margin: 1rem 0  0 0;
+}
+
+.content .three .top .three_one .context{
+    margin-left: 2rem;
+}
+
+.content .three .three_one li{
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 30px;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+}
+
+.content .three .three_one li > a{
+    display: block;
+    margin-bottom: 1rem;
+} 
+
+.content .three .three_one li > span{
+    display: block;
+    margin: 0.5rem;
+}
+
+.content .four {
+    flex-direction: column;
+   
+
+}
+
+.content .four .fill {
+    margin: 5%;
+   
+}
+
+
+.content .four .client {
+margin: 2rem 0;
+}
+.content .four  h2{
+    margin-bottom: 1rem;
+}
+
+
+.content .four li {
+    line-height: 35px;
+    font-size: 18px;
+}
+
+.content .four li > span{
+    font-weight: 600;
+}
+
+
+
+@media (max-width: 768px){
+
+
+
+    .content .first .empty{
+        display: none;
+    }
+    .content .first .fill , .content .second .fill , .content .third .fill,.content .four .fill{ 
+      padding: 10%;
+      margin: 0;
+      display: flex;
+      justify-content: space-around;
+      flex-direction: column;
+    }
+    .content .first .explain {
+        margin-top: 10%;
+    }
+
+    .content  .text {
+        margin-top: 50px;
+    }
+    .content .first .fill .namespace{
+        font-size: 40px;
+    }
+    .content .explain{
+        font-size: 25px;
+    }
+    .content .first .fill .text{
+        font-size: 18px;
+    }
+    .content .second .fill .firstLine{
+        font-size: 25px;
+    }
+    .content .second .fill .explain{
+font-size: 18px;
+}
+
+.content .second .fill .flex_box{
+    flex-direction: column;
+}
+
+.content .second .fill .flex_box .flex_item{
+    min-width: 100%;
+    
+}
+
+}

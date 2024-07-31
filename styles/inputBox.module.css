@@ -1,0 +1,61 @@
+.selection{
+display: block;
+height: max-content;
+margin: 10px;
+
+}
+
+.inputContainer{
+    display: flex;
+    align-items: center;
+}
+
+.selection label{
+    display: block;
+font-size: 20px;
+text-transform: capitalize;
+margin-bottom: 1rem;
+}
+
+.selection input{
+    width: 20vw;
+    height: 2rem;
+    font-size: 1.5rem;
+    padding-left: 5px;
+    padding-right: 10px;
+    text-transform: capitalize;
+}
+
+.selection .icon{
+transform: translateX(-30px);
+
+}
+
+.icon_disabled{
+display: none;
+}
+
+.selection ul{
+display: block;
+position: absolute;
+list-style: none;
+min-width: 20vw;
+background-color: rgb(164, 159, 159);
+border-radius: 8px;
+
+
+}
+
+.selection ul > li{
+    border: 1px solid black;
+    padding-left: 5%;
+    min-height: 50px;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+   
+   
+}
+
+
+
