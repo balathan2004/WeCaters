@@ -1,0 +1,5 @@
+
+    "dev": "concurrently \"next dev\"  \"npx inngest-cli@latest dev\"",
+
+
+    git P A T =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

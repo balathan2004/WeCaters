@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { NavbarInterface } from "./interfaces";
+import { NavbarInterface } from "./interfaces/front";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";

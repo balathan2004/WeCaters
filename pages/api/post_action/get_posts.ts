@@ -1,0 +1,66 @@
+import { firestore } from "@/components/firebase_config";
+import { NextApiRequest, NextApiResponse } from "next";
+import { getDocs, collection } from "firebase/firestore";
+import { postInterface, getPostsInterface } from "@/components/interfaces/shared";
+export default async function (req: NextApiRequest, res: NextApiResponse<getPostsInterface>) {
+  try {
+    const collectionData = collection(firestore, "post");
+    const userData = collection(firestore, "users");
+
+    const data = await getDocs(collectionData);
+    const userFetchedData = await getDocs(userData);
+    const allDocs: postInterface[] = data.docs.map((doc) => {
+      const data = doc.data();
+
+      const post: postInterface = {
+        caption: data.caption,
+        photo_url: data.photoUrl,
+        post_name: data.postName,
+        time: data.time,
+        uid: data.uid,
+        username: data.username,
+      };
+
+      return post;
+    });
+
+
+
+    const allUserData = userFetchedData.docs.map((doc) => {
+      const data = doc.data();
+
+      return {
+        username: data.username,
+        uid: data.uid,
+        profile_url: data.profile_url,
+        account_type: data.account_type
+      };
+    });
+
+    const filteredUserData=allUserData.filter(item=>item.account_type!="personal")
+
+    const allUsernames = allUserData.map((data) => {
+      return data.username;
+    });
+
+    let newRefinedData:postInterface[] = [];
+
+    for (let i = 0; i < allDocs.length; i++) {
+      for (let j = 0; j < allUserData.length; j++) {
+        if (allDocs[i].uid === allUserData[j].uid) {
+          var tempData = {
+            ...allDocs[i],
+            profile_url: allUserData[j].profile_url,
+            //   isVerified: allUserData[j].isVerified,
+          };
+          newRefinedData.push(tempData);
+        }
+      }
+    }
+
+    res.json({status:200,message:"fetch success", postData: newRefinedData, allUsernames: allUsernames });
+    console.log(allUsernames);
+  } catch (err) {
+    res.json({ status:400,message: "error fetching docs" });
+  }
+}
