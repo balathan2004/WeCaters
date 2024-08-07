@@ -1,4 +1,0 @@
-
-    "dev": "concurrently \"next dev\"  \"npx inngest-cli@latest dev\"",
-
-
