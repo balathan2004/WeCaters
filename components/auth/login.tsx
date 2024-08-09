@@ -16,8 +16,8 @@ interface Props {
 
 const LoginBox: FC<Props> = ({ responseState }) => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
-  const [loader, setLoader] = useContext(LoaderProvider);
-  const [reply, setReply] = useContext(ReplyProvider);
+  const {loader, setLoader} = useContext(LoaderProvider);
+  const {reply, setReply} = useContext(ReplyProvider);
 
   const handler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

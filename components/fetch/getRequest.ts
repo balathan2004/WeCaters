@@ -5,7 +5,9 @@ interface Props {
   route: string;
 }
 
-export async function GetRequest({ route }: Props) {
+type availInterfaces=ResponseConfig|userAuthResponse|undefined
+
+export async function GetRequest({ route }: Props):Promise<availInterfaces> {
   try {
     const reqConfig: RequestInit = {
       method: "GET",

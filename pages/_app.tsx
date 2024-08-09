@@ -17,7 +17,7 @@ import {
 
 import { useRouter } from "next/router";
 import { NavbarInterface } from "@/components/interfaces/front";
-
+import PopUp from "@/components/front/popup";
 import Head from "next/head";
 import type { AppProps } from "next/app";
 
@@ -28,7 +28,7 @@ export const UserCredProvider = React.createContext<any>(null);
 export default function App({ Component, pageProps }: AppProps) {
   const [dirs, setDirs] = useState<NavbarInterface[]>([]);
   const [loader, setLoader] = useState(false);
-  const [reply, setReply] = useState("");
+  const [reply, setReply] = useState<string|boolean>(false);
   const [userData, setUserData] = useState<userInterface | undefined>();
 
   const getCred = async () => {
@@ -82,8 +82,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <LoaderProvider.Provider value={{loader, setLoader}}>
         <NavBarProvider.Provider value={{ dirs, setDirs }}>
           <ReplyProvider.Provider value={{reply, setReply}}>
-            <UserCredProvider.Provider value={[userData, setUserData]}>
+            <UserCredProvider.Provider value={{userData, setUserData}}>
               <Navbar />
+              {reply? <PopUp reply={reply} changeState={setReply} />:""}
               <Component {...pageProps} />
             </UserCredProvider.Provider>
           </ReplyProvider.Provider>

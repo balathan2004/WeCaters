@@ -8,6 +8,7 @@ import { CommentsInterface ,userInterface} from "../interfaces/shared";
 import ReplyComment from "./replyComment";
 import SingleReply from "./singleReply";
 
+
 interface Props{
   commentData:CommentsInterface,
   userData:userInterface,

@@ -1,5 +1,10 @@
+import { userInterface } from "../auth/signup";
 import { ResponseConfig ,userAuthResponse} from "./../interfaces/shared";
 
+
+interface dataProps{
+ data:userInterface,
+}
 
 interface Props {
   route: string;
