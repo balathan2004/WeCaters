@@ -8,7 +8,7 @@ import {getAuth } from "firebase-admin/auth";
 import { credential } from 'firebase-admin';
 
 
-const service_account=require('./caters-a782b-firebase-adminsdk-jpayh-c1f431e1a9.json')
+const service_account=require('../../admin_secret.json')
 
 
 
