@@ -45,11 +45,22 @@ export interface userInterface {
   company_name?: string;
   district?: string;
   state?: string;
+  isVerified?:boolean;
+}
+
+export interface personalUserInterface{
+  account_type: "personal" | "professional";
+  uid: string;
+  username: string;
+  display_name: string;
+  email: string;
+  profile_url: string;
+
 }
 
 export interface postInterface {
   caption: string;
-  photo_url: string;
+  photo_url: string[];
   post_name: string;
   time: string;
   uid: string;

@@ -1,4 +1,4 @@
-import SignUpBox from "@/components/auth/signup";
+//import SignUpBox from "@/components/auth/signup";
 import React, { useState, useEffect, useContext } from "react";
 import { NavBarProvider, ReplyProvider, LoaderProvider } from "@/pages/_app";
 import style from "/styles/signupform.module.css";

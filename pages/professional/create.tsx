@@ -83,7 +83,6 @@ export default function CreatePost() {
       var res = await SendData({
         route: "/api/post_action/create_post",
         data: dataToServer,
-        contentType: "multipart/form-data",
         stringify: false,
       });
       setLoader(false);
@@ -122,9 +121,7 @@ export default function CreatePost() {
     }
   };
 
-  useEffect(() => {
-    getPage();
-  }, []);
+
 
   return (
     <div className="container">

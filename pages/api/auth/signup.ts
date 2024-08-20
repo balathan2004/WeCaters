@@ -1,13 +1,12 @@
 import { app, firestore } from "@/components/firebase_config";
-
 import { NextApiRequest, NextApiResponse } from "next";
 import { getAuth } from "firebase/auth";
 import { setDoc, doc, FirestoreError } from "firebase/firestore";
-
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setCookie } from "cookies-next";
 import { ResponseConfig, userInterface } from "@/components/interfaces/shared";
 import { generateUsername } from "unique-username-generator";
+
 export interface FieldsValues {
   account_type: "personal" | "professional";
   display_name: string;
@@ -27,7 +26,8 @@ export default async (
   res: NextApiResponse<ResponseConfig>
 ) => {
   try {
-    const { display_name, email, password, account_type } = req.body;
+    const { display_name, email, password, account_type } = JSON.parse(req.body)
+
     const userData: FieldsValues = {
       display_name: display_name,
       email: email,
@@ -57,9 +57,10 @@ export default async (
 };
 
 async function signUp(email: string, password: string): Promise<string> {
-  const auth = getAuth(app);
+  console.log(email, password);
   let uid: string = await new Promise(async (resolve, reject) => {
     try {
+      const auth = getAuth(app);
       await createUserWithEmailAndPassword(auth, email, password).then(
         (user) => {
           resolve(user.user.uid);
@@ -72,41 +73,3 @@ async function signUp(email: string, password: string): Promise<string> {
   });
   return uid;
 }
-
-/**
- * 
- * 
- * 
-export async function saveFile(file:PersistentFile, uid:string) {
-  const data = fs.readFileSync(file.filepath);
-  var imageUrl = await uploadImage(data, "/profile", uid);
-  return imageUrl;
-}
-
-async function navigation(req, res, user_data) {
-  setCookie("caters_client_id", user_data.uid, {
-    req,
-    res,
-    maxAge: new Date(Date.now() + 900000),
-    httpOnly: false,
-    sameSite: "none",
-    secure: "true",
-  });
-
-  setCookie("caters_account_type", user_data.account_type, {
-    req,
-    res,
-    maxAge: new Date(Date.now() + 900000),
-    httpOnly: false,
-    sameSite: "none",
-    secure: "true",
-  });
-  res.json({
-    status: 200,
-    message: "Account Created",
-    data: user_data,
-  });
-}
-
- * 
- */

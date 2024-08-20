@@ -14,7 +14,7 @@ interface Props {
 
 const MainComment: FC<Props> = ({ userData, setReply, post_id }) => {
   const [commentData, setCommentData] = useState<CommentsInterface[]|[]>([]);
-  const [getComments, setGetComments] = useState(false);
+  const [getComments, setGetComments] = useState<boolean>(false);
   const [message, setMessage] = useState("");
 
   const fetchComments = async function () {
@@ -47,7 +47,7 @@ const MainComment: FC<Props> = ({ userData, setReply, post_id }) => {
   }, [getComments]);
 
   return (
-    <div>
+    <div className={style.main_comment}>
       <span onClick={handleCommentFetch}>
         {!getComments ? "View Comments" : "Hide Comments"}
       </span>

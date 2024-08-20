@@ -14,7 +14,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse<getPost
 
       const post: postInterface = {
         caption: data.caption,
-        photo_url: data.photoUrl,
+        photo_url: data.photo_url,
         post_name: data.postName,
         time: data.time,
         uid: data.uid,

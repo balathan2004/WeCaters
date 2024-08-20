@@ -1,31 +1,28 @@
-import React, { Component, useState, useRef, useEffect } from "react";
+import React, { FC, useState, useRef, useEffect } from "react";
 import style from "/styles/account.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faCheck } from "@fortawesome/free-solid-svg-icons";
-
-
-interface Props{
-    label_name: string,
-    initialValue: string,
-    changeState:"",
-    editable : boolean,
-    differentName : boolean,
-    placeholder : string,
-    
+import { userInterface } from "../interfaces/shared";
+interface Props {
+  label_name: string;
+  initialValue: string;
+  changeState: React.Dispatch<React.SetStateAction<userInterface>>;
+  editable?: boolean;
+  differentName?: string;
+  placeholder?: string;
 }
 
-
-export default function AccountInput({
+const AccountInput: FC<Props> = ({
   label_name,
   initialValue,
   changeState,
   editable = true,
   differentName = false,
   placeholder = "",
-}) {
+}) => {
   const [edit, setEdit] = useState(true);
-  const currentInput = useRef(null);
-  const setState = (event) => {
+  const currentInput = useRef<HTMLInputElement>(null);
+  const setState = (event: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = event.target;
 
     changeState((prev) => ({ ...prev, [name]: value }));
@@ -37,7 +34,8 @@ export default function AccountInput({
   };
 
   useEffect(() => {
-    if (!edit) {
+    if (!edit && currentInput.current ) {
+
       currentInput.current.focus();
     }
   }, [edit]);
@@ -71,4 +69,7 @@ export default function AccountInput({
       />
     </div>
   );
-}
+};
+
+
+export default AccountInput

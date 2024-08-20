@@ -17,9 +17,7 @@ const PopUp: FC<Props> = ({ reply, changeState }) => {
       }, 5000);
     }
 
-    console.log(reply)
-
-
+  
   const removeCursor = () => {
     changeState(false);
   };

@@ -45,6 +45,11 @@
   display: block;
 }
 
+
+ .main_comment span{
+  margin-left: 1rem;
+}
+
  .comment_list,
 .comment_list_show {
   display: flex;

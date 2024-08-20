@@ -51,12 +51,26 @@ interface Props{
     setShowCommentBox((prev) => !prev);
   };
 
+  const cancelComment=()=>{
+    if(commentArea.current){
+      commentArea.current.value=""
+      setHeight("auto");
+    }
+  }
+
   const commentFetching = (event:React.ChangeEvent<HTMLTextAreaElement>) => {
     var commentValue = event.target.value;
-    setHeight("auto"); // Reset height to auto to recalculate the height based on content
-    setHeight(event.target.scrollHeight + "px");
-    console.log(event.target.scrollHeight);
-    setComment(commentValue);
+    if(commentValue.length <1000&& commentValue.length >0 ){
+      setHeight("auto"); // Reset height to auto to recalculate the height based on content
+      setHeight(event.target.scrollHeight + "px");
+      setComment(commentValue);
+    }else if(commentValue.length <10){
+      setHeight("auto");
+    }else if (commentValue.length >1000){
+      setComment(prev=>prev)
+      setReply("character limit exceeded");
+    }
+
   };
 
   return (
@@ -68,10 +82,11 @@ interface Props{
           required
           ref={commentArea}
           style={{ height }}
+
           placeholder="Add your comment"
         ></textarea>
         <button type="submit">Comment</button>
-        <button>Cancel</button>
+        <button onClick={cancelComment} type="button">Cancel</button>
       </form>
       <span className={style.toggler} onClick={handleToggler}>
         Show Comments

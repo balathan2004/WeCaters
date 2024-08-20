@@ -4,7 +4,7 @@ import { NextApiRequest,NextApiResponse } from "next";
 import {  userAuthResponse, userInterface } from "@/components/interfaces/shared";
 
 export default async (req:NextApiRequest, res:NextApiResponse<userAuthResponse>) => {
-  var userData = req.body
+  var userData = JSON.parse( req.body)
   try {
     const { uid } = userData ;
 

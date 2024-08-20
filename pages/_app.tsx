@@ -38,13 +38,13 @@ export default function App({ Component, pageProps }: AppProps) {
       })) as userAuthResponse;
       if (res && res.status == 200) {
 
-        var message = res.message;
+       
         if (res.userCredentials?.account_type == "professional") {
           setDirs([
             { route: "/blog", name: "blog" },
             { route: "/professional/search", name: "search" },
             { route: "/professional/create", name: "create" },
-            { route: "/about", name: "about" },
+            { route: "/professional/about", name: "about" },
             { route: "/account", name: "account" },
           ]);
         } else {
@@ -52,7 +52,7 @@ export default function App({ Component, pageProps }: AppProps) {
             { route: "/blog", name: "blog" },
             { route: "/search", name: "search" },
             { route: "/about", name: "about" },
-            { route: "/account", name: "account" },
+            { route: "/personal/account", name: "account" },
           ]);
         }
         setUserData(res.userCredentials);

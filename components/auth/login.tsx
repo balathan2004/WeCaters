@@ -16,21 +16,22 @@ interface Props {
 
 const LoginBox: FC<Props> = ({ responseState }) => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
-  const {loader, setLoader} = useContext(LoaderProvider);
-  const {reply, setReply} = useContext(ReplyProvider);
+  const { loader, setLoader } = useContext(LoaderProvider);
+  const { reply, setReply } = useContext(ReplyProvider);
 
   const handler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    console.log(loginData)
     setLoader(true);
     var res = await SendData({
-      route: "api/auth/login",
+      route: "/api/auth/login",
       data: loginData,
-    })
-    console.log(loginData)
+    });
+
     setLoader(false);
-    if(res){
-      if ( res.status == 200) {
+    console.log(res);
+    if (res) {
+      if (res.status == 200) {
         setReply(res.message);
         responseState(res);
       } else {
@@ -38,15 +39,12 @@ const LoginBox: FC<Props> = ({ responseState }) => {
         responseState(res);
       }
     }
-   
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    console.log(name, value);
-    
     setLoginData((prev) => ({ ...prev, [name]: value }));
-    console.log(loginData)
+
   };
 
   return (
@@ -108,7 +106,7 @@ const LoginBox: FC<Props> = ({ responseState }) => {
           </button>
 
           <span className={style.signup_text}>
-            Don't have a Account <a href="/account_type">Sign up</a>
+            Don't have a Account <a href="/signup">Sign up</a>
           </span>
         </div>
       </div>
@@ -116,6 +114,6 @@ const LoginBox: FC<Props> = ({ responseState }) => {
   );
 };
 
-export default LoginBox
+export default LoginBox;
 
 // 103   onClick={() => GoogleLogin(responseState)}

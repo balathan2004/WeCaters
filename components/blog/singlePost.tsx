@@ -30,7 +30,7 @@ interface Props {
 const SinglePost: FC<Props> = ({ data }) => {
   console.log(data);
   const navi = useRouter();
-  const postImage = data.photo_url;
+  const postImage = data.photo_url ? data.photo_url:[];
   const [currentImage, setCurrentImage] = useState(postImage[0]);
   const [count, setCount] = useState(0);
   const totalLength = postImage.length;
