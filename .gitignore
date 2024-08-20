@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-/admin_secret.json
+admin_secret.json
 
 # testing
 /coverage
