@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+/components/firebase-contents/caters-a782b-firebase-adminsdk-jpayh-c1f431e1a9.json
 
 # testing
 /coverage
