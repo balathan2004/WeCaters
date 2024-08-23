@@ -15,8 +15,7 @@ export default async (
 
   if (uid) {
     try {
-      console.log("route requested");
-      console.log(account_type)
+    
 
       let docData:userInterface
 
@@ -29,7 +28,7 @@ export default async (
        
       }
 
-      console.log(docData);
+
        res.json({
         status: 200,
         message: "details fetched",

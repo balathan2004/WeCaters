@@ -1,9 +1,16 @@
-import { IncomingForm } from "formidable";
+import { setDoc,doc } from 'firebase/firestore';
+import { firestore } from '@/components/firebase_config';
+const  runBackgroundJob =require('../../../worker/main')
+import formidable, { IncomingForm } from "formidable";
+import uploadImage from "@/components/server/uploadImage";
 import moment from "moment";
 import { inngestClient } from "@/worker/workLoad";
 import { NextApiRequest,NextApiResponse } from "next";
 import { ResponseConfig } from "@/components/interfaces/shared";
 import { postInterface } from "@/components/interfaces/shared";
+const fs= require("fs");
+
+
 export const config = {
   api: {
     bodyParser: false,
@@ -12,10 +19,13 @@ export const config = {
 
 export default async function (req:NextApiRequest, res:NextApiResponse<ResponseConfig>) {
   const caters_client_id = req.cookies.caters_client_id;
+  console.log("post create request")
   const caters_account_type = req.cookies.caters_account_type;
-  if (req.method === "POST" && caters_client_id && caters_account_type) {
+  if (req.method == "POST" && caters_client_id && caters_account_type=="professional") {
+
     post(req, caters_client_id);
   }
+  res.json({status: 200,message: "OK"});
 }
 
 const post = async (req:NextApiRequest, uid:string) => {
@@ -28,23 +38,38 @@ try{
     console.log(files);
     var urls = [];
     var postName = `${uid}-${timer()}`;
-    var filesKey = Object.keys(files);
-    var caption = fields.caption[0];
-    var username = fields.username[0];
+    const filesKeysone:unknown= Object.keys(files)
+    var filesKey :number[] =filesKeysone as number[];
+    var caption = fields.caption?fields.caption[0]:"";
+    var username = fields.username? fields.username[0]:""
 
-    var info = {
-      postName: postName,
+    var info :postInterface= {
+      post_name: postName,
       caption: caption,
-      photoUrl: [],
+      photo_url: null,
       username: username,
       uid: uid,
       time: setDate(),
     };
 
-    inngestClient.send({
-      name: "test/post-handler",
-      data: { info, files },
+
+    const promiseUrl = filesKey.map(async (key) => {
+      const file:formidable.File|null=files[key]?files[key][0]:null
+      if(file){
+        var singleUrl = await saveFile(file, uid);
+        return singleUrl;
+      }else{
+        return null;
+      }
+    
     });
+
+    var resolvedUrl = (await Promise.all(promiseUrl)).filter((url) => url !== null);
+    if(resolvedUrl){
+      info.photo_url=resolvedUrl
+    }
+   await setDoc(doc(firestore, "post", postName), info);
+
   });
 } catch(e){
   reject("error")
@@ -56,13 +81,32 @@ try{
    
 };
 
-const timer = () => {
-  var timerId = new Date().getTime();
-  return timerId;
-};
+
 
 const setDate = () => {
   var nowDate = new Date();
   var newDate = moment(nowDate).format("DD-MM-YYYY hh:mm a");
   return newDate;
+};
+
+
+
+
+
+
+export async function saveFile(file: formidable.File, uid: string) {
+const data = fs.readFileSync(file.filepath);
+
+var newFileName = `${uid}-${timer()}`;
+var imageUrl = await uploadImage({
+file: data,
+path: "/post",
+fileName: newFileName,
+});
+return imageUrl;
+}
+
+const timer = () => {
+var timerId = new Date().getTime();
+return timerId;
 };

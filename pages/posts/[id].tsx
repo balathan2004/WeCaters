@@ -2,7 +2,7 @@ import SinglePost from "@/components/blog/singlePost";
 import style from "/styles/blog.module.css";
 import { FC } from "react";
 import { ParsedUrlQuery } from "querystring";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import {  GetServerSidePropsContext } from "next";
 
 import {
   postInterface,
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const Pages: FC<Props> = ({ data }) => {
-  console.log(data)
+
   if (data) {
     return (
       <div className="container">
@@ -44,8 +44,8 @@ export const getServerSideProps = async (
 
     const apiUrl =
       process.env.NODE_ENV === "production"
-        ? `https://caters.vercel.app/api/post_action/get_single_post?postName=${id}`
-        : `http://localhost:3000/api/post_action/get_single_post?postName=${id}`;
+        ? `https://caters.vercel.app/api/post_action/get_single_post?post_name=${id}`
+        : `http://localhost:3000/api/post_action/get_single_post?post_name=${id}`;
     const response = await fetch(apiUrl);
     const res: getSinglePostInterface = await response.json();
 

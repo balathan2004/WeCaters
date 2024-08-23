@@ -71,13 +71,13 @@ export default function CreatePost() {
 
   const submitPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!loader && image && userCred.username) {
+    if (!loader && image ) {
       setLoader(true);
       const dataToServer = new FormData();
       dataToServer.append("caption", caption);
       image.map((file, index) => {
         dataToServer.append(`file${index}`, file);
-        dataToServer.append("username", userCred?.username);
+        dataToServer.append("username", userCred.username?userCred.username:userCred.display_name);
       });
 
       var res = await SendData({
@@ -121,6 +121,10 @@ export default function CreatePost() {
     }
   };
 
+  useEffect(()=>{
+    getPage()
+  },[])
+
 
 
   return (
@@ -151,7 +155,7 @@ export default function CreatePost() {
             <div className={style.content_box}>
               <textarea
                 onChange={handleCaption}
-                placeholder="Tell About the Catering"
+                placeholder="Share about the catering"
                 required
               ></textarea>
             </div>
@@ -179,7 +183,7 @@ export default function CreatePost() {
                 </div>
 
                 <div className={style.img_div}>
-                  {postImage.length != 0 ? (
+                  {postImage.length > 0 ? (
                     <>
                       <div className={style.delete}>
                         <FontAwesomeIcon

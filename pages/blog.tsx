@@ -13,6 +13,7 @@ const Blog: FC<Props> = ({ postData, allUsernames }) => {
   const navi = useRouter();
 
   const sideBarData = allUsernames;
+  
 
   return (
     <div className="container">

@@ -11,6 +11,14 @@ export interface CommentsResponse extends ResponseConfig{
   comments?: CommentsInterface[]
 }
 
+export interface userProfileResponse extends ResponseConfig{
+userData?:{
+  userDetails:userInterface,
+  userPosts:postInterface[]
+}
+}
+
+
 export interface CommentsInterface {
 
   comment:string;
@@ -60,12 +68,12 @@ export interface personalUserInterface{
 
 export interface postInterface {
   caption: string;
-  photo_url: string[];
+  photo_url: string[] | null;
   post_name: string;
   time: string;
   uid: string;
   username: string;
-  profile_url?: string;
+  profile_url?: string ;
 }
 
 

@@ -1,13 +1,15 @@
 import { inngestClient } from "./workLoad";
 const fs = require("fs");
-import uploadImage from "@/component/uploadImage";
+import uploadImage from "@/components/server/uploadImage";
 import { doc, setDoc } from "firebase/firestore";
-import { firestore } from "@/config";
+import { firestore } from "@/components/firebase_config";
+import formidable from "formidable";
 
 export const tester = inngestClient.createFunction(
   { id: "post-handler", name: "create blog post" },
   { event: "test/post-handler" },
   async ({ event, step }) => {
+    console.log("event triggered")
     var { info, files } = event.data;
 
     const { postName, uid } = info;
@@ -17,7 +19,8 @@ export const tester = inngestClient.createFunction(
     var fileKeys = Object.keys(files);
 
     const promiseUrl = fileKeys.map(async (key) => {
-      var singleUrl = await saveFile(files[key][0], uid);
+      const file:formidable.Files=files[key]?files[key][0]:null
+      var singleUrl = await saveFile(file, uid);
       return singleUrl;
     });
 
@@ -29,10 +32,15 @@ export const tester = inngestClient.createFunction(
   }
 );
 
-export async function saveFile(file, uid) {
+export async function saveFile(file: formidable.Files, uid: string) {
   const data = fs.readFileSync(file.filepath);
+
   var newFileName = `${uid}-${timer()}`;
-  var imageUrl = await uploadImage(data, "/post", newFileName);
+  var imageUrl = await uploadImage({
+    file: data,
+    path: "/post",
+    fileName: newFileName,
+  });
   return imageUrl;
 }
 

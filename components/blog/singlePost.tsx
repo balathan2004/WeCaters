@@ -9,18 +9,14 @@ import {
   faCaretLeft,
   faCaretRight,
 } from "@fortawesome/free-solid-svg-icons";
-
 import moment from "moment";
 import { VerifiedLogo } from "./smallComponents";
 import React, { useState, useContext, useEffect, FC } from "react";
 import { defaultImage } from "./smallComponents";
 import style from "/styles/blog.module.css";
-
 import { useRouter } from "next/router";
-
 import { UserCredProvider, ReplyProvider } from "@/pages/_app";
 import MainComment from "../comments/mainComment";
-import SendData from "../fetch/sendData";
 import { userInterface } from "../auth/signup";
 
 interface Props {
@@ -28,7 +24,7 @@ interface Props {
 }
 
 const SinglePost: FC<Props> = ({ data }) => {
-  console.log(data);
+
   const navi = useRouter();
   const postImage = data.photo_url ? data.photo_url:[];
   const [currentImage, setCurrentImage] = useState(postImage[0]);
@@ -54,29 +50,21 @@ const SinglePost: FC<Props> = ({ data }) => {
 
   const nextImage = () => {
     if (totalLength != 0 && count >= 0 && count < totalLength - 1) {
-      setCount(() => {
-        setCurrentImage(postImage[count + 1]);
-        return count + 1;
-      });
+      setCurrentImage(postImage[count + 1]);
+      setCount(() => count + 1);
     } else {
-      setCount(() => {
-        setCurrentImage(postImage[0]);
-        return 0;
-      });
+      setCurrentImage(postImage[0]);
+      setCount(() => 0);
     }
   };
 
   const prevImage = () => {
     if (totalLength != 0 && count > 0) {
-      setCount(() => {
-        setCurrentImage(postImage[count - 1]);
-        return count - 1;
-      });
+      setCurrentImage(postImage[count - 1]);
+      setCount(() => count - 1);
     } else {
-      setCount(() => {
-        setCurrentImage(postImage[totalLength - 1]);
-        return totalLength - 1;
-      });
+      setCurrentImage(postImage[totalLength - 1]);
+      setCount(() => totalLength - 1);
     }
   };
 
@@ -88,7 +76,7 @@ const SinglePost: FC<Props> = ({ data }) => {
             <img src={data.profile_url ? data.profile_url : defaultImage(data.username)} />
           </div>
           <div className={style.details}>
-            <a href={`/profile/${data.username}`} className={style.name}>
+            <a href={`/profile/${data.uid}`} className={style.name}>
               {data.username}
             </a>
             {true ? <VerifiedLogo /> : null}

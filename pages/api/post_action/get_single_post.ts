@@ -5,13 +5,13 @@ import { getDocs, getDoc, collection, query, where } from "firebase/firestore";
 export default async function (req:NextApiRequest, res:NextApiResponse<getSinglePostInterface>) {
   
   console.log("query"+req.query);
-  let { postName } = req.query;
+  let { post_name } = req.query;
 
 
   try {
     const collectionData = collection(firestore, "post");
     const postData = await getDocs(
-      query(collectionData, where("postName", "==", postName))
+      query(collectionData, where("post_name", "==", post_name))
     ) 
 
    

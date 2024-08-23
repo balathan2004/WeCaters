@@ -72,6 +72,11 @@
   color: darkblue;
 }
 
+.page404{
+  text-align: center;
+  margin-top: 10%;
+}
+
 
 @media (max-width: 800px) {
     .search .inner_container {

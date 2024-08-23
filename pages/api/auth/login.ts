@@ -54,9 +54,16 @@ export default async function (
 }
 
 async function userDocSearch(uid: string) {
-  var document = await getDoc(doc(firestore, "/personal_account", uid));
+  try{
+    var document = await getDoc(doc(firestore, "/professional_account", uid));
+    const docData = document.data() as userInterface;
+    return docData;
+  }catch(err){
+    var document = await getDoc(doc(firestore, "/personal_account", uid));
   const docData = document.data() as userInterface;
   return docData;
+  }
+  
 }
 
 async function Login(email: string, password: string) {
