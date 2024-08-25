@@ -8,7 +8,7 @@ interface Props {
   initialValue: string;
   changeState: React.Dispatch<React.SetStateAction<userInterface>>;
   editable?: boolean;
-  differentName?: string;
+  variable_name?: string;
   placeholder?: string;
 }
 
@@ -17,7 +17,7 @@ const AccountInput: FC<Props> = ({
   initialValue,
   changeState,
   editable = true,
-  differentName = false,
+  variable_name = "",
   placeholder = "",
 }) => {
   const [edit, setEdit] = useState(true);
@@ -34,8 +34,7 @@ const AccountInput: FC<Props> = ({
   };
 
   useEffect(() => {
-    if (!edit && currentInput.current ) {
-
+    if (!edit && currentInput.current) {
       currentInput.current.focus();
     }
   }, [edit]);
@@ -43,20 +42,24 @@ const AccountInput: FC<Props> = ({
   return (
     <div className={style.data}>
       <div className={style.label_container}>
-        <label>{differentName ? differentName : label_name}</label>
-        {edit ? (
-          <FontAwesomeIcon
-            icon={faPenToSquare}
-            onClick={changeEdit}
-            className={style.icon}
-          />
-        ) : (
-          <FontAwesomeIcon
-            icon={faCheck}
-            onClick={changeEdit}
-            className={style.icon}
-          />
-        )}
+        <label>{    label_name}</label>
+        {editable ? (
+          <>
+            {edit ? (
+              <FontAwesomeIcon
+                icon={faPenToSquare}
+                onClick={changeEdit}
+                className={style.icon}
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faCheck}
+                onClick={changeEdit}
+                className={style.icon}
+              />
+            )}
+          </>
+        ) : null}
       </div>
 
       <input
@@ -64,12 +67,11 @@ const AccountInput: FC<Props> = ({
         value={initialValue ? initialValue : ""}
         onChange={setState}
         placeholder={placeholder}
-        name={label_name}
+        name={variable_name}
         ref={currentInput}
       />
     </div>
   );
 };
 
-
-export default AccountInput
+export default AccountInput;

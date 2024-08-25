@@ -9,11 +9,11 @@ export default async (req:NextApiRequest, res:NextApiResponse<userAuthResponse>)
     const { uid } = userData ;
 
 
-    var docRef = await getDoc(doc(firestore, "users", uid));
+    var docRef = await getDoc(doc(firestore, "personal_account", uid));
     var document = docRef.data();
 
     if (document !== userData) {
-      await updateDoc(doc(firestore, "users", uid), userData).then(() => {
+      await updateDoc(doc(firestore, "personal_account", uid), userData).then(() => {
         res.json({ status: 200, message: "changes made",userCredentials:userData as userInterface });
       });
     }

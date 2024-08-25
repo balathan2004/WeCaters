@@ -153,7 +153,6 @@ const SignUpBox: FC<Props> = ({ responseState }) => {
       var res = await SendData({
         route: "/signup",
         data: FormData,
-        contentType: "multipart/form-data",
         stringify: false,
       });
       setLoader(false);

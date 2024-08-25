@@ -40,8 +40,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse<getPost
 
     //const filteredUserData=allUserData.filter(item=>item.account_type!="personal")
 
-    const allUsernames = allUserData.map((data) => {
-      return data.username?data.username:data.display_name;
+    const allUsernames:{name:string,uid:string}[] = allUserData.map((data) => {
+      return {name:data.username?data.username:data.display_name,uid:data.uid}
     });
 
     let newRefinedData:postInterface[] = [];

@@ -42,10 +42,10 @@ export default function App({ Component, pageProps }: AppProps) {
         if (res.userCredentials?.account_type == "professional") {
           setDirs([
             { route: "/blog", name: "blog" },
-            { route: "/professional/search", name: "search" },
+            { route: "/search", name: "search" },
             { route: "/professional/create", name: "create" },
             { route: "/professional/about", name: "about" },
-            { route: "/account", name: "account" },
+            { route: "/professional/profile", name: "account" },
           ]);
         } else {
           setDirs([

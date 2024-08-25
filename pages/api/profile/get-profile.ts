@@ -18,15 +18,19 @@ export default async function (req:NextApiRequest, res:NextApiResponse<userProfi
      
         //specific uid posts doc
         const specificPost = await getDocs(
-          query(postData, where("username", "==", uid))
+          query(postData, where("uid", "==", uid))
         );
+
+        
+        
+        
         // specific uid posts data
-        const userPosts = specificPost.docs.map((doc) => doc.data()as postInterface);
-    
+        const userPosts = specificPost.docs.map((doc) => {return doc.data()as postInterface});
+  
         res.json({
             status:200,
           message: "success",
-         userData:{ userDetails: finalUser, userPosts: userPosts,}
+         userData:{ userDetails: finalUser, userPosts: userPosts}
         });
     }
  

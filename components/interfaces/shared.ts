@@ -18,6 +18,10 @@ userData?:{
 }
 }
 
+export interface usernameSuggestInterface extends ResponseConfig{
+  usernames:string[]
+}
+
 
 export interface CommentsInterface {
 
@@ -34,7 +38,7 @@ export interface CommentsInterface {
 
 export interface getPostsInterface extends ResponseConfig {
   postData?:postInterface[],
-  allUsernames?:string[]
+  allUsernames?:{ name: string; uid: string; }[]
 }
 
 
@@ -54,7 +58,11 @@ export interface userInterface {
   district?: string;
   state?: string;
   isVerified?:boolean;
+  bio?: string;
 }
+
+export const userInterfaceCount=11
+
 
 export interface personalUserInterface{
   account_type: "personal" | "professional";

@@ -14,13 +14,12 @@ interface props{
 
 const  Profile:FC<props>=({ userData, userPosts }) =>{
   const userDetails = userData;
-  console.log(userDetails)
 
   return (
     <div className="container">
       <div className={blogStyle.inner}>
         <div className={blogStyle.sideBar}>
-          <SideBar data={""} />
+          <SideBar data={[]} />
         </div>
         <div className={blogStyle.blog}>
           <div className={style.profile}>
@@ -72,13 +71,13 @@ const  Profile:FC<props>=({ userData, userPosts }) =>{
             </div>
 
             <ul className={style.posts}>
-              {userPosts.map((post, index) => {
+              {userPosts.length>0?userPosts.map((post, index) => {
                 return (
                   <li className={style.item} key={index}>
                     <img src={post.photo_url?post.photo_url[0]:""}></img>
                   </li>
                 );
-              })}
+              }):null}
             </ul>
           </div>
         </div>
@@ -113,13 +112,3 @@ export async function getServerSideProps(context: GetServerSidePropsContext<Pars
 }
 
 
-// 43    {userDetails.isVerified ? <VerifiedLogo /> : null}
-// 58   <span>{userDetails.bio}</span>
-
-/**
- * 65  {userDetails.location
-                        ? userDetails.location.toString()
-                        : null}
- * 
- * 
- */

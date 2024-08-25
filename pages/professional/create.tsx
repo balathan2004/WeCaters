@@ -155,7 +155,7 @@ export default function CreatePost() {
             <div className={style.content_box}>
               <textarea
                 onChange={handleCaption}
-                placeholder="Share about the catering"
+                placeholder="Share your experience"
                 required
               ></textarea>
             </div>
@@ -223,4 +223,3 @@ export default function CreatePost() {
   );
 }
 
-// 160  {userCred.isVerified ? <VerifiedLogo /> : null}

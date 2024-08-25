@@ -19,7 +19,7 @@ const Blog: FC<Props> = ({ postData, allUsernames }) => {
     <div className="container">
       <div className={style.inner}>
         <div className={style.sideBar}>
-          <SideBar data={sideBarData} />
+          <SideBar data={sideBarData?sideBarData:[]} />
         </div>
         <div className={style.blog}>
           <div className={style.post_wrapper}>
@@ -36,8 +36,8 @@ const Blog: FC<Props> = ({ postData, allUsernames }) => {
           {sideBarData &&
             sideBarData.map((value, index) => {
               return (
-                <a key={index} href={`/profile/${value}`}>
-                  {value}
+                <a key={index} href={`/profile/${value.uid}`}>
+                  {value.name}
                 </a>
               );
             })}

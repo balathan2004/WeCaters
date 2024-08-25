@@ -2,7 +2,7 @@
   min-height: calc(100vh - 80px);
   width: 100vw;
   max-height: max-content;
-  background-color: gray;
+  background-color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,11 +12,12 @@
 min-height: 475px;
   max-height:max-content;
   width: 500px;
-  background-color: #fff;
+  background-color: #818586;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border-radius: 10px;
 }
 
 .post .header {

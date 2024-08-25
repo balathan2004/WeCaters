@@ -1,29 +1,35 @@
 import style from "/styles/sideBar.module.css";
-import React, { useState } from "react";
-export default function SideBar({ data }) {
+import React, { useState,FC } from "react";
+
+interface props{
+  data:{
+    name: string,
+uid: string;
+  }[]
+  
+}
+
+ const SideBar:FC<props>=({ data })=> {
   const [provider, setProvider] = useState(data ? data : []);
+  const [search, setSearch] = useState<string>("");
+  const [results, setResults] = useState<{
+    name: string,
+uid: string;
+  }[]>();
 
-  const userNames = provider
-    .filter((single) => single != undefined)
-    .map((single) => {
-      return single != undefined ? single : "";
-    });
-
-  const [search, setSearch] = useState(null);
-  const [results, setResults] = useState(null);
-
-  const handleSearch = (event) => {
+  const handleSearch = (event:React.ChangeEvent<HTMLInputElement>) => {
     var value = event.target.value.toLowerCase();
     if (value != "") {
-      setSearch(value);
-
-      var suggestions = userNames.filter((singleData) =>
-        singleData.toLowerCase().includes(value)
+    setSearch(value);
+    console.log(value);
+      var suggestions = provider.filter((singleData) =>
+        singleData.name.toLowerCase().includes(value) 
       );
+      console.log(suggestions);
 
       setResults(suggestions);
     } else {
-      setResults(null);
+      setResults([]);
     }
   };
 
@@ -31,15 +37,15 @@ export default function SideBar({ data }) {
     <>
       <div className={style.sideBar}>
         <div className={style.search}>
-          <h2>Search Providers</h2>
+          <h2>Search Businesses</h2>
           <input onChange={handleSearch} placeholder="Search"></input>
           <ul className={style.results}>
             {!results
               ? null
               : results.map((resultValue) => {
                   return (
-                    <a href={`/profile/${resultValue}`} key={resultValue}>
-                      <li>@{resultValue}</li>
+                    <a href={`/profile/${resultValue.uid}`} key={resultValue.uid}>
+                      <li>@{resultValue.name}</li>
                     </a>
                   );
                 })}
@@ -49,3 +55,5 @@ export default function SideBar({ data }) {
     </>
   );
 }
+
+export default SideBar

@@ -1,5 +1,5 @@
 import { userInterface } from "../auth/signup";
-import { ResponseConfig ,userAuthResponse} from "./../interfaces/shared";
+import { ResponseConfig ,userAuthResponse, usernameSuggestInterface} from "./../interfaces/shared";
 
 
 interface dataProps{
@@ -13,7 +13,7 @@ interface Props {
   stringify?: boolean;
 }
 
-type availInterfaces=ResponseConfig | userAuthResponse
+type availInterfaces=ResponseConfig | userAuthResponse |usernameSuggestInterface
 
 const SendData = async ({
   route,
