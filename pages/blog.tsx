@@ -51,7 +51,7 @@ export default Blog;
 export const getServerSideProps:GetServerSideProps=async()=> {
   const apiUrl =
     process.env.NODE_ENV === "production"
-      ? `https://caters.vercel.app/api/post_action/get_posts`
+      ? "https://we-caters.vercel.app/api/post_action/get_posts"
       : "http://localhost:3000/api/post_action/get_posts";
   const response = await fetch(apiUrl);
   const res: getPostsInterface = await response.json();
