@@ -96,7 +96,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext<Pars
   const {id}=query
   const apiUrl =
     process.env.NODE_ENV === "production"
-      ? `https://caters.vercel.app/api/profile/get-profile?user=${id}`
+      ? `https://we-caters.vercel.app/api/profile/get-profile?user=${id}`
       : `http://localhost:3000/api/profile/get-profile?user=${id}`;
   const response = await fetch(apiUrl);
   const res:userProfileResponse = await response.json();

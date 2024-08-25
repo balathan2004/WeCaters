@@ -115,7 +115,7 @@ export const getServerSideProps = async (
 
   const apiUrl =
     process.env.NODE_ENV === "production"
-      ? `https://caters.vercel.app/api/profile/my_profile?userid=${uid}`
+      ? `https://we-caters.vercel.app/api/profile/my_profile?userid=${uid}`
       : `http://localhost:3000/api/profile/my_profile?userid=${uid}`;
   const response = await fetch(apiUrl);
   const res: userProfileResponse = await response.json();
