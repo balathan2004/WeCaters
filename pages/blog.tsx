@@ -1,5 +1,4 @@
 import style from "/styles/blog.module.css";
-import Post from "@/components/blog/post";
 import { GetServerSideProps } from "next";
 import SideBar from "@/components/blog/sideBar";
 import { getPostsInterface } from "@/components/interfaces/shared";
