@@ -1,8 +1,12 @@
-import { firestore } from "@/config";
+import { NextApiRequest,NextApiResponse } from "next";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
+import {firestore} from '@/components/firebase_config'
 
-export default async function (req, res) {
-  const { post_id, comment_id, comment, comment_user, comment_reply, time } =
+export default async function (req:NextApiRequest, res:NextApiResponse) {
+  /**
+   * 
+   * 
+   * const { post_id, comment_id, comment, comment_user, comment_reply, time } =
     JSON.parse(req.body);
   console.log(req.body);
 
@@ -40,4 +44,7 @@ export default async function (req, res) {
   }
 
   res.json({ message: "comment added", authType: 200 });
+   * 
+   * 
+   */
 }
