@@ -8,12 +8,12 @@ import {getAuth } from "firebase-admin/auth";
 import { credential } from 'firebase-admin';
 
 
-const service_account=require('../../admin_secret.json')
+const service_account=require('./admin_secret.json')
 
 
 
 // Initialize Firebase
-const app_admin = admin.initializeApp({credential:admin.credential.cert(service_account)})
+const app_admin = admin.initializeApp({credential:admin.credential.cert(service_account)},"admin")
 //initializeApp(service_account,"admin1");
 const firestore_admin = getFirestore(app_admin);
 const storage_admin = getStorage(app_admin);

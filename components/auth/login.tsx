@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import SendData from "../fetch/sendData";
 import React, { useContext, useState, FC } from "react";
-import GoogleLogin from "./googlePopupLogin";
+
 import { LoaderProvider, ReplyProvider } from "@/pages/_app";
 import { userAuthResponse } from "../interfaces/shared";
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -102,7 +102,7 @@ const LoginBox: FC<Props> = ({ responseState }) => {
           <button className={style.google}>
             {" "}
             <FontAwesomeIcon className={style.icon} icon={faGoogle} />
-            <span> Continue with Google</span>
+           
           </button>
 
           <span className={style.signup_text}>
@@ -117,3 +117,4 @@ const LoginBox: FC<Props> = ({ responseState }) => {
 export default LoginBox;
 
 // 103   onClick={() => GoogleLogin(responseState)}
+//105  <a href="/auth/google_login"> Continue with Google</a>

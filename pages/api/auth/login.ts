@@ -8,6 +8,7 @@ import {
   userAuthResponse,
   userInterface,
 } from "@/components/interfaces/shared";
+import { partial } from "lodash";
 export default async function (
   req: NextApiRequest,
   res: NextApiResponse<userAuthResponse>
@@ -54,17 +55,23 @@ export default async function (
 }
 
 async function userDocSearch(uid: string) {
-  try{
+
+  const userDoc=await new Promise(async(resolve, reject) => {
+
     var document = await getDoc(doc(firestore, "/professional_account", uid));
-    const docData = document.data() as userInterface;
-    return docData;
-  }catch(err){
-    var document = await getDoc(doc(firestore, "/personal_account", uid));
-  const docData = document.data() as userInterface;
-  return docData;
+    const docData=document.data() as userInterface;
+    if(docData){
+      resolve(docData);
+    }else{
+      var document = await getDoc(doc(firestore, "/personal_account", uid));
+      var data = document.data() as userInterface
+      resolve(data)
+    }
+  })
+return userDoc as userInterface
   }
   
-}
+
 
 async function Login(email: string, password: string) {
   const auth = getAuth(app);

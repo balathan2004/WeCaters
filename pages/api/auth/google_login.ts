@@ -3,9 +3,9 @@ import {
   firestore_admin,
 } from "@/components/firebase-contents/firebase_admin";
 import { NextApiRequest, NextApiResponse } from "next";
-import { personalUserInterface } from "@/components/interfaces/shared";
-
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+import { personalUserInterface ,ResponseConfig} from "@/components/interfaces/shared";
+import { setCookie } from "cookies-next";
+export default async (req: NextApiRequest, res: NextApiResponse<ResponseConfig>) => {
   const userdata = JSON.parse(req.body) as personalUserInterface;
   console.log(userdata.email);
 
@@ -24,4 +24,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .set(userdata);
     }
   }
+
+  setCookie("caters_client_id", userdata.uid, {
+    req,
+    res,
+    maxAge: 900000,
+    httpOnly: false,
+    sameSite: "none",
+    secure: true,
+  });
+  setCookie("caters_account_type", userdata.account_type, {
+    req,
+    res,
+    maxAge: 900000,
+    httpOnly: false,
+    sameSite: "none",
+    secure: true,
+  });
+  res.json({status: 200, message:"login successful"})
 };

@@ -8,6 +8,7 @@ import { provider, auth } from "@/components/firebase_config";
 import SendData from "@/components/fetch/sendData";
 import { signInWithPopup } from "firebase/auth";
 import { defaultImage } from "@/components/blog/smallComponents";
+import { useRouter } from "next/router";
 
 interface FormProps {
   display_name: string;
@@ -18,6 +19,7 @@ interface FormProps {
 }
 
 const GoogleLogin: FC = () => {
+  const router=useRouter()
   const [formData, setFormData] = useState<FormProps>({
     display_name: "",
     email: "",
@@ -33,12 +35,15 @@ const GoogleLogin: FC = () => {
 
   const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     if(formData.email!=""){
-      const response = (await SendData({
+      const response = await SendData({
         route: "/api/auth/google_login",
         data: formData,
-      })) as ResponseConfig;
+      }) as ResponseConfig
+    
+      if(response&&response.status==200){
+        router.push("/blog")
+      }
     }else{
       alert("click the link button to add email")
     }
