@@ -44,7 +44,7 @@ export const getServerSideProps = async (
 
     const apiUrl =
       process.env.NODE_ENV === "production"
-        ? `https://caters.vercel.app/api/post_action/get_single_post?post_name=${id}`
+        ? `https://we-caters.vercel.app/api/post_action/get_single_post?post_name=${id}`
         : `http://localhost:3000/api/post_action/get_single_post?post_name=${id}`;
     const response = await fetch(apiUrl);
     const res: getSinglePostInterface = await response.json();
