@@ -16,6 +16,7 @@ interface FormProps {
   account_type: "personal" | "professional";
   uid: string;
   profile_url: string;
+  phone_number:string
 }
 
 const GoogleLogin: FC = () => {
@@ -26,6 +27,7 @@ const GoogleLogin: FC = () => {
     account_type: "personal",
     uid: "",
     profile_url: "",
+    phone_number:""
   });
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +54,7 @@ const GoogleLogin: FC = () => {
   };
 
   const popup = async () => {
-    const userdata: Omit<FormProps, "account_type"> = await new Promise(
+    const userdata: Omit<FormProps, "account_type" | "phone_number"> = await new Promise(
       (resolve, reject) => {
         signInWithPopup(auth, provider).then(({ user }) => {
           resolve({
@@ -66,7 +68,7 @@ const GoogleLogin: FC = () => {
         });
       }
     );
-    setFormData((prev) => ({ account_type: prev.account_type, ...userdata }));
+    setFormData((prev) => ({ account_type: prev.account_type ,phone_number:"", ...userdata }));
     console.log(userdata);
   };
 

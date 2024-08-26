@@ -10,7 +10,7 @@ commentData:CommentsInterface,
 userData:userInterface,
 setReply:React.Dispatch<React.SetStateAction<string>>
 updateChildComments:React.Dispatch<React.SetStateAction<CommentsInterface[]>>,
-post_id:string,
+post_name:string,
 removeShowBox:React.Dispatch<React.SetStateAction<boolean>>
 
 }
@@ -25,7 +25,7 @@ const ReplyComment:FC<ReplyCommentProps>=({
   removeShowBox,
   setReply,
   updateChildComments,
-  post_id,
+  post_name,
 })=> {
   const { comment_id, comment_user } = commentData;
   const commentArea = useRef<HTMLTextAreaElement>(null);
@@ -53,7 +53,7 @@ const ReplyComment:FC<ReplyCommentProps>=({
         comment_user: userData.username ? userData.username : "anonymous",
         comment_time: modifiedTime,
         comment_reply: comment_user,
-        post_id: post_id,
+        post_name: post_name,
       };
 
       console.log(replyCommentData);

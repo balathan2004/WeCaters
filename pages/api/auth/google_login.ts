@@ -3,11 +3,10 @@ import {
   firestore_admin,
 } from "@/components/firebase-contents/firebase_admin";
 import { NextApiRequest, NextApiResponse } from "next";
-import { personalUserInterface ,ResponseConfig} from "@/components/interfaces/shared";
+import { personalUserInterface ,userAuthResponse} from "@/components/interfaces/shared";
 import { setCookie } from "cookies-next";
-export default async (req: NextApiRequest, res: NextApiResponse<ResponseConfig>) => {
+export default async (req: NextApiRequest, res: NextApiResponse<userAuthResponse>) => {
   const userdata = JSON.parse(req.body) as personalUserInterface;
-  console.log(userdata.email);
 
   const value = await auth_admin.getUserByEmail(userdata.email);
 
@@ -16,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<ResponseConfig>)
       await firestore_admin
         .collection("professional_account")
         .doc(userdata.uid)
-        .set(userdata);
+        .set({userdata});
     } else {
       await firestore_admin
         .collection("personal_account")
@@ -41,5 +40,5 @@ export default async (req: NextApiRequest, res: NextApiResponse<ResponseConfig>)
     sameSite: "none",
     secure: true,
   });
-  res.json({status: 200, message:"login successful"})
+  res.json({status: 200, message:"login successful",userCredentials:userdata})
 };

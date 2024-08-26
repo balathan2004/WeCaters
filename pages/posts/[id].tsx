@@ -22,7 +22,7 @@ const Pages: FC<Props> = ({ data }) => {
           <div className={style.sideBar}></div>
           <div className={style.blog}>
             <div className={style.post_wrapper}>
-              <SinglePost data={data} />;
+              <SinglePost data={data} />
             </div>
           </div>
           <div className={style.sideBar}></div>

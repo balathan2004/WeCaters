@@ -74,7 +74,7 @@ const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
 
   async function checkForUsername() {
     const username = usernameRef.current?.value;
-    console.log(username);
+
     if (username && EvaluateUsername(username)) {
       console.log("sending request");
       const response = (await SendData({
@@ -131,8 +131,8 @@ const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
   useEffect(() => {
     if (loginCred.state) {
       setDistricts(city_data[loginCred.state]);
-      const current=city_data[loginCred.state][0]
-      setLoginCred(prev=>({...prev,district:current}))
+      const current = city_data[loginCred.state][0];
+      setLoginCred((prev) => ({ ...prev, district: current }));
     }
   }, [loginCred.state]);
 

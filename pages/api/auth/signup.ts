@@ -15,7 +15,7 @@ export interface FieldsValues {
   profile_url?: string;
   uid: string;
   password?: string;
-  phone?: number | null;
+  phone_number?: number | null;
   company_name?: string;
   district?: string;
   state?: string;
@@ -28,11 +28,11 @@ export default async (
   try {
     const { display_name, email, password, account_type } = JSON.parse(req.body)
 
-    const userData: FieldsValues = {
+    const userData = {
       display_name: display_name,
       email: email,
       uid: "",
-      phone: null,
+      phone_number: "",
       password: password,
       account_type: account_type,
       profile_url: `https://ui-avatars.com/api/?name=${display_name}&size=200&background=random&color=fff&bold=true`,
@@ -43,7 +43,8 @@ export default async (
     userData.uid = uid;
     delete userData.password;
     if (account_type == "personal") {
-      userData.username = generateUsername(display_name, 3, 20, "user-");
+      const name = display_name.replace(" ", "");
+      userData.username = generateUsername(name, 3, 20, "user-")
       setDoc(doc(firestore, "personal_account", uid), userData);
     } else {
       setDoc(doc(firestore, "professional_account", uid), userData);

@@ -2,8 +2,9 @@ import style from "/styles/new.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import SendData from "../fetch/sendData";
+import { auth,provider } from "../firebase_config";
 import React, { useContext, useState, FC } from "react";
-
+import { signInWithPopup } from "firebase/auth";
 import { LoaderProvider, ReplyProvider } from "@/pages/_app";
 import { userAuthResponse } from "../interfaces/shared";
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -45,6 +46,28 @@ const LoginBox: FC<Props> = ({ responseState }) => {
     const { name, value } = event.target;
     setLoginData((prev) => ({ ...prev, [name]: value }));
 
+  };
+
+
+  const googleLogin = async () => {
+    const uid:string = await new Promise(
+      (resolve, reject) => {
+        signInWithPopup(auth, provider).then(({ user }) => {
+          resolve(user.uid);
+        });
+      }
+    );
+
+    const response=await SendData({
+      route:"/api/auth/google_uid_login",
+      data:{uid:uid}
+
+    }) as userAuthResponse
+    if(response &&response.status==200) {
+      setReply(response.message)
+      responseState(response)
+    }
+  
   };
 
   return (
@@ -99,10 +122,10 @@ const LoginBox: FC<Props> = ({ responseState }) => {
               <button>login</button>
             </div>
           </form>
-          <button className={style.google}>
+          <button className={style.google} onClick={googleLogin}>
             {" "}
             <FontAwesomeIcon className={style.icon} icon={faGoogle} />
-           
+           Continue with Google
           </button>
 
           <span className={style.signup_text}>

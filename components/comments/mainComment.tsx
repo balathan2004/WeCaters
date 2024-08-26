@@ -9,20 +9,21 @@ import { CommentsResponse,CommentsInterface, userInterface } from "../interfaces
 interface Props {
   userData: userInterface;
   setReply: React.Dispatch<React.SetStateAction<string>>;
-  post_id: string;
+  post_name: string;
 }
 
-const MainComment: FC<Props> = ({ userData, setReply, post_id }) => {
+const MainComment: FC<Props> = ({ userData, setReply, post_name }) => {
   const [commentData, setCommentData] = useState<CommentsInterface[]|[]>([]);
   const [getComments, setGetComments] = useState<boolean>(false);
   const [message, setMessage] = useState("");
 
   const fetchComments = async function () {
     var data = {
-      post_id: post_id,
+      post_name: post_name,
     };
+    console.log(data);
     const response = (await SendData({
-      route: "api/post_action/fetch_comments",
+      route: "/api/post_action/fetch_comments",
       data: data,
     })) as CommentsResponse;
 
@@ -46,16 +47,18 @@ const MainComment: FC<Props> = ({ userData, setReply, post_id }) => {
     }
   }, [getComments]);
 
+  
+
   return (
     <div className={style.main_comment}>
-      <span onClick={handleCommentFetch}>
+      <span className={style.view_comment} onClick={handleCommentFetch}>
         {!getComments ? "View Comments" : "Hide Comments"}
       </span>
       <p>{message}</p>
       <CommentBox
         userData={userData}
         setReply={setReply}
-        post_id={post_id}
+        post_name={post_name}
         setCommentData={setCommentData}
       />
       <div className={style.comment_list}>
@@ -67,7 +70,7 @@ const MainComment: FC<Props> = ({ userData, setReply, post_id }) => {
                   key={index}
                   userData={userData}
                   setReply={setReply}
-                  post_id={post_id}
+                  post_name={post_name}
                 />
               );
             })

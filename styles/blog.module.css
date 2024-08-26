@@ -153,6 +153,7 @@
 
 .icon {
   height: 25px;
+  cursor: pointer;
 }
 
 .post .post_footer .save {
@@ -161,6 +162,13 @@
 .post .post_footer_content {
   padding: 0 16px 16px 16px;
 }
+
+
+.post .post_footer_content  p{
+  word-wrap: break-word;
+}
+
+
 .post .post_footer_content span {
   margin-bottom: 3px;
   display: block;
@@ -169,10 +177,11 @@
   margin-bottom: 8px;
 }
 .post .post_footer_content .name {
-  display: inline-block;
+  white-space: nowrap;
   color: inherit;
   text-decoration: none;
   font-weight: 700;
+  display: inline-block;
   margin-right: 0.5rem;
 }
 
@@ -181,7 +190,10 @@
 }
 
 .post .post_footer_content .caption {
-  display: inline-block;
+  white-space: nowrap; /* Prevents wrapping of the caption */
+  overflow: hidden; /* Ensures the caption doesn't overflow the container */
+  text-overflow: ellipsis;
+  word-wrap: break-word;
 }
 
 .post .post_footer_content .posting-time {

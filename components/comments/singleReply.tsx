@@ -12,7 +12,7 @@ interface Props{
     userData:userInterface,
     setReply:React.Dispatch<React.SetStateAction<string>>,
     setCommentChild:React.Dispatch<React.SetStateAction<CommentsInterface[]>>,
-    post_id:string
+    post_name:string
 }
 
 
@@ -21,7 +21,7 @@ const  SingleReply:FC<Props>=({
   userData,
   setReply,
   setCommentChild,
-  post_id,
+  post_name,
 })=> {
   const [showReplyBox, setShowReplyBox] = useState(false);
 
@@ -61,7 +61,7 @@ const  SingleReply:FC<Props>=({
           userData={userData}
           setReply={setReply}
           updateChildComments={setCommentChild}
-          post_id={post_id}
+          post_name={post_name}
           removeShowBox={setShowReplyBox}
         />
       ) : null}

@@ -130,7 +130,7 @@ const SinglePost: FC<Props> = ({ data }) => {
       <div className={style.post_footer_content}>
         <span className={style.likes}>100 likes</span>
         <p>
-          <a href={`/profile/${data.username}`} className={style.name}>
+          <a href={`/profile/${data.uid}`} className={style.name}>
             {data.username}
           </a>
           <span className={style.caption}> {data.caption}</span>
@@ -144,7 +144,7 @@ const SinglePost: FC<Props> = ({ data }) => {
         {showComment ? (
           <MainComment
             userData={userData}
-            post_id={data.post_name}
+            post_name={data.post_name}
             setReply={setReply}
           />
         ) : null}

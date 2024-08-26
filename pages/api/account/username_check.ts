@@ -5,6 +5,7 @@ import { NextApiRequest,NextApiResponse } from "next";
 export default async function (req:NextApiRequest, res:NextApiResponse) {
 
   const { username } = JSON.parse(req.body);
+  console.log(username);
   console.log("username response")
 
   const users = collection(firestore, "professional_account");
@@ -15,6 +16,7 @@ export default async function (req:NextApiRequest, res:NextApiResponse) {
   });
   userData.map((user) => {
     if (user.username === username) {
+      console.log("username same")
       check = false;
       res.json({ status: 400, message: "Username already exists" });
     }

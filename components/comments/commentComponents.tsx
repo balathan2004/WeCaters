@@ -13,11 +13,11 @@ interface Props{
   commentData:CommentsInterface,
   userData:userInterface,
   setReply:React.Dispatch<React.SetStateAction<string>>,
-  post_id:string
+  post_name:string
 }
 
 
-const OneCommentList:FC<Props>=({ commentData, userData, setReply, post_id })=> {
+const OneCommentList:FC<Props>=({ commentData, userData, setReply, post_name })=> {
   const [showReplyBox, setShowReplyBox] = useState(false);
   const [isCommentShow, setIsCommentShow] = useState(false);
   const [commentChild, setCommentChild] = useState(
@@ -68,7 +68,7 @@ const OneCommentList:FC<Props>=({ commentData, userData, setReply, post_id })=> 
                   userData={userData}
                   setReply={setReply}
                   setCommentChild={setCommentChild}
-                  post_id={post_id}
+                  post_name={post_name}
                 />
               );
             })
@@ -80,7 +80,7 @@ const OneCommentList:FC<Props>=({ commentData, userData, setReply, post_id })=> 
           userData={userData}
           setReply={setReply}
           updateChildComments={setCommentChild}
-          post_id={post_id}
+          post_name={post_name}
           removeShowBox={setShowReplyBox}
         />
       ) : null}

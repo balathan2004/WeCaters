@@ -16,11 +16,8 @@ export default async function (
   if (req.method === "POST") {
     try {
       const { email, password } = JSON.parse(req.body);
-
       const uid: string = await Login(email, password);
-
       const userCred: userInterface = await userDocSearch(uid);
-
       setCookie("caters_client_id", userCred.uid, {
         req,
         res,
@@ -44,8 +41,8 @@ export default async function (
         userCredentials: userCred,
       });
     } catch (error: any) {
-      console.log(error);
-      if (error.code == "auth/invalid-credential") {
+
+      if (error.message == "auth/invalid-credential") {
         res.json({ status: 400, message: "auth/invalid-credential" });
       } else {
         res.json({ status: 400, message: "Error to login" });
@@ -54,35 +51,36 @@ export default async function (
   }
 }
 
-async function userDocSearch(uid: string) {
+export async function userDocSearch(uid: string) {
+  try {
+    let document = await getDoc(doc(firestore, "/professional_account", uid));
+    let docData = document.data() as userInterface;
 
-  const userDoc=await new Promise(async(resolve, reject) => {
+    if (!docData) {
+      document = await getDoc(doc(firestore, "/personal_account", uid));
+      docData = document.data() as userInterface;
 
-    var document = await getDoc(doc(firestore, "/professional_account", uid));
-    const docData=document.data() as userInterface;
-    if(docData){
-      resolve(docData);
-    }else{
-      var document = await getDoc(doc(firestore, "/personal_account", uid));
-      var data = document.data() as userInterface
-      resolve(data)
+      if (!docData) {
+        throw new Error("User not found");
+      }
     }
-  })
-return userDoc as userInterface
-  }
-  
 
+    return docData;
+  } catch (err: any) {
+    throw err;
+  }
+}
 
 async function Login(email: string, password: string) {
-  const auth = getAuth(app);
-  const uid: string = await new Promise(async (resolve, reject) => {
-    await signInWithEmailAndPassword(auth, email, password).then(
-      async (cred) => {
-        console.log(cred.user.uid);
-        var { uid } = cred.user;
-        resolve(uid);
-      }
-    );
-  });
-  return uid;
+  try {
+    const auth = getAuth(app);
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    return cred.user.uid;
+  } catch (err: any) {
+    if (err.code == "auth/invalid-credential") {
+      throw new Error("auth/invalid-credential");
+    }else{
+      throw err
+    }
+  }
 }

@@ -23,10 +23,7 @@ const Blog: FC<Props> = ({ postData, allUsernames }) => {
         <div className={style.blog}>
           <div className={style.post_wrapper}>
             {postData
-              ? postData.map((value, index) => {
-                  return <SinglePost data={value} key={index} />;
-                })
-              : null}
+              ? postData.map((value, index) =>  <SinglePost data={value} key={index} />) : null}
           </div>
         </div>
 

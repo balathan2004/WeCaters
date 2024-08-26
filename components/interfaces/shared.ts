@@ -24,15 +24,13 @@ export interface usernameSuggestInterface extends ResponseConfig{
 
 
 export interface CommentsInterface {
-
   comment:string;
   comment_id:string;
   comment_time:string;
   comment_user:string;
   has_replies?:CommentsInterface[]|[],
-  post_id:string;
+  post_name:string;
   comment_reply?:string;
-
 }
 
 
@@ -71,6 +69,7 @@ export interface personalUserInterface{
   display_name: string;
   email: string;
   profile_url: string;
+  phone_number: string;
 
 }
 

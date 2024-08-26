@@ -8,7 +8,7 @@ import { userInterface,CommentsInterface } from "../interfaces/shared";
 interface Props{
   setReply:React.Dispatch<React.SetStateAction<string>>,
   userData:userInterface,
-  post_id:string,
+  post_name:string,
   setCommentData: React.Dispatch<React.SetStateAction<[] | CommentsInterface[]>>
 }
 
@@ -16,18 +16,18 @@ interface Props{
  const CommentBox:FC<Props>=({
   setReply,
   userData,
-  post_id,
+  post_name,
   setCommentData,
 })=> {
   const [comment, setComment] = useState("");
   const commentArea = useRef<HTMLTextAreaElement>(null);
-  const [showCommentBox, setShowCommentBox] = useState(false);
+  //const [showCommentBox, setShowCommentBox] = useState(false);
   const [height, setHeight] = useState("auto");
 
   const sendComment = async (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     var data:CommentsInterface = {
-      post_id: post_id,
+      post_name: post_name,
       comment: comment,
       comment_id: v4(),
       comment_user: userData ? userData.username : "anonymous",
@@ -35,10 +35,11 @@ interface Props{
       has_replies: [],
     };
     setCommentData((prev) => [...prev, data]);
+    console.log(data)
     const response = await SendData(
-      {route:"api/post_action/add_comment",data:data}
+      {route:"/api/post_action/add_comment",data:data}
        );
-    if (response && response.message) {
+    if (response && response.status ==200) {
       if(commentArea.current){
         commentArea.current.value=""
         setReply("Comment Added");
@@ -48,7 +49,7 @@ interface Props{
   };
 
   const handleToggler = () => {
-    setShowCommentBox((prev) => !prev);
+    //setShowCommentBox((prev) => !prev);
   };
 
   const cancelComment=()=>{
@@ -88,12 +89,18 @@ interface Props{
         <button type="submit">Comment</button>
         <button onClick={cancelComment} type="button">Cancel</button>
       </form>
-      <span className={style.toggler} onClick={handleToggler}>
-        Show Comments
-      </span>
+    
     </div>
   );
 }
 
 
 export default CommentBox
+
+/**
+ * 92   <span className={style.toggler} onClick={handleToggler}>
+        Show Comments
+      </span>
+ * 
+ * 
+ */

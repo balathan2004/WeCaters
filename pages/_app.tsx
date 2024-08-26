@@ -4,7 +4,7 @@ import { GetRequest } from "@/components/fetch/getRequest";
 
 
 import PopUp from "@/component/popup";
-import Loading from "@/component/loading";
+
  * 
  * 
  */
@@ -14,11 +14,10 @@ import {
   userAuthResponse,
   userInterface,
 } from "@/components/interfaces/shared";
-
-import { useRouter } from "next/router";
 import { NavbarInterface } from "@/components/interfaces/front";
 import PopUp from "@/components/front/popup";
 import Head from "next/head";
+import Loading from "@/components/front/loader";
 import type { AppProps } from "next/app";
 
 export const NavBarProvider = React.createContext<any>(null);
@@ -84,6 +83,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <ReplyProvider.Provider value={{reply, setReply}}>
             <UserCredProvider.Provider value={{userData, setUserData}}>
               <Navbar />
+              {loader?<Loading/>:null}
               {reply? <PopUp reply={reply} changeState={setReply} />:""}
               <Component {...pageProps} />
             </UserCredProvider.Provider>
