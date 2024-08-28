@@ -18,17 +18,20 @@ import { useRouter } from "next/router";
 import { UserCredProvider, ReplyProvider } from "@/pages/_app";
 import MainComment from "../comments/mainComment";
 import { userInterface } from "../auth/signup";
+import SendData from "../fetch/sendData";
 
 interface Props {
   data: postInterface;
 }
 
 const SinglePost: FC<Props> = ({ data }) => {
+console.log(data);
 
   const navi = useRouter();
   const postImage = data.photo_url ? data.photo_url:[];
   const [currentImage, setCurrentImage] = useState(postImage[0]);
   const [count, setCount] = useState(0);
+  const [likes,setLikes]=useState<number>(data.likes_count?data.likes_count:0)
   const totalLength = postImage.length;
   const {reply, setReply} = useContext(ReplyProvider);
   const [arrowDecide, setArrowDecide] = useState(
@@ -67,6 +70,23 @@ const SinglePost: FC<Props> = ({ data }) => {
       setCount(() => totalLength - 1);
     }
   };
+
+  const add_like =async()=>{
+
+    if(userData){
+
+    const res=  await SendData({
+        route:"/api/post_action/add_like",
+        data:{post_name:data.post_name,uid:userData.uid,post_author:data.uid}
+      })
+      if(res&& res.status==200){
+        setLikes(prev=>prev+1)
+      }
+  
+
+    }
+
+  }
 
   return (
     <div className={style.post} onDoubleClick={gotoPost}>
@@ -113,7 +133,7 @@ const SinglePost: FC<Props> = ({ data }) => {
       </div>
       <div className={style.post_footer}>
         <div className={style.like_share_comment}>
-          <FontAwesomeIcon className={style.icon} icon={faHeart} />
+          <FontAwesomeIcon className={style.icon} icon={faHeart} onClick={add_like} />
 
           <FontAwesomeIcon
             className={style.icon}
@@ -128,12 +148,12 @@ const SinglePost: FC<Props> = ({ data }) => {
         </div>
       </div>
       <div className={style.post_footer_content}>
-        <span className={style.likes}>100 likes</span>
+        <span className={style.likes}>{likes} likes</span>
         <p>
           <a href={`/profile/${data.uid}`} className={style.name}>
             {data.username}
           </a>
-          <span className={style.caption}> {data.caption}</span>
+         {data.caption}
         </p>
 
         <span className={style.posting_time}>

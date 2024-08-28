@@ -1,5 +1,4 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase-admin/app";
 const admin = require("firebase-admin");
 import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
@@ -24,7 +23,7 @@ const service_account = {
 // Initialize Firebase
 const app_admin = admin.initializeApp(
   { credential: admin.credential.cert(service_account) },
-  "admin"
+  "admin_account"
 );
 const firestore_admin = getFirestore(app_admin);
 const storage_admin = getStorage(app_admin);

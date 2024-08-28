@@ -6,10 +6,10 @@ import { CommentsInterface, userInterface } from "../interfaces/shared";
 
 
 interface ReplyCommentProps{
-commentData:CommentsInterface,
+commentData:Omit<CommentsInterface,"post_name">,
 userData:userInterface,
 setReply:React.Dispatch<React.SetStateAction<string>>
-updateChildComments:React.Dispatch<React.SetStateAction<CommentsInterface[]>>,
+updateChildComments:React.Dispatch<React.SetStateAction<Omit<CommentsInterface, "post_name">[]>>,
 post_name:string,
 removeShowBox:React.Dispatch<React.SetStateAction<boolean>>
 

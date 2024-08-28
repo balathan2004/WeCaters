@@ -15,6 +15,7 @@ export default async (
     const { uid } = userData;
     var docRef = await getDoc(doc(firestore, "professional_account", uid));
     var document = docRef.data();
+    console.log(userData)
 
     if (document !== userData) {
       await updateDoc(

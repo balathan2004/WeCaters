@@ -21,11 +21,11 @@ interface Props {
 
 const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
   const { reply, setReply } = useContext(ReplyProvider);
-  const { dirs, setDirs } = useContext(NavBarProvider);
   const { loader, setLoader } = useContext(LoaderProvider);
+  console.log(loginCred)
   const [image, setImage] = useState<File | null>(null);
   const [imageChange, setImageChange] = useState(false);
-  const [showImage, setShowImage] = useState("");
+  const [showImage, setShowImage] = useState(loginCred.profile_url?loginCred.profile_url:"");
   const [oldLoginCred, setOldLoginCred] = useState<userInterface | null>(null);
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const states = Object.keys(cityData);
@@ -34,10 +34,10 @@ const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
 
   const handler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(loginCred);
+
     if (oldLoginCred && !isEqual(oldLoginCred, loginCred)) {
       console.log(oldLoginCred);
-      console.log(loginCred);
+  
       setLoader(true);
 
       const response = (await SendData({
@@ -170,8 +170,8 @@ const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
           <label htmlFor="image">
             <img
               src={
-                showImage
-                  ? showImage
+                loginCred.profile_url
+                  ? loginCred.profile_url
                   : defaultImage(
                       loginCred.username
                         ? loginCred.username

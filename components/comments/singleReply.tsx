@@ -8,10 +8,10 @@ import ReplyComment from "./replyComment";
 import { CommentsInterface, userInterface } from "../interfaces/shared";
 
 interface Props{
-    commentData:CommentsInterface;
+    commentData:Omit<CommentsInterface,"post_name">;
     userData:userInterface,
     setReply:React.Dispatch<React.SetStateAction<string>>,
-    setCommentChild:React.Dispatch<React.SetStateAction<CommentsInterface[]>>,
+    setCommentChild:React.Dispatch<React.SetStateAction<Omit<CommentsInterface, "post_name">[]>>,
     post_name:string
 }
 
@@ -33,7 +33,7 @@ const  SingleReply:FC<Props>=({
         </div>
         <div className={style.right}>
           <div className={style.right_top}>
-            <span>{commentData.comment_user}</span>
+            <span className={style.username}>{commentData.comment_user}</span>
             <span className={style.comment_time}>
               {TimeSetter(commentData.comment_time)}
             </span>

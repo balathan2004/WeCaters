@@ -90,6 +90,11 @@
   
 }
 
+.comment_item_top .right .user_mention::before {
+  content: "@";
+}
+
+
 .comment_item_top .right span {
   font-size: 14px;
   font-weight: 600;

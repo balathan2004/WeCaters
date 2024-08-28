@@ -28,9 +28,16 @@ export interface CommentsInterface {
   comment_id:string;
   comment_time:string;
   comment_user:string;
-  has_replies?:CommentsInterface[]|[],
+  has_replies?:Omit<CommentsInterface,"post_name">[]|[],
   post_name:string;
   comment_reply?:string;
+}
+
+export interface LikesInterface{
+  post_name:string;
+  likes_count:number;
+  liked_by:string[];
+  post_author:string;
 }
 
 
@@ -81,6 +88,8 @@ export interface postInterface {
   uid: string;
   username: string;
   profile_url?: string ;
+  likes_count?: number;
+  liked_by?: string[];
 }
 
 

@@ -50,6 +50,7 @@ try{
       username: username,
       uid: uid,
       time: setDate(),
+      likes_count:0
     };
 
 
