@@ -9,6 +9,8 @@ import {
   faCaretLeft,
   faCaretRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as faRegularHeart } from "@fortawesome/free-regular-svg-icons";
+
 import moment from "moment";
 import { VerifiedLogo } from "./smallComponents";
 import React, { useState, useContext, useEffect, FC } from "react";
@@ -25,23 +27,28 @@ interface Props {
 }
 
 const SinglePost: FC<Props> = ({ data }) => {
-console.log(data);
-
   const navi = useRouter();
-  const postImage = data.photo_url ? data.photo_url:[];
+  const postImage = data.photo_url ? data.photo_url : [];
   const [currentImage, setCurrentImage] = useState(postImage[0]);
   const [count, setCount] = useState(0);
-  const [likes,setLikes]=useState<number>(data.likes_count?data.likes_count:0)
+  const { userData, setUserData } = useContext(UserCredProvider);
+  const [likes, setLikes] = useState<number>(
+    data.likes_count ? data.likes_count : 0
+  );
+  const [isLiked, setIsLiked] = useState<boolean>(
+    userData && data.liked_by?.find((user) => user == userData.uid)
+      ? true
+      : false
+  );
   const totalLength = postImage.length;
-  const {reply, setReply} = useContext(ReplyProvider);
+  const { reply, setReply } = useContext(ReplyProvider);
   const [arrowDecide, setArrowDecide] = useState(
     totalLength > 1 ? true : false
   );
 
   const [showComment, setShowComment] = useState(false);
 
-  const {userData, setUserData} = useContext(UserCredProvider);
-  const parsedUserData :userInterface = userData
+  const parsedUserData: userInterface = userData;
 
   const gotoPost = () => {
     navi.push(`/posts/${data.post_name}`);
@@ -71,29 +78,46 @@ console.log(data);
     }
   };
 
-  const add_like =async()=>{
-
-    if(userData){
-
-    const res=  await SendData({
-        route:"/api/post_action/add_like",
-        data:{post_name:data.post_name,uid:userData.uid,post_author:data.uid}
-      })
-      if(res&& res.status==200){
-        setLikes(prev=>prev+1)
+  const add_like = async () => {
+    if (userData) {
+      const res = await SendData({
+        route: "/api/post_action/add_like",
+        data: {
+          post_name: data.post_name,
+          uid: userData.uid,
+          post_author: data.uid,
+        },
+      });
+      if (res && res.status == 200) {
+        setReply("liked");
+        setLikes((prev) => prev + 1);
+        setIsLiked(true);
+      } else if (res?.status == 300) {
+        setLikes((prev) => prev - 1);
+        setIsLiked(false);
       }
-  
-
     }
+  };
 
-  }
+  const copyToClipboard = () => {
+    const apiUrl = `${process.env.NEXT_PUBLIC_DOMAIN_URL}/posts/${data.post_name}`;
+    console.log(apiUrl);
+    setReply("Link Copied to clipboard");
+    navigator.clipboard.writeText(apiUrl);
+  };
 
   return (
     <div className={style.post} onDoubleClick={gotoPost}>
       <div className={style.post_title}>
         <div className={style.post_left}>
           <div className={style.image}>
-            <img src={data.profile_url ? data.profile_url : defaultImage(data.username)} />
+            <img
+              src={
+                data.profile_url
+                  ? data.profile_url
+                  : defaultImage(data.username)
+              }
+            />
           </div>
           <div className={style.details}>
             <a href={`/profile/${data.uid}`} className={style.name}>
@@ -133,7 +157,11 @@ console.log(data);
       </div>
       <div className={style.post_footer}>
         <div className={style.like_share_comment}>
-          <FontAwesomeIcon className={style.icon} icon={faHeart} onClick={add_like} />
+          <FontAwesomeIcon
+            className={style.icon}
+            icon={isLiked ? faHeart : faRegularHeart}
+            onClick={add_like}
+          />
 
           <FontAwesomeIcon
             className={style.icon}
@@ -141,7 +169,11 @@ console.log(data);
             icon={faComment}
           />
 
-          <FontAwesomeIcon className={style.icon} icon={faPaperPlane} />
+          <FontAwesomeIcon
+            className={style.icon}
+            icon={faPaperPlane}
+            onClick={copyToClipboard}
+          />
         </div>
         <div className={style.save}>
           <FontAwesomeIcon className={style.icon} icon={faBookmark} />
@@ -153,7 +185,7 @@ console.log(data);
           <a href={`/profile/${data.uid}`} className={style.name}>
             {data.username}
           </a>
-         {data.caption}
+          {data.caption}
         </p>
 
         <span className={style.posting_time}>

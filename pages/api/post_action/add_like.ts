@@ -29,7 +29,13 @@ export default async function (
           ["liked_by"]:FieldValue.arrayUnion(uid),
           ["likes_count"]:FieldValue.increment(1)
          })
+         res.json({ status: 200, message: "liked" });
       }else{
+        //const removed=data.liked_by.filter(user=>user==uid)
+        await docRef.update({
+          ["liked_by"]:FieldValue.arrayRemove(uid),
+          ["likes_count"]:FieldValue.increment(-1)
+        })
         res.json({ status: 300, message: "already liked" });
       }
 

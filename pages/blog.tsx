@@ -12,18 +12,20 @@ const Blog: FC<Props> = ({ postData, allUsernames }) => {
   const navi = useRouter();
 
   const sideBarData = allUsernames;
-  
 
   return (
     <div className="container">
       <div className={style.inner}>
         <div className={style.sideBar}>
-          <SideBar data={sideBarData?sideBarData:[]} />
+          <SideBar data={sideBarData ? sideBarData : []} />
         </div>
         <div className={style.blog}>
           <div className={style.post_wrapper}>
             {postData
-              ? postData.map((value, index) =>  <SinglePost data={value} key={index} />) : null}
+              ? postData.map((value, index) => (
+                  <SinglePost data={value} key={index} />
+                ))
+              : null}
           </div>
         </div>
 
@@ -45,10 +47,10 @@ const Blog: FC<Props> = ({ postData, allUsernames }) => {
 
 export default Blog;
 
-export const getServerSideProps:GetServerSideProps=async()=> {
+export const getServerSideProps: GetServerSideProps = async () => {
   const apiUrl =
     process.env.NODE_ENV === "production"
-      ? "https://we-caters.vercel.app/api/post_action/get_posts"
+      ? `${process.env.domain_url}/api/post_action/get_posts`
       : "http://localhost:3000/api/post_action/get_posts";
   const response = await fetch(apiUrl);
   const res: getPostsInterface = await response.json();
@@ -56,4 +58,4 @@ export const getServerSideProps:GetServerSideProps=async()=> {
   return {
     props: { postData: res.postData, allUsernames: res.allUsernames },
   };
-}
+};
