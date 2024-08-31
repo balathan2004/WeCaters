@@ -229,7 +229,7 @@
   width: 75px;
 }
 
-/*  blog  */
+/*  profile page  */
 
 .blog .profile {
   margin-top: 1rem;
@@ -313,12 +313,12 @@
 
 .blog .posts li{
   list-style: none;
-  width: 30%;
+  min-width: 30%;
+  max-width: 30%;
 }
 
 .blog .posts li img {
 width: 100%;
-
 aspect-ratio: 1/1;
 object-fit:fill;
 border-radius: 10px;
@@ -331,25 +331,42 @@ border-radius: 10px;
 
 
 
-@media (max-width: 800px) {
-  .inner .blog {
-    width: 100%;
-    margin: auto;
-    display: block;
-  }
-}
 
 @media (max-width: 800px) {
   .inner .blog {
-    flex: 1;
-    width: 100%;
-    background-color: rgb(181, 181, 167);
-    margin: auto;
-    display: block;
-  }
-
-  .inner .blog .post {
     width: 95%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+ 
+    display: block;
+  }
+
+  .inner .blog .profile{
+    height: 100%;
+  }
+
+  .inner .blog .posts {
+    width: 95%;
+  }
+
+  .blog .profile .account {
+    gap: 1rem;
+    padding: 1rem 0 2rem 0;
+  }
+  
+  .blog .profile .profileImage {
+    height: 100px;
+    border-radius: 50%;
+  }
+
+  .blog .posts {
+    gap:10px;
+  
+  }
+
+  .blog .posts li {
+    flex: 1;
+  min-width: 30%;
   }
 
   .inner .sideBar,
