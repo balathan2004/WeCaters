@@ -8,10 +8,15 @@ import {
   userAuthResponse,
   userInterface,
 } from "@/components/interfaces/shared";
+import Report from "@/components/professional_account/report";
 
 import ProProfile from "@/components/professional_account/profile";
+
 export default function Account() {
   const navi = useRouter();
+  const toggler = useState<"profile" | "account" | "analytics" | "report">(
+    "profile"
+  );
   const [loginCred, setLoginCred] = useState<userInterface>({
     account_type: "professional",
     profile_url: "",
@@ -28,10 +33,12 @@ export default function Account() {
   });
   const { reply, setReply } = useContext(ReplyProvider);
   const { dirs, setDirs } = useContext(NavBarProvider);
-  const { loader, setLoader } = useContext(LoaderProvider);  
+  const { loader, setLoader } = useContext(LoaderProvider);
   const [showImage, setShowImage] = useState("");
-
-
+  const components = [
+    { name: "profile", component: ProProfile },
+    { name: "report", component: Report },
+  ];
 
   const Logout = () => {
     localStorage.removeItem("login_cred");
@@ -51,8 +58,6 @@ export default function Account() {
     let { name, value } = event.target;
     setLoginCred((prev) => ({ ...prev, [name]: value }));
   };
-
- 
 
   const getCred = async () => {
     let res = (await GetRequest({
@@ -85,8 +90,6 @@ export default function Account() {
     }
   };
 
-  
-
   useEffect(() => {
     render();
   }, []);
@@ -101,16 +104,16 @@ export default function Account() {
           <li>Report a problem</li>
         </nav>
         <section>
-          <article>
-          <ProProfile loginCred={loginCred} setLoginCred={setLoginCred}/>
-          </article>
+          <article></article>
         </section>
       </main>
     </div>
   );
 }
 
-//  
+//  <ProProfile loginCred={loginCred} setLoginCred={setLoginCred} />
+
+//
 //  {loginCred.isVerified ? <VerifiedLogo /> : null}
 
 /**

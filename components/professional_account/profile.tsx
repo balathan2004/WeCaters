@@ -22,10 +22,11 @@ interface Props {
 const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
   const { reply, setReply } = useContext(ReplyProvider);
   const { loader, setLoader } = useContext(LoaderProvider);
-  console.log(loginCred)
   const [image, setImage] = useState<File | null>(null);
   const [imageChange, setImageChange] = useState(false);
-  const [showImage, setShowImage] = useState(loginCred.profile_url?loginCred.profile_url:"");
+  const [showImage, setShowImage] = useState(
+    loginCred.profile_url ? loginCred.profile_url : ""
+  );
   const [oldLoginCred, setOldLoginCred] = useState<userInterface | null>(null);
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const states = Object.keys(cityData);
@@ -37,7 +38,7 @@ const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
 
     if (oldLoginCred && !isEqual(oldLoginCred, loginCred)) {
       console.log(oldLoginCred);
-  
+
       setLoader(true);
 
       const response = (await SendData({

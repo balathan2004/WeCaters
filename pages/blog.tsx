@@ -50,8 +50,9 @@ export default Blog;
 export const getServerSideProps: GetServerSideProps = async () => {
   const apiUrl =
     process.env.NODE_ENV === "production"
-      ? `${process.env.domain_url}/api/post_action/get_posts`
+      ? `${process.env.DOMAIN_URL}/api/post_action/get_posts`
       : "http://localhost:3000/api/post_action/get_posts";
+  console.log("url", apiUrl);
   const response = await fetch(apiUrl);
   const res: getPostsInterface = await response.json();
 

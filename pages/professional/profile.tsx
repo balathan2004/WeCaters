@@ -8,7 +8,8 @@ import { GetServerSidePropsContext } from "next";
 import {
   postInterface,
   userInterface,
-  userProfileResponse,userInterfaceCount
+  userProfileResponse,
+  userInterfaceCount,
 } from "@/components/interfaces/shared";
 import CompleteProfile from "@/components/account/complete_profile";
 
@@ -19,7 +20,7 @@ interface props {
 
 const Profile: FC<props> = ({ userData, userPosts }) => {
   const userDetails = userData;
-  
+
   const count = Math.floor(
     (Object.keys(userData).length / userInterfaceCount) * 100
   );
@@ -67,7 +68,7 @@ const Profile: FC<props> = ({ userData, userPosts }) => {
               <span></span>
             </span>
           </div>
-          <button className={style.follow}>+ Follow</button>
+          <a href="/professional/account">Edit Profile</a>
         </div>
       </>
     );
@@ -82,8 +83,11 @@ const Profile: FC<props> = ({ userData, userPosts }) => {
         <div className={blogStyle.blog}>
           <div className={style.profile}>
             <div className={style.account}>
-{count==100?<AccountBox/>:<CompleteProfile data={userDetails}/>}
-              
+              {count == 100 ? (
+                <AccountBox />
+              ) : (
+                <CompleteProfile data={userDetails} />
+              )}
             </div>
 
             <ul className={style.posts}>

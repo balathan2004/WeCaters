@@ -10,7 +10,6 @@ import {
   faCaretRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faRegularHeart } from "@fortawesome/free-regular-svg-icons";
-
 import moment from "moment";
 import { VerifiedLogo } from "./smallComponents";
 import React, { useState, useContext, useEffect, FC } from "react";

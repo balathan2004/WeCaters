@@ -94,3 +94,20 @@
     margin-top: 1rem;
 
 } 
+
+/* report page*/
+.profile .report{
+
+}
+
+.profile .report h1{
+  line-height: 50px;
+}
+
+
+.profile .report textarea{
+min-height: 250px;
+width: 100%;
+padding: 5px;
+resize:none;
+}
