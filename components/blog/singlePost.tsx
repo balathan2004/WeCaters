@@ -12,45 +12,41 @@ import {
 import { faHeart as faRegularHeart } from "@fortawesome/free-regular-svg-icons";
 import moment from "moment";
 import { VerifiedLogo } from "./smallComponents";
-import React, { useState, useContext, useEffect, FC } from "react";
+import React, { useState, useContext, useEffect, FC, useMemo } from "react";
 import { defaultImage } from "./smallComponents";
 import style from "/styles/blog.module.css";
 import { useRouter } from "next/router";
 import { UserCredProvider, ReplyProvider } from "@/pages/_app";
 import MainComment from "../comments/mainComment";
-import { userInterface } from "../auth/signup";
+import { userInterface } from "@/components/interfaces/shared";
 import SendData from "../fetch/sendData";
 
 interface Props {
   data: postInterface;
+  userData: userInterface | null;
 }
 
 const SinglePost: FC<Props> = ({ data }) => {
+  const [availData, setAvailData] = useState(data);
+  const postData = useMemo(() => availData, [availData]);
   const navi = useRouter();
-  const postImage = data.photo_url ? data.photo_url : [];
+  const postImage = postData.photo_url ? postData.photo_url : [];
   const [currentImage, setCurrentImage] = useState(postImage[0]);
   const [count, setCount] = useState(0);
-  const { userData, setUserData } = useContext(UserCredProvider);
+  const { userData } = useContext(UserCredProvider);
   const [likes, setLikes] = useState<number>(
-    data.likes_count ? data.likes_count : 0
+    postData.likes_count ? postData.likes_count : 0
   );
-  const [isLiked, setIsLiked] = useState<boolean>(
-    userData && data.liked_by?.find((user) => user == userData.uid)
-      ? true
-      : false
-  );
-  const totalLength = postImage.length;
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+
+  const totalLength = useMemo(() => postImage.length, [postImage]);
+  const arrowDecide = useMemo(() => totalLength > 1, [totalLength]);
   const { reply, setReply } = useContext(ReplyProvider);
-  const [arrowDecide, setArrowDecide] = useState(
-    totalLength > 1 ? true : false
-  );
 
   const [showComment, setShowComment] = useState(false);
 
-  const parsedUserData: userInterface = userData;
-
   const gotoPost = () => {
-    navi.push(`/posts/${data.post_name}`);
+    navi.push(`/posts/${postData.post_name}`);
   };
 
   const handleShowComment = () => {
@@ -82,27 +78,50 @@ const SinglePost: FC<Props> = ({ data }) => {
       const res = await SendData({
         route: "/api/post_action/add_like",
         data: {
-          post_name: data.post_name,
+          post_name: postData.post_name,
           uid: userData.uid,
-          post_author: data.uid,
+          post_author: postData.uid,
         },
       });
       if (res && res.status == 200) {
         setReply("liked");
+        setAvailData((prev) => ({
+          ...prev,
+          like_count: prev.likes_count ? prev.likes_count + 1 : 1,
+          liked_by: prev.liked_by
+            ? [...prev.liked_by, userData.uid]
+            : [userData.uid],
+        }));
         setLikes((prev) => prev + 1);
         setIsLiked(true);
-      } else if (res?.status == 300) {
+        console.log("liked");
+      } else if (res && res.status == 300) {
         setLikes((prev) => prev - 1);
         setIsLiked(false);
+        console.log("not liked");
+        setAvailData((prev) => ({
+          ...prev,
+          like_count: prev.likes_count ? prev.likes_count - 1 : 0,
+          liked_by: prev.liked_by
+            ? prev.liked_by.filter((ele) => ele != userData.uid)
+            : [],
+        }));
       }
+    } else {
+      setReply("Login First");
     }
   };
 
   const copyToClipboard = () => {
-    const apiUrl = `${process.env.NEXT_PUBLIC_DOMAIN_URL}/posts/${data.post_name}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_DOMAIN_URL}/posts/${postData.post_name}`;
     console.log(apiUrl);
-    setReply("Link Copied to clipboard");
-    navigator.clipboard.writeText(apiUrl);
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(apiUrl);
+      setReply("Link Copied to clipboard");
+    } else {
+      setReply("Permission denied");
+    }
   };
 
   return (
@@ -112,15 +131,15 @@ const SinglePost: FC<Props> = ({ data }) => {
           <div className={style.image}>
             <img
               src={
-                data.profile_url
-                  ? data.profile_url
-                  : defaultImage(data.username)
+                postData.profile_url
+                  ? postData.profile_url
+                  : defaultImage(postData.username)
               }
             />
           </div>
           <div className={style.details}>
-            <a href={`/profile/${data.uid}`} className={style.name}>
-              {data.username}
+            <a href={`/profile/${postData.uid}`} className={style.name}>
+              {postData.username}
             </a>
             {true ? <VerifiedLogo /> : null}
           </div>
@@ -181,21 +200,21 @@ const SinglePost: FC<Props> = ({ data }) => {
       <div className={style.post_footer_content}>
         <span className={style.likes}>{likes} likes</span>
         <p>
-          <a href={`/profile/${data.uid}`} className={style.name}>
-            {data.username}
+          <a href={`/profile/${postData.uid}`} className={style.name}>
+            {postData.username}
           </a>
-          {data.caption}
+          {postData.caption}
         </p>
 
         <span className={style.posting_time}>
-          {moment(data.time, "DD-MM-YYYY hh-mm a").fromNow()}
+          {moment(postData.time, "DD-MM-YYYY hh-mm a").fromNow()}
         </span>
       </div>
       <div>
         {showComment ? (
           <MainComment
             userData={userData}
-            post_name={data.post_name}
+            post_name={postData.post_name}
             setReply={setReply}
           />
         ) : null}

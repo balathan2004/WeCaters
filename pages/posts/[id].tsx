@@ -1,12 +1,15 @@
 import SinglePost from "@/components/blog/singlePost";
 import style from "/styles/blog.module.css";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { ParsedUrlQuery } from "querystring";
-import {  GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next";
+import { getCookie } from "cookies-next";
+import { GetRequest } from "@/components/fetch/getRequest";
 
 import {
   postInterface,
   getSinglePostInterface,
+  userInterface,
 } from "@/components/interfaces/shared";
 
 interface Props {
@@ -14,6 +17,34 @@ interface Props {
 }
 
 const Pages: FC<Props> = ({ data }) => {
+  const [userData, setUserData] = useState<userInterface | null>(null);
+
+  const getCred = async () => {
+    let res = await GetRequest({ route: "/api/auth/login-cred" });
+    if (res && res.status === 200) {
+      var message = res.message;
+      localStorage.setItem("login-cred", JSON.stringify(message));
+      return message;
+    }
+  };
+
+  useEffect(() => {
+    try {
+      const getter = localStorage.getItem("login_cred");
+      let renderData = JSON.parse(getter ? getter : "");
+      if (getCookie("caters_client_id") != "") {
+        if (renderData == "") {
+          renderData = getCred();
+        } else {
+          setUserData(renderData);
+        }
+      } else {
+        setUserData(null);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
   if (data) {
     return (
@@ -22,7 +53,7 @@ const Pages: FC<Props> = ({ data }) => {
           <div className={style.sideBar}></div>
           <div className={style.blog}>
             <div className={style.post_wrapper}>
-              <SinglePost data={data} />
+              <SinglePost data={data} userData={userData} />
             </div>
           </div>
           <div className={style.sideBar}></div>
@@ -39,8 +70,8 @@ export const getServerSideProps = async (
 ) => {
   try {
     const { query } = context;
-    
-   const {id}=query
+
+    const { id } = query;
 
     const apiUrl =
       process.env.NODE_ENV === "production"
@@ -49,12 +80,14 @@ export const getServerSideProps = async (
     const response = await fetch(apiUrl);
     const res: getSinglePostInterface = await response.json();
 
-    return {
-      props: { data: res.postData },
-    };
-  } catch (e) {
-    return { props: { data: null } };
-  }
+    if (res.status === 200) {
+      return {
+        props: { data: res.postData },
+      };
+    } else {
+      return { props: { data: null } };
+    }
+  } catch (e) {}
 };
 
 export default Pages;

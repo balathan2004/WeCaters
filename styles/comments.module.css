@@ -36,8 +36,8 @@
 
  .commentBox button {
   margin: 1rem 2rem;
-  height: 40px;
-  width: 100px;
+  padding: 10px;
+  min-width: 100px;
   background-color: skyblue;
 }
 
@@ -144,5 +144,9 @@ font-size: 16px;
    .toggler {
     display: block;
     cursor: pointer;
+  }
+
+  .commentBox button {
+    margin: 1rem 1rem;
   }
 }

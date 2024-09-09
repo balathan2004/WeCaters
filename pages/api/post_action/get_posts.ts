@@ -31,6 +31,7 @@ export default async function (
         uid: data.uid,
         username: data.username,
         likes_count: data.likes_count,
+        numeric_time: data.numeric_time
       };
 
       return post;
@@ -63,7 +64,9 @@ export default async function (
 
     const finalValue = allDocs.map((doc) => {
       const matchingUser = allUserData.find((user) => user.uid == doc.uid);
-      const matchingLike = likeData.find((like) => like.post_name == doc.post_name);
+      const matchingLike = likeData.find(
+        (like) => like.post_name == doc.post_name
+      );
 
       const tempData = {
         ...doc,
@@ -74,26 +77,8 @@ export default async function (
       newRefinedData.push(tempData);
     });
 
-    /**
-     * 
-     * 
-     *   for (let i = 0; i < allDocs.length; i++) {
-      for (let j = 0; j < allUserData.length; j++) {
-        if (allDocs[i].uid === allUserData[j].uid) {
-          var tempData = {
-            ...allDocs[i],
-            profile_url: allUserData[j].profile_url,
-            //   isVerified: allUserData[j].isVerified,
-          };
-          newRefinedData.push(tempData);
-        }
-      }
-    }
-     * 
-     * 
-     */
+    newRefinedData.sort((ele,ele2)=>ele2.numeric_time-ele.numeric_time)
 
-    console.log("allusername", allUsernames);
     res.json({
       status: 200,
       message: "fetch success",
@@ -104,3 +89,5 @@ export default async function (
     res.json({ status: 400, message: "error fetching docs" });
   }
 }
+
+

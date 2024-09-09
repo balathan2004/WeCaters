@@ -50,7 +50,8 @@ try{
       username: username,
       uid: uid,
       time: setDate(),
-      likes_count:0
+      likes_count:0,
+      numeric_time:new Date().getTime(),
     };
 
 

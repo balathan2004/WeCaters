@@ -24,7 +24,7 @@ export default async function (
         maxAge: 900000,
         httpOnly: false,
         sameSite: "none",
-        secure: true,
+   
       });
       setCookie("caters_account_type", userCred.account_type, {
         req,
@@ -32,7 +32,7 @@ export default async function (
         maxAge: 900000,
         httpOnly: false,
         sameSite: "none",
-        secure: true,
+   
       });
 
       res.json({

@@ -1,7 +1,7 @@
 import {
   auth_admin,
   firestore_admin,
-} from "@/components/firebase-contents/firebase_admin";
+} from "@/config/firebase_admin";
 import { NextApiRequest, NextApiResponse } from "next";
 import { personalUserInterface ,userAuthResponse} from "@/components/interfaces/shared";
 import { setCookie } from "cookies-next";
@@ -30,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<userAuthResponse
     maxAge: 900000,
     httpOnly: false,
     sameSite: "none",
-    secure: true,
+
   });
   setCookie("caters_account_type", userdata.account_type, {
     req,
@@ -38,7 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<userAuthResponse
     maxAge: 900000,
     httpOnly: false,
     sameSite: "none",
-    secure: true,
+
   });
   res.json({status: 200, message:"login successful",userCredentials:userdata})
 };

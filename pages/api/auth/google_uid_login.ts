@@ -1,7 +1,4 @@
-import {
-    auth_admin,
-    firestore_admin,
-  } from "@/components/firebase-contents/firebase_admin";
+
   import { NextApiRequest, NextApiResponse } from "next";
   import { userAuthResponse} from "@/components/interfaces/shared";
   import { setCookie } from "cookies-next";
@@ -22,7 +19,7 @@ if(uid){
             maxAge: 900000,
             httpOnly: false,
             sameSite: "none",
-            secure: true,
+         
           });
           setCookie("caters_account_type", userData.account_type, {
             req,
@@ -30,7 +27,7 @@ if(uid){
             maxAge: 900000,
             httpOnly: false,
             sameSite: "none",
-            secure: true,
+         
           });
           res.json({status: 200, message:"login successful",userCredentials:userData})
         

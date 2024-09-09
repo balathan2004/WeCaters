@@ -1,4 +1,4 @@
-import {  firestore_admin } from "@/components/firebase-contents/firebase_admin";
+import {  firestore_admin } from "@/config/firebase_admin";
 import { NextApiRequest, NextApiResponse } from "next";
 import { LikesInterface, ResponseConfig } from "@/components/interfaces/shared";
 import { FieldValue } from 'firebase-admin/firestore';
@@ -17,6 +17,8 @@ export default async function (
     const { post_name, uid ,post_author} = JSON.parse(req.body)  as Props
     const docRef= firestore_admin.collection("likes").doc(post_name)
     const snap=await docRef.get()
+
+    console.log("like request from ",req.body)
 
     if(snap.exists){
 

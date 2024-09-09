@@ -80,12 +80,13 @@
   border-radius: 100%;
   object-fit: cover;
   margin-right: 1rem;
+  border: 0.5px solid black;
 }
 
 .post .post_title .post_left .details {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .post .post_title .post_left .details .name {
@@ -232,7 +233,7 @@
 /*  profile page  */
 
 .blog .profile {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .blog .profile .account {
@@ -334,19 +335,21 @@ border-radius: 10px;
 
 @media (max-width: 800px) {
   .inner .blog {
-    width: 95%;
+    width: 100%;
     height: 100%;
     background-color: rgb(255, 255, 255);
- 
+   
     display: block;
   }
 
   .inner .blog .profile{
     height: 100%;
+    width: 95%;
+    margin: auto;
   }
 
-  .inner .blog .posts {
-    width: 95%;
+  .inner .blog .post {
+    width: 90%;
   }
 
   .blog .profile .account {

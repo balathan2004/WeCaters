@@ -1,27 +1,31 @@
 import React, { FC } from "react";
 import style from "/styles/blog.module.css";
-import blogStyle from "/styles/blog.module.css";
+
 import SideBar from "@/components/blog/sideBar";
 import { defaultImage } from "@/components/blog/smallComponents";
 import { ParsedUrlQuery } from "querystring";
-import {  GetServerSidePropsContext } from "next";
-import { postInterface, userInterface, userProfileResponse } from "@/components/interfaces/shared";
+import { GetServerSidePropsContext } from "next";
+import {
+  postInterface,
+  userInterface,
+  userProfileResponse,
+} from "@/components/interfaces/shared";
 
-interface props{
-  userData:userInterface,
-  userPosts:postInterface[]
+interface props {
+  userData: userInterface;
+  userPosts: postInterface[];
 }
 
-const  Profile:FC<props>=({ userData, userPosts }) =>{
+const Profile: FC<props> = ({ userData, userPosts }) => {
   const userDetails = userData;
 
   return (
     <div className="container">
-      <div className={blogStyle.inner}>
-        <div className={blogStyle.sideBar}>
+      <div className={style.inner}>
+        <div className={style.sideBar}>
           <SideBar data={[]} />
         </div>
-        <div className={blogStyle.blog}>
+        <div className={style.blog}>
           <div className={style.profile}>
             <div className={style.account}>
               <div className={style.left}>
@@ -40,7 +44,6 @@ const  Profile:FC<props>=({ userData, userPosts }) =>{
                     <span className={style.displayName}>
                       {userDetails.username}
                     </span>
-                 
                   </div>
                 </div>
                 <div className={style.infos}>
@@ -55,15 +58,12 @@ const  Profile:FC<props>=({ userData, userPosts }) =>{
                 </div>
 
                 <div className={style.contact}>
-                
                   <span>contact - {userDetails.email}</span>
                   <span>
                     {userDetails.phone_number
                       ? `contact - ${userDetails.phone_number}`
                       : null}
-                    <span>
-                     
-                    </span>
+                    <span></span>
                   </span>
                 </div>
                 <button className={style.follow}>+ Follow</button>
@@ -71,36 +71,44 @@ const  Profile:FC<props>=({ userData, userPosts }) =>{
             </div>
 
             <ul className={style.posts}>
-              {userPosts.length>0?userPosts.map((post, index) => {
-                return (
-                  <li className={style.item} key={index}>
-                    <img src={post.photo_url?post.photo_url[0]:""}></img>
-                  </li>
-                );
-              }):null}
+              {userPosts.length > 0
+                ? userPosts.map((post, index) => {
+                    return (
+                      <li className={style.item} key={index}>
+                        <a href={`/posts/${post.post_name}`}>
+                          <img
+                            src={post.photo_url ? post.photo_url[0] : ""}
+                          ></img>
+                        </a>
+                      </li>
+                    );
+                  })
+                : null}
             </ul>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default Profile
+export default Profile;
 
 //
 
-export async function getServerSideProps(context: GetServerSidePropsContext<ParsedUrlQuery>) {
-  const { query} =context
+export async function getServerSideProps(
+  context: GetServerSidePropsContext<ParsedUrlQuery>
+) {
+  const { query } = context;
 
-  const {id}=query
+  const { id } = query;
   const apiUrl =
     process.env.NODE_ENV === "production"
       ? `https://we-caters.vercel.app/api/profile/get-profile?user=${id}`
       : `http://localhost:3000/api/profile/get-profile?user=${id}`;
   const response = await fetch(apiUrl);
-  const res:userProfileResponse = await response.json();
-  if(response.status === 200){
+  const res: userProfileResponse = await response.json();
+  if (response.status === 200) {
     return {
       props: {
         userData: res.userData?.userDetails,
@@ -108,7 +116,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext<Pars
       },
     };
   }
- 
 }
-
-

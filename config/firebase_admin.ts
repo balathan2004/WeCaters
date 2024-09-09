@@ -20,11 +20,15 @@ const service_account = {
   universe_domain: "googleapis.com",
 };
 
-// Initialize Firebase
-const app_admin = admin.initializeApp(
-  { credential: admin.credential.cert(service_account) },
-  "admin_account"
-);
+if (!admin.apps.length) {
+  admin.initializeApp(
+    { credential: admin.credential.cert(service_account) },
+    "admin_account"
+  );
+}
+
+// Use the existing app or the one you just initialized
+const app_admin = admin.app("admin_account");
 const firestore_admin = getFirestore(app_admin);
 const storage_admin = getStorage(app_admin);
 const auth_admin = getAuth(app_admin);

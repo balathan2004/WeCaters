@@ -90,6 +90,7 @@ export interface postInterface {
   profile_url?: string ;
   likes_count?: number;
   liked_by?: string[];
+  numeric_time: number;
 }
 
 

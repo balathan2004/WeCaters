@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { firestore_admin } from "@/components/firebase-contents/firebase_admin";
+import { firestore_admin } from "@/config/firebase_admin";
 import { userProfileResponse } from "@/components/interfaces/shared";
 import {
   doc,
