@@ -13,7 +13,7 @@ export interface CommentsResponse extends ResponseConfig{
 
 export interface userProfileResponse extends ResponseConfig{
 userData?:{
-  userDetails:userInterface,
+  userDetails:profileUserInterface,
   userPosts:postInterface[]
 }
 }
@@ -66,7 +66,30 @@ export interface userInterface {
   bio?: string;
 }
 
+export interface profileUserInterface extends userInterface{
+  followers:string[]
+  following:string[]
+  followersCount:number
+  followingCount:number
+}
+
+
+
 export const userInterfaceCount=11
+
+export interface metadata {
+    cred:{
+      email:string;
+      uid:string;
+      createdAt:string;
+    },
+    userConnections:{
+      followers?:string[]
+      following:string[]
+      followersCount?:number
+      followingCount:number
+    }
+} 
 
 
 export interface personalUserInterface{

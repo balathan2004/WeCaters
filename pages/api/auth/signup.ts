@@ -1,10 +1,10 @@
 import { app, firestore } from "@/components/firebase_config";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getAuth } from "firebase/auth";
+import { getAuth, UserCredential } from "firebase/auth";
 import { setDoc, doc, FirestoreError } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setCookie } from "cookies-next";
-import { ResponseConfig, userInterface } from "@/components/interfaces/shared";
+import { metadata, ResponseConfig, userInterface } from "@/components/interfaces/shared";
 import { generateUsername } from "unique-username-generator";
 
 export interface FieldsValues {
@@ -26,7 +26,9 @@ export default async (
   res: NextApiResponse<ResponseConfig>
 ) => {
   try {
-    const { display_name, email, password, account_type } = JSON.parse(req.body)
+    const { display_name, email, password, account_type } = JSON.parse(
+      req.body
+    );
 
     const userData = {
       display_name: display_name,
@@ -39,15 +41,40 @@ export default async (
       username: "",
     };
 
-    const uid = await signUp(email, password);
-    userData.uid = uid;
+    const userCredentials = await signUp(email, password);
+    userData.uid = userCredentials.user.uid;
+
+    const metadata:metadata = {
+      cred:{
+        uid: userCredentials.user.uid,
+        email: userCredentials.user.email?userCredentials.user.email:"",
+        createdAt: userCredentials.user.metadata.creationTime?userCredentials.user.metadata.creationTime:"",
+      },
+      userConnections:{
+        following:[],
+        followingCount:0
+      }
+
+   
+    };
+
     delete userData.password;
     if (account_type == "personal") {
       const name = display_name.replace(" ", "");
-      userData.username = generateUsername(name, 3, 20, "user-")
-      setDoc(doc(firestore, "personal_account", uid), userData);
+      userData.username = generateUsername(name, 3, 20, "user-");
+      setDoc(doc(firestore, "personal_account", userData.uid), userData);
+      setDoc(
+        doc(firestore, "personal_account_meta", userData.uid),
+        metadata
+      );
     } else {
-      setDoc(doc(firestore, "professional_account", uid), userData);
+      setDoc(doc(firestore, "professional_account", userData.uid), userData);
+      metadata.userConnections.followers=[]
+      metadata.userConnections.followersCount=0
+      setDoc(
+        doc(firestore, "professional_account_meta", userData.uid),
+        metadata
+      );
     }
     res.json({ message: "account created", status: 200 });
   } catch (e: any) {
@@ -57,14 +84,17 @@ export default async (
   }
 };
 
-async function signUp(email: string, password: string): Promise<string> {
+async function signUp(
+  email: string,
+  password: string
+): Promise<UserCredential> {
   console.log(email, password);
-  let uid: string = await new Promise(async (resolve, reject) => {
+  let userData: UserCredential = await new Promise(async (resolve, reject) => {
     try {
       const auth = getAuth(app);
       await createUserWithEmailAndPassword(auth, email, password).then(
         (user) => {
-          resolve(user.user.uid);
+          resolve(user);
         }
       );
     } catch (err) {
@@ -72,5 +102,6 @@ async function signUp(email: string, password: string): Promise<string> {
       reject(err);
     }
   });
-  return uid;
+
+  return userData;
 }

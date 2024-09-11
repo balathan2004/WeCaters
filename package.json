@@ -37,6 +37,7 @@
     "nodemailer": "^6.9.14",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-virtualized": "^9.22.5",
     "sharp": "^0.33.0",
     "styled-components": "^6.1.9",
     "typescript": "5.5.4",
@@ -47,6 +48,7 @@
   "devDependencies": {
     "@types/formidable": "^3.4.5",
     "@types/lodash": "^4.17.7",
+    "@types/react-virtualized": "^9.21.30",
     "concurrently": "^8.2.2"
   }
 }

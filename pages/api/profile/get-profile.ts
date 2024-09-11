@@ -1,19 +1,25 @@
 import { firestore } from "@/components/firebase_config";
 import { NextApiRequest,NextApiResponse } from "next";
-import { postInterface, userInterface, userProfileResponse } from "@/components/interfaces/shared";
+import { metadata, postInterface, profileUserInterface, userInterface, userProfileResponse } from "@/components/interfaces/shared";
 import { doc, getDoc,getDocs, collection, query, where } from "firebase/firestore";
+
 export default async function (req:NextApiRequest, res:NextApiResponse<userProfileResponse>) {
   let userId :unknown= req.query.user;
   const uid=userId as string
 
   try {
-    if(userId){
+    if(uid){
         const usersData = doc(firestore, "professional_account",uid);
+        const userMetaData = doc(firestore, "professional_account_meta",uid);
         const postData = collection(firestore, "post");
-        const specifiedUser= await getDoc(usersData) ;
-        const fetchedSpecifiedUser = specifiedUser.data()
-        const userFound:unknown=fetchedSpecifiedUser
-        const finalUser:userInterface=userFound as userInterface
+        const specifiedUser= (await getDoc(usersData)).data() as userInterface
+        const userMetaDoc=(await getDoc(userMetaData)).data() as metadata
+       
+       
+
+        let finalUser:profileUserInterface={...specifiedUser,...userMetaDoc.userConnections} as profileUserInterface
+          console.log(finalUser)
+        
         //specified single uid account details
      
         //specific uid posts doc

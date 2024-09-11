@@ -1,23 +1,40 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import style from "/styles/blog.module.css";
-
+import { UserCredProvider } from "../_app";
 import SideBar from "@/components/blog/sideBar";
 import { defaultImage } from "@/components/blog/smallComponents";
 import { ParsedUrlQuery } from "querystring";
 import { GetServerSidePropsContext } from "next";
 import {
   postInterface,
+  profileUserInterface,
   userInterface,
   userProfileResponse,
 } from "@/components/interfaces/shared";
+import SendData from "@/components/fetch/sendData";
 
 interface props {
-  userData: userInterface;
+  userDetails: profileUserInterface;
   userPosts: postInterface[];
 }
 
-const Profile: FC<props> = ({ userData, userPosts }) => {
-  const userDetails = userData;
+const Profile: FC<props> = ({ userDetails, userPosts }) => {
+  const { userData } = useContext(UserCredProvider);
+  console.log(userDetails);
+  const startFollow = async () => {
+    if (userData) {
+      const res = await SendData({
+        route: "/api/account_action/follow",
+        data: {
+          authorId: userDetails.uid,
+          requestorId: userData.uid,
+          requestor_accountType: userData.account_type,
+        },
+      });
+    } else {
+      alert("login first");
+    }
+  };
 
   return (
     <div className="container">
@@ -53,7 +70,12 @@ const Profile: FC<props> = ({ userData, userPosts }) => {
                     <label>posts</label>
                   </span>
                   <span className={style.followers}>
-                    10<label>following</label>{" "}
+                    {userDetails.followingCount}
+                    <label>following</label>{" "}
+                  </span>
+                  <span className={style.followers}>
+                    {userDetails.followersCount}
+                    <label>followers</label>{" "}
                   </span>
                 </div>
 
@@ -66,7 +88,9 @@ const Profile: FC<props> = ({ userData, userPosts }) => {
                     <span></span>
                   </span>
                 </div>
-                <button className={style.follow}>+ Follow</button>
+                <button className={style.follow} onClick={startFollow}>
+                  + Follow
+                </button>
               </div>
             </div>
 
@@ -111,7 +135,7 @@ export async function getServerSideProps(
   if (response.status === 200) {
     return {
       props: {
-        userData: res.userData?.userDetails,
+        userDetails: res.userData?.userDetails,
         userPosts: res.userData?.userPosts,
       },
     };

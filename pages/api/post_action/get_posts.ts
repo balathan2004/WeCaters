@@ -32,7 +32,7 @@ export default async function (
         username: data.username,
         likes_count: data.likes_count,
         numeric_time: data.numeric_time
-      };
+      }
 
       return post;
     });
@@ -49,14 +49,14 @@ export default async function (
       };
     });
 
-    //const filteredUserData=allUserData.filter(item=>item.account_type!="personal")
+
 
     const allUsernames: { name: string; uid: string }[] = allUserData.map(
       (data) => {
         return {
           name: data.username ? data.username : data.display_name,
           uid: data.uid,
-        };
+        }
       }
     );
 
@@ -73,7 +73,7 @@ export default async function (
         profile_url: matchingUser?.profile_url,
         likes_count: matchingLike?.likes_count,
         liked_by: matchingLike?.liked_by,
-      };
+      }
       newRefinedData.push(tempData);
     });
 
