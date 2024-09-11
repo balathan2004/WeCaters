@@ -10,11 +10,12 @@ import {
   userInterface,
   userProfileResponse,
   userInterfaceCount,
+  profileUserInterface,
 } from "@/components/interfaces/shared";
 import CompleteProfile from "@/components/account/complete_profile";
 
 interface props {
-  userData: userInterface;
+  userData: profileUserInterface;
   userPosts: postInterface[];
 }
 
@@ -55,7 +56,12 @@ const Profile: FC<props> = ({ userData, userPosts }) => {
               <label>posts</label>
             </span>
             <span className={style.followers}>
-              10<label>following</label>{" "}
+              {userDetails.followingCount}
+              <label>following</label>{" "}
+            </span>
+            <span className={style.followers}>
+              {userDetails.followersCount}
+              <label>followers</label>{" "}
             </span>
           </div>
 

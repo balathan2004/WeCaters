@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { firestore_admin } from "@/config/firebase_admin";
-import { userProfileResponse } from "@/components/interfaces/shared";
+import { profileUserInterface, userProfileResponse } from "@/components/interfaces/shared";
 import {
   doc,
   getDoc,
@@ -25,7 +25,7 @@ export default async function (
     const specifiedUser = await getDoc(usersData);
     const fetchedSpecifiedUser = specifiedUser.data();
     const userFound: unknown = fetchedSpecifiedUser;
-    const finalUser: userInterface = userFound as userInterface;
+    const finalUser = userFound as profileUserInterface;
  
     const specificPost = await getDocs(
       query(postData, where("uid", "==", uid))
