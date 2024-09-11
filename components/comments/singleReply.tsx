@@ -1,28 +1,29 @@
 import style from "/styles/comments.module.css";
 import moment from "moment";
-import React, { useState, useRef,FC } from "react";
+import React, { useState, useRef, FC } from "react";
 import SendData from "../fetch/sendData";
 import { defaultImage } from "../blog/smallComponents";
 import { TimeSetter } from "../blog/smallComponents";
 import ReplyComment from "./replyComment";
 import { CommentsInterface, userInterface } from "../interfaces/shared";
 
-interface Props{
-    commentData:Omit<CommentsInterface,"post_name">;
-    userData:userInterface,
-    setReply:React.Dispatch<React.SetStateAction<string>>,
-    setCommentChild:React.Dispatch<React.SetStateAction<Omit<CommentsInterface, "post_name">[]>>,
-    post_name:string
+interface Props {
+  commentData: Omit<CommentsInterface, "post_name">;
+  userData: userInterface | null;
+  setReply: React.Dispatch<React.SetStateAction<string>>;
+  setCommentChild: React.Dispatch<
+    React.SetStateAction<Omit<CommentsInterface, "post_name">[]>
+  >;
+  post_name: string;
 }
 
-
-const  SingleReply:FC<Props>=({
+const SingleReply: FC<Props> = ({
   commentData,
   userData,
   setReply,
   setCommentChild,
   post_name,
-})=> {
+}) => {
   const [showReplyBox, setShowReplyBox] = useState(false);
 
   return (
@@ -67,7 +68,6 @@ const  SingleReply:FC<Props>=({
       ) : null}
     </div>
   );
-}
+};
 
-
-export default SingleReply
+export default SingleReply;

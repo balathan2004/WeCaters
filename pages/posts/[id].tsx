@@ -1,10 +1,11 @@
 import SinglePost from "@/components/blog/singlePost";
 import style from "/styles/blog.module.css";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { ParsedUrlQuery } from "querystring";
 import { GetServerSidePropsContext } from "next";
 import { getCookie } from "cookies-next";
 import { GetRequest } from "@/components/fetch/getRequest";
+import { UserCredProvider } from "../_app";
 
 import {
   postInterface,
@@ -17,34 +18,7 @@ interface Props {
 }
 
 const Pages: FC<Props> = ({ data }) => {
-  const [userData, setUserData] = useState<userInterface | null>(null);
-
-  const getCred = async () => {
-    let res = await GetRequest({ route: "/api/auth/login-cred" });
-    if (res && res.status === 200) {
-      var message = res.message;
-      localStorage.setItem("login-cred", JSON.stringify(message));
-      return message;
-    }
-  };
-
-  useEffect(() => {
-    try {
-      const getter = localStorage.getItem("login_cred");
-      let renderData = JSON.parse(getter ? getter : "");
-      if (getCookie("caters_client_id") != "") {
-        if (renderData == "") {
-          renderData = getCred();
-        } else {
-          setUserData(renderData);
-        }
-      } else {
-        setUserData(null);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
+  const { userData } = useContext(UserCredProvider);
 
   if (data) {
     return (

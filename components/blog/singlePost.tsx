@@ -26,27 +26,25 @@ interface Props {
   userData: userInterface | null;
 }
 
-const SinglePost: FC<Props> = ({ data }) => {
-  const [availData, setAvailData] = useState(data);
-  const postData = useMemo(() => availData, [availData]);
+const SinglePost: FC<Props> = ({ data, userData }) => {
   const navi = useRouter();
-  const postImage = postData.photo_url ? postData.photo_url : [];
+  const [availData, setAvailData] = useState(data);
+  const postImage = availData.photo_url ? availData.photo_url : [];
   const [currentImage, setCurrentImage] = useState(postImage[0]);
   const [count, setCount] = useState(0);
-  const { userData } = useContext(UserCredProvider);
   const [likes, setLikes] = useState<number>(
-    postData.likes_count ? postData.likes_count : 0
+    availData.likes_count ? availData.likes_count : 0
   );
   const [isLiked, setIsLiked] = useState<boolean>(false);
 
-  const totalLength = useMemo(() => postImage.length, [postImage]);
-  const arrowDecide = useMemo(() => totalLength > 1, [totalLength]);
+  const totalLength = postImage.length;
+  const arrowDecide = totalLength > 1;
   const { reply, setReply } = useContext(ReplyProvider);
 
   const [showComment, setShowComment] = useState(false);
 
   const gotoPost = () => {
-    navi.push(`/posts/${postData.post_name}`);
+    navi.push(`/posts/${availData.post_name}`);
   };
 
   const handleShowComment = () => {
@@ -78,9 +76,9 @@ const SinglePost: FC<Props> = ({ data }) => {
       const res = await SendData({
         route: "/api/post_action/add_like",
         data: {
-          post_name: postData.post_name,
+          post_name: availData.post_name,
           uid: userData.uid,
-          post_author: postData.uid,
+          post_author: availData.uid,
         },
       });
       if (res && res.status == 200) {
@@ -113,7 +111,7 @@ const SinglePost: FC<Props> = ({ data }) => {
   };
 
   const copyToClipboard = () => {
-    const apiUrl = `${process.env.NEXT_PUBLIC_DOMAIN_URL}/posts/${postData.post_name}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_DOMAIN_URL}/posts/${availData.post_name}`;
     console.log(apiUrl);
 
     if (navigator.clipboard) {
@@ -124,6 +122,14 @@ const SinglePost: FC<Props> = ({ data }) => {
     }
   };
 
+  useEffect(() => {
+    if (userData) {
+      setIsLiked(() => {
+        return data.liked_by?.includes(userData.uid) ? true : false;
+      });
+    }
+  }, [userData]);
+
   return (
     <div className={style.post} onDoubleClick={gotoPost}>
       <div className={style.post_title}>
@@ -131,15 +137,15 @@ const SinglePost: FC<Props> = ({ data }) => {
           <div className={style.image}>
             <img
               src={
-                postData.profile_url
-                  ? postData.profile_url
-                  : defaultImage(postData.username)
+                availData.profile_url
+                  ? availData.profile_url
+                  : defaultImage(availData.username)
               }
             />
           </div>
           <div className={style.details}>
-            <a href={`/profile/${postData.uid}`} className={style.name}>
-              {postData.username}
+            <a href={`/profile/${availData.uid}`} className={style.name}>
+              {availData.username}
             </a>
             {true ? <VerifiedLogo /> : null}
           </div>
@@ -200,21 +206,21 @@ const SinglePost: FC<Props> = ({ data }) => {
       <div className={style.post_footer_content}>
         <span className={style.likes}>{likes} likes</span>
         <p>
-          <a href={`/profile/${postData.uid}`} className={style.name}>
-            {postData.username}
+          <a href={`/profile/${availData.uid}`} className={style.name}>
+            {availData.username}
           </a>
-          {postData.caption}
+          {availData.caption}
         </p>
 
         <span className={style.posting_time}>
-          {moment(postData.time, "DD-MM-YYYY hh-mm a").fromNow()}
+          {moment(availData.time, "DD-MM-YYYY hh-mm a").fromNow()}
         </span>
       </div>
       <div>
         {showComment ? (
           <MainComment
             userData={userData}
-            post_name={postData.post_name}
+            post_name={availData.post_name}
             setReply={setReply}
           />
         ) : null}

@@ -1,38 +1,34 @@
 import style from "/styles/comments.module.css";
 import moment from "moment";
-import React, { useState, useRef,FC } from "react";
+import React, { useState, useRef, FC } from "react";
 import SendData from "../fetch/sendData";
 import { CommentsInterface, userInterface } from "../interfaces/shared";
 
-
-interface ReplyCommentProps{
-commentData:Omit<CommentsInterface,"post_name">,
-userData:userInterface,
-setReply:React.Dispatch<React.SetStateAction<string>>
-updateChildComments:React.Dispatch<React.SetStateAction<Omit<CommentsInterface, "post_name">[]>>,
-post_name:string,
-removeShowBox:React.Dispatch<React.SetStateAction<boolean>>
-
+interface ReplyCommentProps {
+  commentData: Omit<CommentsInterface, "post_name">;
+  userData: userInterface | null;
+  setReply: React.Dispatch<React.SetStateAction<string>>;
+  updateChildComments: React.Dispatch<
+    React.SetStateAction<Omit<CommentsInterface, "post_name">[]>
+  >;
+  post_name: string;
+  removeShowBox: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-
-
-
-
-const ReplyComment:FC<ReplyCommentProps>=({
+const ReplyComment: FC<ReplyCommentProps> = ({
   commentData,
   userData,
   removeShowBox,
   setReply,
   updateChildComments,
   post_name,
-})=> {
+}) => {
   const { comment_id, comment_user } = commentData;
   const commentArea = useRef<HTMLTextAreaElement>(null);
   const [commentText, setCommentText] = useState("");
   const [height, setHeight] = useState("auto");
 
-  const commentFetching = (event:React.ChangeEvent<HTMLTextAreaElement>) => {
+  const commentFetching = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     var commentValue = event.target.value;
     setHeight("auto"); // Reset height to auto to recalculate the height based on content
     setHeight(event.target.scrollHeight + "px");
@@ -40,14 +36,14 @@ const ReplyComment:FC<ReplyCommentProps>=({
     setCommentText(commentValue);
   };
 
-  const sendComment = async function (event:React.FormEvent<HTMLFormElement>) {
+  const sendComment = async function (event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (commentText.trim()) {
+    if (commentText.trim() && userData) {
       const time = new Date();
       const modifiedTime = moment(time).format("DD-MM-YYYY hh:mm a");
 
-      const replyCommentData:CommentsInterface = {
+      const replyCommentData: CommentsInterface = {
         comment: commentText,
         comment_id: comment_id,
         comment_user: userData.username ? userData.username : "anonymous",
@@ -58,11 +54,10 @@ const ReplyComment:FC<ReplyCommentProps>=({
 
       console.log(replyCommentData);
 
-      const response = await SendData(
-        {route:"/api/post_action/reply_comment",data:replyCommentData}
-    
-
-      );
+      const response = await SendData({
+        route: "/api/post_action/reply_comment",
+        data: replyCommentData,
+      });
       if (response && response.status == 200) {
         setReply(response.message);
         updateChildComments((prev) => [...prev, replyCommentData]);
@@ -91,6 +86,6 @@ const ReplyComment:FC<ReplyCommentProps>=({
       </form>
     </>
   );
-}
+};
 
-export default ReplyComment
+export default ReplyComment;

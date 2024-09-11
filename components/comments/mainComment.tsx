@@ -4,16 +4,20 @@ import SendData from "../fetch/sendData";
 import OneCommentList from "./commentComponents";
 
 import style from "/styles/comments.module.css";
-import { CommentsResponse,CommentsInterface, userInterface } from "../interfaces/shared";
+import {
+  CommentsResponse,
+  CommentsInterface,
+  userInterface,
+} from "../interfaces/shared";
 
 interface Props {
-  userData: userInterface;
+  userData: userInterface | null;
   setReply: React.Dispatch<React.SetStateAction<string>>;
   post_name: string;
 }
 
 const MainComment: FC<Props> = ({ userData, setReply, post_name }) => {
-  const [commentData, setCommentData] = useState<CommentsInterface[]|[]>([]);
+  const [commentData, setCommentData] = useState<CommentsInterface[] | []>([]);
   const [getComments, setGetComments] = useState<boolean>(false);
   const [message, setMessage] = useState("");
 
@@ -46,8 +50,6 @@ const MainComment: FC<Props> = ({ userData, setReply, post_name }) => {
       fetchComments();
     }
   }, [getComments]);
-
-  
 
   return (
     <div className={style.main_comment}>

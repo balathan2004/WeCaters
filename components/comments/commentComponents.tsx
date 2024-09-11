@@ -4,20 +4,23 @@ import React, { useState, FC } from "react";
 import SendData from "../fetch/sendData";
 import { defaultImage } from "../blog/smallComponents";
 import { TimeSetter } from "../blog/smallComponents";
-import { CommentsInterface ,userInterface} from "../interfaces/shared";
+import { CommentsInterface, userInterface } from "../interfaces/shared";
 import ReplyComment from "./replyComment";
 import SingleReply from "./singleReply";
 
-
-interface Props{
-  commentData:CommentsInterface,
-  userData:userInterface,
-  setReply:React.Dispatch<React.SetStateAction<string>>,
-  post_name:string
+interface Props {
+  commentData: CommentsInterface;
+  userData: userInterface | null;
+  setReply: React.Dispatch<React.SetStateAction<string>>;
+  post_name: string;
 }
 
-
-const OneCommentList:FC<Props>=({ commentData, userData, setReply, post_name })=> {
+const OneCommentList: FC<Props> = ({
+  commentData,
+  userData,
+  setReply,
+  post_name,
+}) => {
   const [showReplyBox, setShowReplyBox] = useState(false);
   const [isCommentShow, setIsCommentShow] = useState(false);
   const [commentChild, setCommentChild] = useState(
@@ -86,6 +89,6 @@ const OneCommentList:FC<Props>=({ commentData, userData, setReply, post_name })=
       ) : null}
     </div>
   );
-}
+};
 
-export default OneCommentList
+export default OneCommentList;
