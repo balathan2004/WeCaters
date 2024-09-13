@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, use, useContext, useEffect } from "react";
 import { parse } from "cookie";
 import style from "/styles/blog.module.css";
 import blogStyle from "/styles/blog.module.css";
@@ -12,18 +12,19 @@ import {
   userInterfaceCount,
   profileUserInterface,
 } from "@/components/interfaces/shared";
+
 import CompleteProfile from "@/components/account/complete_profile";
 
 interface props {
-  userData: profileUserInterface;
+  profileData: profileUserInterface;
   userPosts: postInterface[];
 }
 
-const Profile: FC<props> = ({ userData, userPosts }) => {
-  const userDetails = userData;
+const Profile: FC<props> = ({ profileData, userPosts }) => {
+  const userDetails = profileData;
 
   const count = Math.floor(
-    (Object.keys(userData).length / userInterfaceCount) * 100
+    (Object.keys(profileData).length / userInterfaceCount) * 100
   );
 
   const AccountBox: FC = () => {
@@ -74,7 +75,7 @@ const Profile: FC<props> = ({ userData, userPosts }) => {
               <span></span>
             </span>
           </div>
-          <a href="/professional/account">Edit Profile</a>
+          <a href="/professional/edit-profile">Edit Profile</a>
         </div>
       </>
     );
@@ -132,7 +133,7 @@ export const getServerSideProps = async (
 
   return {
     props: {
-      userData: res.userData?.userDetails,
+      profileData: res.userData?.userDetails,
       userPosts: res.userData?.userPosts,
     },
   };

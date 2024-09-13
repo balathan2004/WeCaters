@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import style from "/styles/blog.module.css";
 import { UserCredProvider } from "../_app";
 import SideBar from "@/components/blog/sideBar";
@@ -12,6 +12,8 @@ import {
   userProfileResponse,
 } from "@/components/interfaces/shared";
 import SendData from "@/components/fetch/sendData";
+import { analytics } from "@/components/firebase_config";
+import { logEvent } from "firebase/analytics";
 
 interface props {
   userDetails: profileUserInterface;
@@ -20,9 +22,11 @@ interface props {
 
 const Profile: FC<props> = ({ userDetails, userPosts }) => {
   const { userData } = useContext(UserCredProvider);
-  console.log(userDetails);
+
+  const [isFollower, setIsFollower] = useState(false);
+
   const startFollow = async () => {
-    if (userData) {
+    if (userData && userData.uid != userDetails.uid) {
       const res = await SendData({
         route: "/api/account_action/follow",
         data: {
@@ -35,6 +39,20 @@ const Profile: FC<props> = ({ userDetails, userPosts }) => {
       alert("login first");
     }
   };
+
+  useEffect(() => {
+    if (userData) {
+      setIsFollower(() => {
+        return userDetails.followers.includes(userData.uid) ? true : false;
+      });
+      if (analytics) {
+        console.log("triggered analytics");
+        logEvent(analytics, "view_item", {
+          name: "light",
+        });
+      }
+    }
+  }, [userData]);
 
   return (
     <div className="container">
@@ -88,9 +106,14 @@ const Profile: FC<props> = ({ userDetails, userPosts }) => {
                     <span></span>
                   </span>
                 </div>
-                <button className={style.follow} onClick={startFollow}>
-                  + Follow
-                </button>
+                {userData?.uid == userDetails.uid ? null : (
+                  <>
+                    {" "}
+                    <button className={style.follow} onClick={startFollow}>
+                      {isFollower ? "Following" : "Follow"}
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 

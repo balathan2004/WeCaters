@@ -1,22 +1,24 @@
-import React, { useContext, useState, useEffect, useRef, FC } from "react";
+import React, { useContext, useState, useEffect, Suspense, lazy } from "react";
 import style from "/styles/professional_account.module.css";
 import { deleteCookie } from "cookies-next";
 import { GetRequest } from "@/components/fetch/getRequest";
-import { LoaderProvider, ReplyProvider, NavBarProvider } from "../_app";
+import {
+  LoaderProvider,
+  ReplyProvider,
+  NavBarProvider,
+  UserCredProvider,
+} from "../_app";
 import { useRouter } from "next/router";
 import {
   userAuthResponse,
   userInterface,
 } from "@/components/interfaces/shared";
 import Report from "@/components/professional_account/report";
-
 import ProProfile from "@/components/professional_account/profile";
 
 export default function Account() {
   const navi = useRouter();
-  const toggler = useState<"profile" | "account" | "analytics" | "report">(
-    "profile"
-  );
+
   const [loginCred, setLoginCred] = useState<userInterface>({
     account_type: "professional",
     profile_url: "",
@@ -31,10 +33,13 @@ export default function Account() {
     isVerified: false,
     bio: "",
   });
+  const { userData } = useContext(UserCredProvider);
   const { reply, setReply } = useContext(ReplyProvider);
   const { dirs, setDirs } = useContext(NavBarProvider);
   const { loader, setLoader } = useContext(LoaderProvider);
-  const [showImage, setShowImage] = useState("");
+  const [activeComponent, setActiveComponent] = useState<
+    "profile" | "account" | "analytics" | "report"
+  >("profile");
   const components = [
     { name: "profile", component: ProProfile },
     { name: "report", component: Report },
@@ -50,6 +55,7 @@ export default function Account() {
       { route: "/about", name: "about" },
       { route: "/welcome", name: "welcome" },
       { route: "/login", name: "login" },
+      { route: "/signup", name: "signup" },
     ]);
     navi.push("/welcome");
   };
@@ -59,7 +65,53 @@ export default function Account() {
     setLoginCred((prev) => ({ ...prev, [name]: value }));
   };
 
-  const getCred = async () => {
+  const renderComponent = () => {
+    switch (activeComponent) {
+      case "profile":
+        return <ProProfile loginCred={loginCred} setLoginCred={setLoginCred} />;
+
+      case "report":
+        return <Report userData={userData} />;
+    }
+  };
+
+  useEffect(() => {
+    if (userData) {
+      console.log(userData);
+      setLoginCred(userData);
+    }
+  }, [userData]);
+
+  return (
+    <div className={style.account}>
+      <main>
+        <nav>
+          <ul>
+            <li onClick={() => setActiveComponent("profile")}>My Profile</li>
+            <li>Account Settings</li>
+            <li>Analytics</li>
+            <li onClick={() => setActiveComponent("report")}>
+              Report a problem
+            </li>
+          </ul>
+        </nav>
+        <section>
+          <article>{renderComponent()}</article>
+        </section>
+      </main>
+    </div>
+  );
+}
+
+//
+//  {loginCred.isVerified ? <VerifiedLogo /> : null}
+
+/**
+ *
+ *  *
+ *
+ * 
+ *   const getCred = async () => {
     let res = (await GetRequest({
       route: "/api/auth/login_cred",
     })) as userAuthResponse;
@@ -89,35 +141,6 @@ export default function Account() {
       console.log(e);
     }
   };
-
-  useEffect(() => {
-    render();
-  }, []);
-
-  return (
-    <div className={style.account}>
-      <main>
-        <nav>
-          <li>My Profile</li>
-          <li>Account Settings</li>
-          <li>Analytics</li>
-          <li>Report a problem</li>
-        </nav>
-        <section>
-          <article></article>
-        </section>
-      </main>
-    </div>
-  );
-}
-
-//  <ProProfile loginCred={loginCred} setLoginCred={setLoginCred} />
-
-//
-//  {loginCred.isVerified ? <VerifiedLogo /> : null}
-
-/**
- *
- *  *
- *
+ * 
+ * 
  */
