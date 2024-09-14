@@ -48,7 +48,7 @@ const SinglePost: FC<Props> = ({ data, userData }) => {
   };
 
   const handleShowComment = () => {
-    setShowComment(true);
+    setShowComment((prev) => !prev);
   };
 
   const nextImage = () => {

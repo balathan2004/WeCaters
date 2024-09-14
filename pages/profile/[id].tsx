@@ -22,7 +22,10 @@ interface props {
 
 const Profile: FC<props> = ({ userDetails, userPosts }) => {
   const { userData } = useContext(UserCredProvider);
-
+  const [connections, setConnections] = useState({
+    followers: userDetails.followers,
+    followersCount: userDetails.followersCount,
+  });
   const [isFollower, setIsFollower] = useState(false);
 
   const startFollow = async () => {
@@ -33,8 +36,25 @@ const Profile: FC<props> = ({ userDetails, userPosts }) => {
           authorId: userDetails.uid,
           requestorId: userData.uid,
           requestor_accountType: userData.account_type,
+          isFollower: isFollower,
         },
       });
+      setIsFollower((prev) => !prev);
+      if (res && res.message == "follow_added") {
+        setConnections((prev) => {
+          return {
+            followers: [...prev.followers, userDetails.uid],
+            followersCount: prev.followersCount + 1,
+          };
+        });
+      } else {
+        setConnections((prev) => {
+          return {
+            followers: prev.followers.filter((user) => user != userData.uid),
+            followersCount: prev.followersCount - 1,
+          };
+        });
+      }
     } else {
       alert("login first");
     }
@@ -92,7 +112,7 @@ const Profile: FC<props> = ({ userDetails, userPosts }) => {
                     <label>following</label>{" "}
                   </span>
                   <span className={style.followers}>
-                    {userDetails.followersCount}
+                    {connections.followersCount}
                     <label>followers</label>{" "}
                   </span>
                 </div>

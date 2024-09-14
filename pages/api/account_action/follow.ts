@@ -9,7 +9,7 @@ export default async function (
   res: NextApiResponse<ResponseConfig>
 ) {
   try {
-    const { authorId, requestorId, requestor_accountType } = JSON.parse(
+    const { authorId, requestorId, requestor_accountType,isFollower } = JSON.parse(
       req.body
     );
 
@@ -35,16 +35,30 @@ export default async function (
         const requestorExits=(await requestorDocRef.get()).exists
 
       if (authorExits && requestorExits) {
-        
-        await authorDocRef.update({
-          "userConnections.followers": FieldValue.arrayUnion(requestorId),
-          "userConnections.followersCount": FieldValue.increment(1),
-        });
-
-        await requestorDocRef.update({
-          "userConnections.following": FieldValue.arrayUnion(requestorId),
-          "userConnections.followingCount": FieldValue.increment(1),
-        });
+        if(!isFollower){
+          await authorDocRef.update({
+            "userConnections.followers": FieldValue.arrayUnion(requestorId),
+            "userConnections.followersCount": FieldValue.increment(1),
+          });
+  
+          await requestorDocRef.update({
+            "userConnections.following": FieldValue.arrayUnion(requestorId),
+            "userConnections.followingCount": FieldValue.increment(1),
+          });
+          res.json({ status: 200, message: "follow_added" });
+        }else{
+          await authorDocRef.update({
+            "userConnections.followers": FieldValue.arrayRemove(requestorId),
+            "userConnections.followersCount": FieldValue.increment(-1),
+          });
+  
+          await requestorDocRef.update({
+            "userConnections.following": FieldValue.arrayRemove(requestorId),
+            "userConnections.followingCount": FieldValue.increment(-1),
+          });
+          res.json({ status: 200, message: "unfollowed" });
+        }
+       
       } else {
         console.log("doc creating")
        
@@ -52,7 +66,7 @@ export default async function (
     } else {
       console.log("error updating");
     }
-    res.json({ status: 200, message: "Success" });
+    //res.json({ status: 200, message: "Success" });
   } catch (e) {
     res.json({ status: 200, message: "Success" });
     console.log(e);

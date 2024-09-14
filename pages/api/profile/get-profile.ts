@@ -33,6 +33,8 @@ export default async function (req:NextApiRequest, res:NextApiResponse<userProfi
         // specific uid posts data
         const userPosts = specificPost.docs.map((doc) => {return doc.data()as postInterface});
   
+        userPosts.sort((ele,ele2)=>ele2.numeric_time-ele.numeric_time)
+
         res.json({
             status:200,
           message: "success",
