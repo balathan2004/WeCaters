@@ -112,6 +112,9 @@ const SingleForm: FC<Props> = ({ responseState }) => {
           </article>
           <footer>
             <button type="submit">Create Account</button>
+            <button type="button">
+              <a href="/auth/google_login">Continue with Google</a>
+            </button>
           </footer>
         </form>
       </section>

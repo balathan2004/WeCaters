@@ -29,7 +29,7 @@ export default function Account() {
     username: "",
     company_name: "",
     district: "",
-    state: "tamil nadu",
+    state: "",
     isVerified: false,
     bio: "",
   });
@@ -77,8 +77,9 @@ export default function Account() {
 
   useEffect(() => {
     if (userData) {
-      console.log(userData);
-      setLoginCred(userData);
+      if (userData.state == "") {
+        setLoginCred(() => ({ ...userData, state: "tamil nadu" }));
+      }
     }
   }, [userData]);
 

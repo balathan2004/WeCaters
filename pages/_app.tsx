@@ -1,12 +1,7 @@
 import "@/styles/globals.css";
 import { GetRequest } from "@/components/fetch/getRequest";
-/**
-
-
+/*
 import PopUp from "@/component/popup";
-
- * 
- * 
  */
 import Navbar from "@/components/navbar";
 import React, { Component, useEffect, useState, useContext } from "react";
@@ -25,10 +20,15 @@ export const LoaderProvider = React.createContext<any>(null);
 export const ReplyProvider = React.createContext<any>(null);
 export const UserCredProvider = React.createContext<any>(null);
 export default function App({ Component, pageProps }: AppProps) {
-  const [dirs, setDirs] = useState<NavbarInterface[]>([]);
+  const [dirs, setDirs] = useState<NavbarInterface[]>([
+    { route: "/blog", name: "blog" },
+    { route: "/about", name: "about" },
+    { route: "/auth/signup", name: "signup" },
+    { route: "/auth/login", name: "login" },
+  ]);
   const [loader, setLoader] = useState(false);
   const [reply, setReply] = useState<string | boolean>(false);
-  const [userData, setUserData] = useState<userInterface | undefined>();
+  const [userData, setUserData] = useState<userInterface>();
 
   const getCred = async () => {
     try {
@@ -41,8 +41,8 @@ export default function App({ Component, pageProps }: AppProps) {
             { route: "/blog", name: "blog" },
             { route: "/search", name: "search" },
             { route: "/professional/create", name: "create" },
-            { route: "/professional/about", name: "about" },
-            { route: "/professional/profile", name: "account" },
+            { route: "/about", name: "about" },
+            { route: "/professional/account", name: "account" },
           ]);
         } else {
           setDirs([
@@ -54,13 +54,6 @@ export default function App({ Component, pageProps }: AppProps) {
         }
         setUserData(res.userCredentials);
         localStorage.setItem("login_cred", JSON.stringify(res.userCredentials));
-      } else {
-        setDirs([
-          { route: "/blog", name: "blog" },
-          { route: "/about", name: "about" },
-          { route: "/signup", name: "signup" },
-          { route: "/login", name: "login" },
-        ]);
       }
     } catch (e) {
       console.log(e);

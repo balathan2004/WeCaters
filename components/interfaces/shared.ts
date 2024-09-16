@@ -7,6 +7,9 @@ export interface userAuthResponse extends ResponseConfig {
   userCredentials?: userInterface;
 }
 
+export interface SearchPageResponse extends ResponseConfig {
+  resultDocs: SearchableDocs[] | null
+}
 export interface CommentsResponse extends ResponseConfig{
   comments?: CommentsInterface[]
 }
@@ -116,4 +119,15 @@ export interface postInterface {
   numeric_time: number;
 }
 
+
+export interface SearchableDocs {
+  uid: string;
+  username: string;
+  display_name: string;
+  profile_url: string;
+  company_name: string;
+  district: string;
+  state: string;
+  bio: string;
+}
 

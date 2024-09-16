@@ -68,6 +68,9 @@ export default async (
         metadata
       );
     } else {
+      const emptyIntialization:userInterface={...userData,bio:"",state:"",district:"",}
+      emptyIntialization.bio=""
+
       setDoc(doc(firestore, "professional_account", userData.uid), userData);
       metadata.userConnections.followers=[]
       metadata.userConnections.followersCount=0

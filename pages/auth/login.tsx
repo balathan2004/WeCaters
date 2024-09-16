@@ -1,7 +1,12 @@
 import style from "/styles/new.module.css";
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
-import { NavBarProvider, ReplyProvider, LoaderProvider } from "@/pages/_app";
+import {
+  NavBarProvider,
+  ReplyProvider,
+  LoaderProvider,
+  UserCredProvider,
+} from "@/pages/_app";
 import LoginBox from "@/components/auth/login";
 import { userAuthResponse } from "@/components/interfaces/shared";
 
@@ -11,10 +16,11 @@ export default function Login() {
   const [response, setResponse] = useState<userAuthResponse | undefined>(
     undefined
   );
+  const { userData, setUserData } = useContext(UserCredProvider);
 
   useEffect(() => {
     if (response && response.status == 200) {
-      console.log(response);
+      setUserData(response.userCredentials);
       localStorage.setItem(
         "login_cred",
         JSON.stringify(response.userCredentials)
@@ -26,15 +32,14 @@ export default function Login() {
           { route: "/professional/search", name: "search" },
           { route: "/professional/create", name: "create" },
           { route: "/about", name: "about" },
-          { route: "/account", name: "account" },
+          { route: "/professional/account", name: "account" },
         ]);
       } else if (response.userCredentials?.account_type == "personal") {
-        console.log("changine dirs");
         setDirs([
           { route: "/blog", name: "blog" },
           { route: "/search", name: "search" },
           { route: "/about", name: "about" },
-          { route: "personal/account", name: "account" },
+          { route: "/personal/account", name: "account" },
         ]);
       }
       navi.push("/blog");

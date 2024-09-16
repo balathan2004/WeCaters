@@ -116,7 +116,9 @@ const Profile: FC<props> = ({ userDetails, userPosts }) => {
                     <label>followers</label>{" "}
                   </span>
                 </div>
-
+                <div>
+                  <p>{userDetails.bio}</p>
+                </div>
                 <div className={style.contact}>
                   <span>contact - {userDetails.email}</span>
                   <span>

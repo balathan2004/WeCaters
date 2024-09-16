@@ -13,15 +13,13 @@ export default function clientSignup() {
 
   useEffect(() => {
     if (response) {
-
-
       if (response.status == 200) {
         setReply("Navigating to login page");
-        navi.push("/login");
+        navi.push("/auth/login");
       } else {
         setReply(response.message);
       }
-    } 
+    }
   }, [response]);
 
   return (

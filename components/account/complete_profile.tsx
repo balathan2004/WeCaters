@@ -15,7 +15,7 @@ const CompleteProfile: FC<props> = ({ data }) => {
       <h1>Complete your Profile</h1>
       <progress max={100} value={count}></progress>
       <label>{count}% completed</label>
-      <a href="/professional/account">Complete Profile</a>
+      <a href="/professional/edit-profile">Complete Profile</a>
     </article>
   );
 };

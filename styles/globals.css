@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap");
 * {
   padding: 0;
   margin: 0;
@@ -6,7 +6,7 @@
   font-family: "Montserrat", sans-serif;
 }
 
-button{
+button {
   cursor: pointer;
 }
 
@@ -25,7 +25,6 @@ body {
   background-color: rgb(235, 229, 229);
   overflow: auto;
 }
-
 
 .nav {
   position: fixed;
@@ -155,6 +154,12 @@ body {
   }
 }
 
+@media (max-width: 400px) {
+  .nav .brand {
+    font-size: 24px;
+    padding: 0 0 0 10px;
+  }
+}
 
 .loader {
   border: 7px solid rgb(79, 75, 75);
@@ -172,15 +177,15 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-
-.material-symbols-outlined{
+.material-symbols-outlined {
   color: rgb(31, 107, 137);
   font-size: 22px;
 }
-
-
-

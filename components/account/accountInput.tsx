@@ -42,7 +42,7 @@ const AccountInput: FC<Props> = ({
   return (
     <div className={style.data}>
       <div className={style.label_container}>
-        <label>{    label_name}</label>
+        <label>{label_name}</label>
         {editable ? (
           <>
             {edit ? (

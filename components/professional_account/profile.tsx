@@ -1,6 +1,11 @@
 import React, { FC, useContext, useState, useEffect, useRef } from "react";
 import { isEqual } from "lodash";
-import { LoaderProvider, NavBarProvider, ReplyProvider } from "@/pages/_app";
+import {
+  LoaderProvider,
+  NavBarProvider,
+  ReplyProvider,
+  UserCredProvider,
+} from "@/pages/_app";
 import { defaultImage, VerifiedLogo } from "@/components/blog/smallComponents";
 
 import SendData from "../fetch/sendData";
@@ -24,6 +29,7 @@ const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
   const { loader, setLoader } = useContext(LoaderProvider);
   const [image, setImage] = useState<File | null>(null);
   const [imageChange, setImageChange] = useState(false);
+  const { userData, setUserData } = useContext(UserCredProvider);
   const [showImage, setShowImage] = useState(
     loginCred.profile_url ? loginCred.profile_url : ""
   );
@@ -50,6 +56,7 @@ const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
           "login_cred",
           JSON.stringify(response.userCredentials)
         );
+        setUserData(response.userCredentials);
         setOldLoginCred(response.userCredentials);
         console.log(response);
       }
@@ -91,6 +98,8 @@ const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
       } else {
         console.log(response);
       }
+    } else {
+      console.log("expression not found");
     }
   }
 
