@@ -5,6 +5,7 @@ import SideBar from "@/components/blog/sideBar";
 import { defaultImage } from "@/components/blog/smallComponents";
 import { ParsedUrlQuery } from "querystring";
 import { GetServerSidePropsContext } from "next";
+import Rating from "@/components/front/rating";
 import {
   postInterface,
   profileUserInterface,
@@ -136,6 +137,7 @@ const Profile: FC<props> = ({ userDetails, userPosts }) => {
                     </button>
                   </>
                 )}
+                <Rating />
               </div>
             </div>
 
