@@ -3,6 +3,9 @@ import { faStar as faRegularstar } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import styles from "../../styles/blog.module.css";
+import { userInterface } from "../interfaces/shared";
+import { reviewInterface } from "../interfaces/shared";
+import SendData from "../fetch/sendData";
 const ratingMessages = [
   "Disappointed",
   "Needs Improvement",
@@ -10,7 +13,13 @@ const ratingMessages = [
   "Good",
   "Excellent",
 ];
-const Rating: FC = () => {
+
+interface Props {
+  userData: userInterface;
+  toID: string;
+  changeTrigger: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const Rating: FC<Props> = ({ userData, toID, changeTrigger }) => {
   const [count, setCount] = useState(3);
   const [placeholderMessage, setPlaceholderMessage] = useState(
     ratingMessages[count - 1]
@@ -25,8 +34,21 @@ const Rating: FC = () => {
     setPlaceholderMessage(ratingMessages[value - 1]);
   };
 
-  const handleSubmit = () => {
-    console.log("value is ", count);
+  const handleSubmit = async () => {
+    const data: reviewInterface = {
+      from: userData.uid,
+      to: toID,
+      rating: count,
+    };
+    if (userData.account_type == "personal") {
+      const response = await SendData({
+        route: "/api/other_actions/review",
+        data: data,
+      });
+      if (response?.status == 200) {
+        changeTrigger((prev) => !prev);
+      }
+    }
   };
 
   return (

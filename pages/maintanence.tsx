@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import style from "../styles/Home.module.css";
 
-const Page: FC = () => {
+const Maintanence: FC = () => {
   return (
     <div className="container">
       <article className={style.page404}>
@@ -11,4 +11,4 @@ const Page: FC = () => {
   );
 };
 
-export default Page;
+export default Maintanence;

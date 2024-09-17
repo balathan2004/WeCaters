@@ -42,7 +42,7 @@ export default async function (
           });
   
           await requestorDocRef.update({
-            "userConnections.following": FieldValue.arrayUnion(requestorId),
+            "userConnections.following": FieldValue.arrayUnion(authorId),
             "userConnections.followingCount": FieldValue.increment(1),
           });
           res.json({ status: 200, message: "follow_added" });
@@ -53,7 +53,7 @@ export default async function (
           });
   
           await requestorDocRef.update({
-            "userConnections.following": FieldValue.arrayRemove(requestorId),
+            "userConnections.following": FieldValue.arrayRemove(authorId),
             "userConnections.followingCount": FieldValue.increment(-1),
           });
           res.json({ status: 200, message: "unfollowed" });

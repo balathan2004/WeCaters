@@ -73,7 +73,8 @@ export interface profileUserInterface extends userInterface{
   followers:string[]
   following:string[]
   followersCount:number
-  followingCount:number
+  followingCount:number 
+  reviews?:reviewInterface[]
 }
 
 
@@ -91,7 +92,8 @@ export interface metadata {
       following:string[]
       followersCount?:number
       followingCount:number
-    }
+    },
+    reviews?:reviewInterface[]
 } 
 
 
@@ -131,3 +133,10 @@ export interface SearchableDocs {
   bio: string;
 }
 
+
+export interface reviewInterface{
+  from?: string,
+  to?: string,
+  rating: number,
+
+}

@@ -28,6 +28,7 @@ const Profile: FC<props> = ({ userDetails, userPosts }) => {
     followersCount: userDetails.followersCount,
   });
   const [isFollower, setIsFollower] = useState(false);
+  const [isReviewed, setIsReviewed] = useState(false);
 
   const startFollow = async () => {
     if (userData && userData.uid != userDetails.uid) {
@@ -66,6 +67,13 @@ const Profile: FC<props> = ({ userDetails, userPosts }) => {
       setIsFollower(() => {
         return userDetails.followers.includes(userData.uid) ? true : false;
       });
+      setIsReviewed(() => {
+        return (
+          userDetails.reviews?.some((review) => review.from == userData.uid) ||
+          false
+        );
+      });
+
       if (analytics) {
         console.log("triggered analytics");
         logEvent(analytics, "view_item", {
@@ -129,15 +137,21 @@ const Profile: FC<props> = ({ userDetails, userPosts }) => {
                     <span></span>
                   </span>
                 </div>
-                {userData?.uid == userDetails.uid ? null : (
+                {userData && userData.uid !== userDetails.uid ? (
                   <>
                     {" "}
                     <button className={style.follow} onClick={startFollow}>
                       {isFollower ? "Following" : "Follow"}
                     </button>
+                    {!isReviewed ? (
+                      <Rating
+                        changeTrigger={setIsReviewed}
+                        userData={userData}
+                        toID={userDetails.uid}
+                      />
+                    ) : null}
                   </>
-                )}
-                <Rating />
+                ) : null}
               </div>
             </div>
 
@@ -165,8 +179,6 @@ const Profile: FC<props> = ({ userDetails, userPosts }) => {
 
 export default Profile;
 
-//
-
 export async function getServerSideProps(
   context: GetServerSidePropsContext<ParsedUrlQuery>
 ) {
@@ -185,6 +197,10 @@ export async function getServerSideProps(
         userDetails: res.userData?.userDetails,
         userPosts: res.userData?.userPosts,
       },
+    };
+  } else {
+    return {
+      props: null,
     };
   }
 }
