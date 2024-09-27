@@ -6,7 +6,7 @@ import { getPostTime } from "../blog/smallComponents";
 import { userInterface, CommentsInterface } from "../interfaces/shared";
 
 interface Props {
-  setReply: React.Dispatch<React.SetStateAction<string>>;
+  setReply: React.Dispatch<React.SetStateAction<string|false>>;
   userData: userInterface | null;
   post_name: string;
   setCommentData: React.Dispatch<

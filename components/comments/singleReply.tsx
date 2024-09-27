@@ -10,7 +10,7 @@ import { CommentsInterface, userInterface } from "../interfaces/shared";
 interface Props {
   commentData: Omit<CommentsInterface, "post_name">;
   userData: userInterface | null;
-  setReply: React.Dispatch<React.SetStateAction<string>>;
+  setReply: React.Dispatch<React.SetStateAction<string|false>>;
   setCommentChild: React.Dispatch<
     React.SetStateAction<Omit<CommentsInterface, "post_name">[]>
   >;

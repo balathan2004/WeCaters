@@ -3,8 +3,9 @@ import { NavbarInterface } from "./interfaces/front";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import { useSelector, UseSelector } from "react-redux";
 import Link from "next/link";
-import { NavBarProvider } from "@/pages/_app";
+
 import React, { useContext, useState, useEffect } from "react";
 
 interface NewNavConfig{
@@ -14,7 +15,7 @@ interface NewNavConfig{
 
 export default function Navbar() {
   const currentRoute = useRouter().asPath.replace("/", "");
-  const {dirs, setDirs} = useContext<NewNavConfig>(NavBarProvider);
+  const NAVCRED = useSelector((state:any)=>state.NAVCRED.value as NavbarInterface[]);
   const [inputValue, setInputValue] = useState<boolean>(false);
 
   const changeInput = () => {
@@ -44,11 +45,11 @@ export default function Navbar() {
         <label htmlFor="check" className={"checkbtn"}>
           <FontAwesomeIcon icon={faBars} />
         </label>
-        <a href="/" className={"brand"}>
+        <Link href="/" className={"brand"}>
           WeCaters
-        </a>
+        </Link>
         <ul className={"uls"}>
-          {dirs.map((x) => {
+          {NAVCRED.map((x) => {
             if (x.route != currentRoute) {
               return (
                 <li key={x.route} id={x.route}>

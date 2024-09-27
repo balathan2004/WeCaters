@@ -12,7 +12,7 @@ import {
 
 interface Props {
   userData: userInterface | null;
-  setReply: React.Dispatch<React.SetStateAction<string>>;
+  setReply: React.Dispatch<React.SetStateAction<string|false>>;
   post_name: string;
 }
 

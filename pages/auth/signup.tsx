@@ -1,15 +1,18 @@
 //import SignUpBox from "@/components/auth/signup";
 import React, { useState, useEffect, useContext } from "react";
-import { NavBarProvider, ReplyProvider, LoaderProvider } from "@/pages/_app";
+
+import {
+  ReplyContext,
+  ReplyContextType,
+} from "@/components/providers/reply_provider";
 import style from "/styles/signupform.module.css";
 import { useRouter } from "next/router";
 import { ResponseConfig } from "@/components/interfaces/shared";
 import SingleForm from "@/components/auth/singleForm";
 export default function clientSignup() {
   const navi = useRouter();
-  const { dirs, setDirs } = useContext(NavBarProvider);
   const [response, setResponse] = useState<ResponseConfig | null>();
-  const { reply, setReply } = useContext(ReplyProvider);
+  const { setReply } = useContext<ReplyContextType>(ReplyContext);
 
   useEffect(() => {
     if (response) {

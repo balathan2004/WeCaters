@@ -55,7 +55,7 @@ export interface getSinglePostInterface extends ResponseConfig {
 }
 
 export interface userInterface {
-  account_type: "personal" | "professional";
+  account_type: "personal" | "professional"|"";
   uid: string;
   username: string;
   display_name: string;

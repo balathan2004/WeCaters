@@ -11,7 +11,7 @@ import SingleReply from "./singleReply";
 interface Props {
   commentData: CommentsInterface;
   userData: userInterface | null;
-  setReply: React.Dispatch<React.SetStateAction<string>>;
+  setReply: React.Dispatch<React.SetStateAction<string|false>>;
   post_name: string;
 }
 

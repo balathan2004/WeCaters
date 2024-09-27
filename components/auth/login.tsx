@@ -5,7 +5,8 @@ import SendData from "../fetch/sendData";
 import { auth,provider } from "../firebase_config";
 import React, { useContext, useState, FC } from "react";
 import { signInWithPopup } from "firebase/auth";
-import { LoaderProvider, ReplyProvider } from "@/pages/_app";
+import { LoadingContext } from "../providers/loader_provider";
+import { ReplyContext } from "../providers/reply_provider";
 import { userAuthResponse } from "../interfaces/shared";
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 
@@ -17,19 +18,19 @@ interface Props {
 
 const LoginBox: FC<Props> = ({ responseState }) => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
-  const { loader, setLoader } = useContext(LoaderProvider);
-  const { reply, setReply } = useContext(ReplyProvider);
+  const {  setLoading } = useContext(LoadingContext);
+  const {  setReply } = useContext(ReplyContext);
 
   const handler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(loginData)
-    setLoader(true);
+    setLoading(true);
     var res = await SendData({
       route: "/api/auth/login",
       data: loginData,
     });
 
-    setLoader(false);
+    setLoading(false);
     console.log(res);
     if (res) {
       if (res.status == 200) {

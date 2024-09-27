@@ -7,7 +7,7 @@ import { CommentsInterface, userInterface } from "../interfaces/shared";
 interface ReplyCommentProps {
   commentData: Omit<CommentsInterface, "post_name">;
   userData: userInterface | null;
-  setReply: React.Dispatch<React.SetStateAction<string>>;
+  setReply: React.Dispatch<React.SetStateAction<string|false>>;
   updateChildComments: React.Dispatch<
     React.SetStateAction<Omit<CommentsInterface, "post_name">[]>
   >;

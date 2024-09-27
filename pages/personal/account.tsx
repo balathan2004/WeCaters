@@ -5,16 +5,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import AccountInput from "@/components/account/accountInput";
 import SendData from "@/components/fetch/sendData";
-import { GetRequest } from "@/components/fetch/getRequest";
-import {
-  LoaderProvider,
-  NavBarProvider,
-  ReplyProvider,
-  UserCredProvider,
-} from "../_app";
 import { defaultImage } from "@/components/blog/smallComponents";
 import { useRouter } from "next/router";
 import { userInterface } from "@/components/interfaces/shared";
+import { ReplyContext } from "@/components/providers/reply_provider"
+import { LoadingContext } from "@/components/providers/loader_provider";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserCred } from "@/components/features/user";
+import { InitialUserNavFun ,InitialState} from "@/components/features/navbar";
 export default function Account() {
   const navi = useRouter();
   const [loginCred, setLoginCred] = useState<userInterface>({
@@ -26,24 +24,19 @@ export default function Account() {
     profile_url: "",
     account_type: "personal",
   });
-  const { reply, setReply } = useContext(ReplyProvider);
-  const { dirs, setDirs } = useContext(NavBarProvider);
-  const { loader, setLoader } = useContext(LoaderProvider);
+  const { setReply } = useContext(ReplyContext);
+  const {  setLoading } = useContext(LoadingContext);
   const [image, setImage] = useState<Blob | null>(null);
   const [imageChange, setImageChange] = useState(false);
   const [showImage, setShowImage] = useState("");
-  const { userData } = useContext(UserCredProvider);
+  const dispatch=useDispatch()
+  const  userData  = useSelector((state:any)=>state.USERCRED.value as userInterface)
 
   const Logout = () => {
-    localStorage.removeItem("login-cred");
     deleteCookie("catersProfId");
     setReply("Logged out successfully");
-    setDirs([
-      { route: "blog", textName: "blog" },
-      { route: "/about", textName: "about" },
-      { route: "/welcome", textName: "welcome" },
-      { route: "/login", textName: "login" },
-    ]);
+    dispatch(InitialUserNavFun())
+    dispatch(updateUserCred({...InitialState}))
     navi.push("/welcome");
   };
 
@@ -63,13 +56,13 @@ export default function Account() {
 
   const handler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoader(true);
+    setLoading(true);
     const response = await SendData({
       route: "/api/auth/update_user",
       data: loginCred,
     });
     console.log(response);
-    setLoader(false);
+    setLoading(false);
   };
 
   useEffect(() => {

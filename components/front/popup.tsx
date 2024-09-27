@@ -4,14 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
-  reply: string | boolean;
-  changeState: React.Dispatch<React.SetStateAction<string | boolean>>;
+  reply: string | false;
+  changeState: React.Dispatch<React.SetStateAction<string | false>>;
 }
 
 const PopUp: FC<Props> = ({ reply, changeState }) => {
 
     if (reply) {
-  
       setTimeout(() => {
         changeState(false);
       }, 5000);

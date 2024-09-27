@@ -16,10 +16,11 @@ import React, { useState, useContext, useEffect, FC, useMemo } from "react";
 import { defaultImage } from "./smallComponents";
 import style from "/styles/blog.module.css";
 import { useRouter } from "next/router";
-import { UserCredProvider, ReplyProvider } from "@/pages/_app";
+import { UserCredProvider } from "@/pages/_app";
 import MainComment from "../comments/mainComment";
 import { userInterface } from "@/components/interfaces/shared";
 import SendData from "../fetch/sendData";
+import { ReplyContextType,ReplyContext } from "../providers/reply_provider";
 
 interface Props {
   data: postInterface;
@@ -39,7 +40,7 @@ const SinglePost: FC<Props> = ({ data, userData }) => {
 
   const totalLength = postImage.length;
   const arrowDecide = totalLength > 1;
-  const { reply, setReply } = useContext(ReplyProvider);
+  const {  setReply } = useContext(ReplyContext);
 
   const [showComment, setShowComment] = useState(false);
 
@@ -213,7 +214,7 @@ const SinglePost: FC<Props> = ({ data, userData }) => {
         </p>
 
         <span className={style.posting_time}>
-          {moment(availData.time, "DD-MM-YYYY hh-mm a").fromNow()}
+          {moment(availData.numeric_time).fromNow()}
         </span>
       </div>
       <div>
