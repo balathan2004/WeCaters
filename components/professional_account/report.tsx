@@ -1,7 +1,7 @@
 import React, { FC, useState, useContext } from "react";
 import SendData from "../fetch/sendData";
 import style from "/styles/professional_profile.module.css";
-import { ReplyProvider } from "@/pages/_app";
+import { ReplyContext } from "../providers/reply_provider";
 import { userInterface } from "../interfaces/shared";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 const Report: FC<Props> = ({ userData }) => {
   const [textValue, setTextValue] = useState("");
-  const { reply, setReply } = useContext(ReplyProvider);
+  const { setReply } = useContext(ReplyContext);
   const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextValue(event.target.value);
   };

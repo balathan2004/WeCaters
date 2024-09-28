@@ -69,6 +69,22 @@ export interface userInterface {
   bio?: string;
 }
 
+export const userInitialiser:userInterface={
+  account_type:"",
+  uid: "",
+  username: "",
+  display_name: "",
+  email: "",
+  phone_number: "",
+  profile_url: "",
+  company_name: "",
+  district: "chennai",
+  state: "tamil nadu",
+  isVerified:false,
+  bio: "",
+}
+
+
 export interface profileUserInterface extends userInterface{
   followers:string[]
   following:string[]

@@ -15,6 +15,7 @@ import SendData from "@/components/fetch/sendData";
 import { analytics } from "@/components/firebase_config";
 import { logEvent } from "firebase/analytics";
 import { useSelector } from "react-redux";
+import Link from "next/link";
 
 interface props {
   userDetails: profileUserInterface;
@@ -160,11 +161,11 @@ const Profile: FC<props> = ({ userDetails, userPosts }) => {
                 ? userPosts.map((post, index) => {
                     return (
                       <li className={style.item} key={index}>
-                        <a href={`/posts/${post.post_name}`}>
+                        <Link href={`/posts/${post.post_name}`}>
                           <img
                             src={post.photo_url ? post.photo_url[0] : ""}
                           ></img>
-                        </a>
+                        </Link>
                       </li>
                     );
                   })

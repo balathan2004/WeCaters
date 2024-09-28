@@ -1,11 +1,5 @@
 import React, { FC, useContext, useState, useEffect, useRef } from "react";
 import { isEqual } from "lodash";
-import {
-  LoaderProvider,
-  NavBarProvider,
-  ReplyProvider,
-  UserCredProvider,
-} from "@/pages/_app";
 import { defaultImage, VerifiedLogo } from "@/components/blog/smallComponents";
 
 import SendData from "../fetch/sendData";
@@ -18,22 +12,29 @@ import style from "/styles/professional_profile.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import cityData from "@/components/src/new.json";
-
+import { ReplyContext } from "../providers/reply_provider";
+import { LoadingContext } from "../providers/loader_provider";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserCred } from "../features/user";
 interface Props {
   loginCred: userInterface;
   setLoginCred: React.Dispatch<React.SetStateAction<userInterface>>;
+  initialUserData: userInterface;
 }
 
-const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
-  const { reply, setReply } = useContext(ReplyProvider);
-  const { loader, setLoader } = useContext(LoaderProvider);
+const ProProfile: FC<Props> = ({
+  loginCred,
+  setLoginCred,
+  initialUserData,
+}) => {
+  const { setReply } = useContext(ReplyContext);
+  const { setLoading } = useContext(LoadingContext);
   const [image, setImage] = useState<File | null>(null);
   const [imageChange, setImageChange] = useState(false);
-  const { userData, setUserData } = useContext(UserCredProvider);
+  const dispatch = useDispatch();
   const [showImage, setShowImage] = useState(
     loginCred.profile_url ? loginCred.profile_url : ""
   );
-  const [oldLoginCred, setOldLoginCred] = useState<userInterface | null>(null);
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const states = Object.keys(cityData);
   const [districts, setDistricts] = useState<string[]>([]);
@@ -42,25 +43,21 @@ const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
   const handler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (oldLoginCred && !isEqual(oldLoginCred, loginCred)) {
-      console.log(oldLoginCred);
+    console.log(loginCred, initialUserData);
 
-      setLoader(true);
+    if (loginCred && !isEqual(loginCred, initialUserData)) {
+      setLoading(true);
 
       const response = (await SendData({
         route: "/api/auth/update_professional_account",
         data: loginCred,
       })) as userAuthResponse;
       if (response && response?.status == 200 && response?.userCredentials) {
-        localStorage.setItem(
-          "login_cred",
-          JSON.stringify(response.userCredentials)
-        );
-        setUserData(response.userCredentials);
-        setOldLoginCred(response.userCredentials);
+        dispatch(updateUserCred(response.userCredentials));
+
         console.log(response);
       }
-      setLoader(false);
+      setLoading(false);
     } else {
       console.log("No Changes Made");
     }
@@ -133,18 +130,18 @@ const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
   }, [imageChange]);
 
   useEffect(() => {
-    const userCred = localStorage.getItem("login_cred");
-    const oldLoginCred: userInterface = JSON.parse(userCred ? userCred : "");
-    setOldLoginCred(oldLoginCred);
-  }, []);
-
-  useEffect(() => {
     if (loginCred.state) {
       setDistricts(city_data[loginCred.state]);
       const current = city_data[loginCred.state][0];
       setLoginCred((prev) => ({ ...prev, district: current }));
     }
   }, [loginCred.state]);
+
+  useEffect(() => {
+    if (loginCred.profile_url) {
+      setShowImage(loginCred.profile_url);
+    }
+  }, [loginCred]);
 
   const District: FC<{ districts: string[] }> = ({ districts }) => {
     return (
@@ -180,8 +177,8 @@ const ProProfile: FC<Props> = ({ loginCred, setLoginCred }) => {
           <label htmlFor="image">
             <img
               src={
-                loginCred.profile_url
-                  ? loginCred.profile_url
+                showImage
+                  ? showImage
                   : defaultImage(
                       loginCred.username
                         ? loginCred.username

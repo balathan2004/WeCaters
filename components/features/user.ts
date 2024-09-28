@@ -1,15 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { userInterface } from "../interfaces/shared";
+import { userInitialiser } from "../interfaces/shared";
 
-export const InitialState:userInterface={
-    uid:"",
-    account_type:"personal",
-    display_name:"",
-    email:"",
-    profile_url:"",
-    username:"",
-    phone_number:""
-}
+export const InitialState:userInterface=userInitialiser
 
 
 const UserCredSlice = createSlice({

@@ -1,13 +1,7 @@
-import React, { useContext, useState, useEffect, Suspense, lazy } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import style from "/styles/professional_account.module.css";
 import { deleteCookie } from "cookies-next";
-import { GetRequest } from "@/components/fetch/getRequest";
-import {
-  LoaderProvider,
-  ReplyProvider,
-  NavBarProvider,
-  UserCredProvider,
-} from "../_app";
+
 import { useRouter } from "next/router";
 import {
   userAuthResponse,
@@ -15,28 +9,20 @@ import {
 } from "@/components/interfaces/shared";
 import Report from "@/components/professional_account/report";
 import ProProfile from "@/components/professional_account/profile";
-
+import { useDispatch, useSelector } from "react-redux";
+import { ReplyContext } from "@/components/providers/reply_provider";
+import { LoadingContext } from "@/components/providers/loader_provider";
+import { InitialUserNavFun } from "@/components/features/navbar";
+import { userInitialiser } from "@/components/interfaces/shared";
 export default function Account() {
   const navi = useRouter();
+  const dispatch = useDispatch();
+  const userData = useSelector((state: any) => state.USERCRED.value);
+  const [loginCred, setLoginCred] = useState<userInterface>(userInitialiser);
 
-  const [loginCred, setLoginCred] = useState<userInterface>({
-    account_type: "professional",
-    profile_url: "",
-    display_name: "",
-    email: "",
-    phone_number: "",
-    uid: "",
-    username: "",
-    company_name: "",
-    district: "",
-    state: "",
-    isVerified: false,
-    bio: "",
-  });
-  const { userData } = useContext(UserCredProvider);
-  const { reply, setReply } = useContext(ReplyProvider);
-  const { dirs, setDirs } = useContext(NavBarProvider);
-  const { loader, setLoader } = useContext(LoaderProvider);
+  const { setReply } = useContext(ReplyContext);
+
+  const { setLoading } = useContext(LoadingContext);
   const [activeComponent, setActiveComponent] = useState<
     "profile" | "account" | "analytics" | "report"
   >("profile");
@@ -50,13 +36,7 @@ export default function Account() {
     deleteCookie("cater_account_type");
     deleteCookie("caters_client_id");
     setReply("Logged out successfully");
-    setDirs([
-      { route: "/blog", name: "blog" },
-      { route: "/about", name: "about" },
-      { route: "/welcome", name: "welcome" },
-      { route: "/login", name: "login" },
-      { route: "/signup", name: "signup" },
-    ]);
+    dispatch(InitialUserNavFun());
     navi.push("/welcome");
   };
 
@@ -68,7 +48,7 @@ export default function Account() {
   const renderComponent = () => {
     switch (activeComponent) {
       case "profile":
-        return <ProProfile loginCred={loginCred} setLoginCred={setLoginCred} />;
+        return <ProProfile loginCred={loginCred} setLoginCred={setLoginCred} initialUserData={userData} />;
 
       case "report":
         return <Report userData={userData} />;
@@ -77,8 +57,10 @@ export default function Account() {
 
   useEffect(() => {
     if (userData) {
-      if (userData.state == "") {
+      if (userData.state && userData.state == "") {
         setLoginCred(() => ({ ...userData, state: "tamil nadu" }));
+      } else {
+        setLoginCred(userData);
       }
     }
   }, [userData]);
