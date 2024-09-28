@@ -16,12 +16,11 @@ import React, { useState, useContext, useEffect, FC, useMemo } from "react";
 import { defaultImage } from "./smallComponents";
 import style from "/styles/blog.module.css";
 import { useRouter } from "next/router";
-import { UserCredProvider } from "@/pages/_app";
 import MainComment from "../comments/mainComment";
 import { userInterface } from "@/components/interfaces/shared";
 import SendData from "../fetch/sendData";
 import { ReplyContextType,ReplyContext } from "../providers/reply_provider";
-
+import Link from "next/link";
 interface Props {
   data: postInterface;
   userData: userInterface | null;
@@ -145,9 +144,9 @@ const SinglePost: FC<Props> = ({ data, userData }) => {
             />
           </div>
           <div className={style.details}>
-            <a href={`/profile/${availData.uid}`} className={style.name}>
+            <Link href={`/profile/${availData.uid}`} className={style.name}>
               {availData.username}
-            </a>
+            </Link>
             {true ? <VerifiedLogo /> : null}
           </div>
         </div>

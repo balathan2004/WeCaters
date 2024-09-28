@@ -1,6 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import style from "/styles/blog.module.css";
-import { UserCredProvider } from "../_app";
 import SideBar from "@/components/blog/sideBar";
 import { defaultImage } from "@/components/blog/smallComponents";
 import { ParsedUrlQuery } from "querystring";
@@ -15,6 +14,7 @@ import {
 import SendData from "@/components/fetch/sendData";
 import { analytics } from "@/components/firebase_config";
 import { logEvent } from "firebase/analytics";
+import { useSelector } from "react-redux";
 
 interface props {
   userDetails: profileUserInterface;
@@ -22,7 +22,7 @@ interface props {
 }
 
 const Profile: FC<props> = ({ userDetails, userPosts }) => {
-  const { userData } = useContext(UserCredProvider);
+  const  userData  = useSelector((state:any)=>state.USERCRED.value)
   const [connections, setConnections] = useState({
     followers: userDetails.followers,
     followersCount: userDetails.followersCount,

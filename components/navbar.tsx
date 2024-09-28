@@ -8,14 +8,13 @@ import Link from "next/link";
 
 import React, { useContext, useState, useEffect } from "react";
 
-interface NewNavConfig{
-  dirs:NavbarInterface[],
-  setDirs:React.Dispatch<React.SetStateAction<NavbarInterface[]>>
-}
 
 export default function Navbar() {
-  const currentRoute = useRouter().asPath.replace("/", "");
-  const NAVCRED = useSelector((state:any)=>state.NAVCRED.value as NavbarInterface[]);
+  const currentRoute = useRouter().asPath;
+  console.log(currentRoute)
+  const dirs = useSelector(
+    (state: any) => state.NAVCRED.value as NavbarInterface[]
+  );
   const [inputValue, setInputValue] = useState<boolean>(false);
 
   const changeInput = () => {
@@ -23,14 +22,9 @@ export default function Navbar() {
   };
 
   const setInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-
-    setInputValue(event.target.checked)
-  
+    setInputValue(event.target.checked);
   };
 
-  useEffect(() => {
-    console.log(inputValue);
-  }, [inputValue]);
 
   return (
     <div>
@@ -49,7 +43,7 @@ export default function Navbar() {
           WeCaters
         </Link>
         <ul className={"uls"}>
-          {NAVCRED.map((x) => {
+          {dirs.map((x) => {
             if (x.route != currentRoute) {
               return (
                 <li key={x.route} id={x.route}>

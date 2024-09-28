@@ -3,9 +3,7 @@ import style from "/styles/blog.module.css";
 import { FC, useContext, useEffect, useState } from "react";
 import { ParsedUrlQuery } from "querystring";
 import { GetServerSidePropsContext } from "next";
-import { getCookie } from "cookies-next";
-import { GetRequest } from "@/components/fetch/getRequest";
-import { UserCredProvider } from "../_app";
+import { useSelector, UseSelector } from "react-redux";
 
 import {
   postInterface,
@@ -18,7 +16,9 @@ interface Props {
 }
 
 const Pages: FC<Props> = ({ data }) => {
-  const { userData } = useContext(UserCredProvider);
+  const userData = useSelector(
+    (state: any) => state.USERCRED.value as userInterface
+  );
 
   if (data) {
     return (

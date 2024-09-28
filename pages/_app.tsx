@@ -1,12 +1,6 @@
 import "@/styles/globals.css";
-/*
-import PopUp from "@/component/popup";
- */
-
-import React, { Component, useEffect, useState, useContext } from "react";
-
+import React, {useMemo} from "react";
 import Head from "next/head";
-
 import type { AppProps } from "next/app";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
@@ -16,26 +10,28 @@ import ReplyProvider from "@/components/providers/reply_provider";
 import NavBarSlice from "@/components/features/navbar";
 import UserCredSlice from "@/components/features/user";
 export default function App({ Component, pageProps }: AppProps) {
-  const store = configureStore({
-    reducer: { NAVCRED: NavBarSlice, USERCRED: UserCredSlice },
-  });
+  
+  
+  const store = useMemo(() => {
+    return configureStore({
+      reducer: { NAVCRED: NavBarSlice, USERCRED: UserCredSlice },
+    });
+  }, []);
 
   return (
     <>
       <Head>
         <title>WeCaters</title>
       </Head>
-      <LoadingProvider>
-        <ReplyProvider>
-          <Provider store={store}>
-    
-              <ContextWrapper>
-                <Component {...pageProps} />
-              </ContextWrapper>
- 
-          </Provider>
-        </ReplyProvider>
-      </LoadingProvider>
+      <Provider store={store}>
+        <LoadingProvider>
+          <ReplyProvider>
+            <ContextWrapper>
+              <Component {...pageProps} />
+            </ContextWrapper>
+          </ReplyProvider>
+        </LoadingProvider>
+      </Provider>
     </>
   );
 }
