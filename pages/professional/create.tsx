@@ -8,15 +8,16 @@ import {
   faCaretRight,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
-import { LoaderProvider, ReplyProvider } from "@/pages/_app";
+import { ReplyContext } from "@/components/providers/reply_provider";
+import { LoadingContext } from "@/components/providers/loader_provider";
 import { userInterface } from "@/components/interfaces/shared";
 import MessagePopup from "@/components/post/messagePopup";
 import { useRouter } from "next/router";
 import { defaultImage, VerifiedLogo } from "@/components/blog/smallComponents";
 import SendData from "@/components/fetch/sendData";
 export default function CreatePost() {
-  const {loader, setLoader} = useContext(LoaderProvider);
-  const {reply, setReply} = useContext(ReplyProvider);
+  const {loading, setLoading} = useContext(LoadingContext)
+  const {reply, setReply} = useContext(ReplyContext);
   const navi = useRouter();
   const [userCred, setUserCred] = useState({
     username: "",
@@ -71,8 +72,8 @@ export default function CreatePost() {
 
   const submitPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!loader && image ) {
-      setLoader(true);
+    if (!loading && image ) {
+      setLoading(true);
       const dataToServer = new FormData();
       dataToServer.append("caption", caption);
       image.map((file, index) => {
@@ -85,7 +86,7 @@ export default function CreatePost() {
         data: dataToServer,
         stringify: false,
       });
-      setLoader(false);
+      setLoading(false);
       if (res && res.status == 200) {
         setReply(res.message);
         console.log(res);
