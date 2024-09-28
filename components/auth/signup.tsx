@@ -3,7 +3,8 @@ import { ProfilePage, OtherDetails, ProfessionalDetails } from "./signupForm";
 import React, { useState, useEffect, useContext } from "react";
 import SendData from "../fetch/sendData";
 import { FC } from "react";
-import { LoaderProvider, ReplyProvider } from "@/pages/_app";
+import { ReplyContext } from "../providers/reply_provider";
+import { LoadingContext } from "../providers/loader_provider";
 import { ResponseConfig } from "../interfaces/shared";
 
 interface Props {
@@ -53,8 +54,8 @@ const SignUpBox: FC<Props> = ({ responseState }) => {
       district: "chennai",
     });
 
-  const {loader, setLoader} = useContext(LoaderProvider);
-  const {reply, setReply} = useContext(ReplyProvider);
+  const { setLoading} = useContext(LoadingContext);
+  const { setReply} = useContext(ReplyContext);
   const [error, setError] = useState("");
 
   const handleFront = () => {
@@ -148,20 +149,20 @@ const SignUpBox: FC<Props> = ({ responseState }) => {
     event.preventDefault();
 
     if (validation()) {
-      setLoader(true);
+      setLoading(true);
       const FormData = handleData();
       var res = await SendData({
         route: "/signup",
         data: FormData,
         stringify: false,
       });
-      setLoader(false);
-      if (res?.status==200) {
+      setLoading(false);
+      if (res && res?.status==200) {
         responseState(res);
         setReply(res.message);
-      } else {
+      } else if(res&& res.status!=200){
         responseState(res);
-        setReply(res?.message);
+        setReply(res.message ? res?.message :"");
       }
     }
   };
