@@ -8,54 +8,55 @@ export interface userAuthResponse extends ResponseConfig {
 }
 
 export interface SearchPageResponse extends ResponseConfig {
-  resultDocs: SearchableDocs[] | null
+  resultDocs: SearchableDocs[] | null;
 }
-export interface CommentsResponse extends ResponseConfig{
-  comments?: CommentsInterface[]
-}
-
-export interface userProfileResponse extends ResponseConfig{
-userData?:{
-  userDetails:profileUserInterface,
-  userPosts:postInterface[]
-}
+export interface CommentsResponse extends ResponseConfig {
+  comments?: CommentsInterface[];
 }
 
-export interface usernameSuggestInterface extends ResponseConfig{
-  usernames:string[]
+export interface userProfileResponse extends ResponseConfig {
+  userData?: {
+    userDetails: profileUserInterface;
+    userPosts: postInterface[];
+  };
 }
 
+export interface usernameSuggestInterface extends ResponseConfig {
+  usernames: string[];
+}
 
 export interface CommentsInterface {
-  comment:string;
-  comment_id:string;
-  comment_time:string;
-  comment_user:string;
-  has_replies?:Omit<CommentsInterface,"post_name">[]|[],
-  post_name:string;
-  comment_reply?:string;
+  comment: string;
+  comment_id: string;
+  comment_time: string;
+  comment_user: string;
+  has_replies?: Omit<CommentsInterface, "post_name">[] | [];
+  post_name: string;
+  comment_reply?: string;
 }
 
-export interface LikesInterface{
-  post_name:string;
-  likes_count:number;
-  liked_by:string[];
-  post_author:string;
+export interface LikesInterface {
+  post_name: string;
+  likes_count: number;
+  liked_by: string[];
+  post_author: string;
 }
-
 
 export interface getPostsInterface extends ResponseConfig {
-  postData?:postInterface[],
-  allUsernames?:{ name: string; uid: string; }[]
+  postData?: postInterface[];
+  allUsernames?: { name: string; uid: string }[];
 }
 
+export interface reelsResponseInterface extends ResponseConfig{
+  reelsData:reelVideoInterface[]
+}
 
 export interface getSinglePostInterface extends ResponseConfig {
-  postData?:postInterface,
+  postData?: postInterface;
 }
 
 export interface userInterface {
-  account_type: "personal" | "professional"|"";
+  account_type: "personal" | "professional" | "";
   uid: string;
   username: string;
   display_name: string;
@@ -65,12 +66,12 @@ export interface userInterface {
   company_name?: string;
   district?: string;
   state?: string;
-  isVerified?:boolean;
+  isVerified?: boolean;
   bio?: string;
 }
 
-export const userInitialiser:userInterface={
-  account_type:"",
+export const userInitialiser: userInterface = {
+  account_type: "",
   uid: "",
   username: "",
   display_name: "",
@@ -80,40 +81,36 @@ export const userInitialiser:userInterface={
   company_name: "",
   district: "chennai",
   state: "tamil nadu",
-  isVerified:false,
+  isVerified: false,
   bio: "",
+};
+
+export interface profileUserInterface extends userInterface {
+  followers: string[];
+  following: string[];
+  followersCount: number;
+  followingCount: number;
+  reviews?: reviewInterface[];
 }
 
-
-export interface profileUserInterface extends userInterface{
-  followers:string[]
-  following:string[]
-  followersCount:number
-  followingCount:number 
-  reviews?:reviewInterface[]
-}
-
-
-
-export const userInterfaceCount=11
+export const userInterfaceCount = 11;
 
 export interface metadata {
-    cred:{
-      email:string;
-      uid:string;
-      createdAt:string;
-    },
-    userConnections:{
-      followers?:string[]
-      following:string[]
-      followersCount?:number
-      followingCount:number
-    },
-    reviews?:reviewInterface[]
-} 
+  cred: {
+    email: string;
+    uid: string;
+    createdAt: string;
+  };
+  userConnections: {
+    followers?: string[];
+    following: string[];
+    followersCount?: number;
+    followingCount: number;
+  };
+  reviews?: reviewInterface[];
+}
 
-
-export interface personalUserInterface{
+export interface personalUserInterface {
   account_type: "personal" | "professional";
   uid: string;
   username: string;
@@ -121,7 +118,6 @@ export interface personalUserInterface{
   email: string;
   profile_url: string;
   phone_number: string;
-
 }
 
 export interface postInterface {
@@ -131,12 +127,20 @@ export interface postInterface {
   time: string;
   uid: string;
   username: string;
-  profile_url?: string ;
+  profile_url?: string;
   likes_count?: number;
   liked_by?: string[];
   numeric_time: number;
 }
 
+export interface postVideoInterface extends Omit<postInterface, "photo_url"> {
+  video_url: string | null;
+}
+
+export interface reelVideoInterface extends postVideoInterface{
+  profile_url:string;
+  display_name: string
+}
 
 export interface SearchableDocs {
   uid: string;
@@ -149,10 +153,8 @@ export interface SearchableDocs {
   bio: string;
 }
 
-
-export interface reviewInterface{
-  from?: string,
-  to?: string,
-  rating: number,
-
+export interface reviewInterface {
+  from?: string;
+  to?: string;
+  rating: number;
 }

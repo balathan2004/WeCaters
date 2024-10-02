@@ -36,8 +36,8 @@ export default function Account() {
     deleteCookie("catersProfId");
     setReply("Logged out successfully");
     dispatch(InitialUserNavFun())
-    dispatch(updateUserCred({...InitialState}))
-    navi.push("/welcome");
+    dispatch(updateUserCred({InitialState}))
+    navi.push("/");
   };
 
   const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {

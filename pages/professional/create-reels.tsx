@@ -1,6 +1,6 @@
 import style from "/styles/create-post.module.css";
-import React, { Component, useState, useEffect, useContext } from "react";
-// file not uploaded on production
+import React, { useState, useContext, useRef, useEffect } from "react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFileImage,
@@ -16,51 +16,31 @@ import { useRouter } from "next/router";
 import { defaultImage, VerifiedLogo } from "@/components/blog/smallComponents";
 import SendData from "@/components/fetch/sendData";
 import { useSelector, UseSelector } from "react-redux";
+import { LegacyRef } from "react";
 export default function CreatePost() {
   const { loading, setLoading } = useContext(LoadingContext);
   const { reply, setReply } = useContext(ReplyContext);
   const navi = useRouter();
-  const userCred = useSelector((state: any) => state.USERCRED.value);
+  const userCred = useSelector(
+    (state: any) => state.USERCRED.value as userInterface
+  );
 
-  const [image, setImage] = useState<File[]>();
-  const [postImage, setPostImage] = useState<string[]>([]);
-  const [count, setCount] = useState(0);
+  const [videoFile, setVideoFile] = useState<Blob | null>(null);
+  const [postVideo, setPostVideo] = useState<string>("");
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
   const [caption, setCaption] = useState("");
   const [popupError, setPopupError] = useState("");
 
-  const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleVideo = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      var files = Array.from(event.target.files);
-      console.log(files);
-      var urlFiles = files.map((file) => {
-        return URL.createObjectURL(file);
-      });
-      setPostImage(urlFiles);
-      setImage(files);
+      var file = event.target.files[0];
+      console.log(file);
+      var urlFile = URL.createObjectURL(file);
+      setPostVideo(urlFile);
+      setVideoFile(file);
     }
   };
-
-  const prevImage = () => {
-    if (postImage) {
-      var len = postImage.length;
-      if (len != 0 && count <= 0) {
-        setCount((prev) => prev - 1);
-      } else {
-      }
-    }
-  };
-
-  const nextImage = () => {
-    if (postImage) {
-      var len = postImage.length;
-      if (len != 0 && count < len - 1) {
-        setCount((prev) => prev + 1);
-      } else {
-        setCount(0);
-      }
-    }
-  };
-
   const handleCaption = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (event.target.value) {
       setCaption(event.target.value);
@@ -69,20 +49,19 @@ export default function CreatePost() {
 
   const submitPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!loading && image) {
+    if (!loading && videoFile) {
       setLoading(true);
       const dataToServer = new FormData();
       dataToServer.append("caption", caption);
-      image.map((file, index) => {
-        dataToServer.append(`file${index}`, file);
-        dataToServer.append(
-          "username",
-          userCred.username ? userCred.username : userCred.display_name
-        );
-      });
+
+      dataToServer.append(`file`, videoFile);
+      dataToServer.append(
+        "username",
+        userCred.username ? userCred.username : userCred.display_name
+      );
 
       var res = await SendData({
-        route: "/api/post_action/create_post",
+        route: "/api/post_action/create_reel",
         data: dataToServer,
         stringify: false,
       });
@@ -99,11 +78,33 @@ export default function CreatePost() {
 
   const deleteImage = (count: number) => {
     console.log(count);
-    //const deleted = postImage.filter((value, index) => {  index !== count    });
-    setPostImage((prev) => {
-      return prev.filter((value, index) => index !== count);
-    });
+    //const deleted = postVideo.filter((value, index) => {  index !== count    });
+    setPostVideo((prev) => "");
   };
+
+  const videoLenghtFinder = () => {
+    if (videoRef) {
+    }
+  };
+
+  const pauseVideo = () => {
+    if (videoRef.current) {
+      if (!videoRef.current.paused) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (postVideo && videoFile && videoRef.current) {
+      if (videoRef.current.duration > 60) {
+        setPostVideo("");
+        setVideoFile(null);
+      }
+    }
+  }, [postVideo, videoFile]);
 
   return (
     <div className="container">
@@ -145,11 +146,10 @@ export default function CreatePost() {
                 <div className={style.hover_div}>
                   <input
                     type="file"
-                    multiple
                     name="file"
                     id="image"
-                    onChange={handleImage}
-                    accept="image/jpeg,image/png"
+                    onChange={handleVideo}
+                    accept="video/mp4,video/quicktime"
                     required
                   />
 
@@ -159,40 +159,17 @@ export default function CreatePost() {
                       size="2x"
                       className={style.slide}
                     />
-                    <h3>Add Photos / Videos</h3>
+                    <h3>Add Video</h3>
                   </label>
                 </div>
 
                 <div className={style.img_div}>
-                  {postImage.length > 0 ? (
-                    <>
-                      <div className={style.delete}>
-                        <FontAwesomeIcon
-                          icon={faTrashCan}
-                          onClick={() => deleteImage(count)}
-                        />
-                      </div>
-                      <div className={style.slideLeft}>
-                        {" "}
-                        <FontAwesomeIcon
-                          icon={faCaretLeft}
-                          size="2x"
-                          onClick={prevImage}
-                        />
-                      </div>
-
-                      <img src={postImage[count]} alt={``} />
-                      <div className={style.slideRight}>
-                        {" "}
-                        <FontAwesomeIcon
-                          icon={faCaretRight}
-                          size="2x"
-                          className={style.slide}
-                          onClick={nextImage}
-                        />
-                      </div>
-                    </>
-                  ) : null}
+                  <video
+                    src={postVideo}
+                    ref={videoRef}
+                    onClick={pauseVideo}
+                    autoPlay
+                  />
                 </div>
               </div>
               <button>Post</button>

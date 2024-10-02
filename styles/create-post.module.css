@@ -95,7 +95,8 @@ min-height: 475px;
 }
 
  .inner_box input{
-    display: none;
+  position: absolute;
+  opacity: 0;
 }
 
 

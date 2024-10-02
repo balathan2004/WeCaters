@@ -1,4 +1,5 @@
 import moment from "moment";
+import React from "react";
 
 export const defaultImage = (name:string) => {
   var url = `https://ui-avatars.com/api/?name=${name}&size=200&background=random&color=fff&bold=true`;
