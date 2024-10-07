@@ -54,7 +54,6 @@ const post = async (req: NextApiRequest, uid: string) => {
           username: username,
           uid: uid,
           time: setDate(),
-          likes_count: 0,
           numeric_time: new Date().getTime(),
         };
         info.video_url = await saveFile(files.file[0], uid);

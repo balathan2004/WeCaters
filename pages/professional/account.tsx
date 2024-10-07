@@ -11,20 +11,22 @@ import {
   userProfileResponse,
   userInterfaceCount,
   profileUserInterface,
+  userMetaInterface,
 } from "@/components/interfaces/shared";
 
 import CompleteProfile from "@/components/account/complete_profile";
+import { useDispatch, useSelector } from "react-redux";
 
 interface props {
-  profileData: profileUserInterface;
   userPosts: postInterface[];
 }
 
-const Profile: FC<props> = ({ profileData, userPosts }) => {
-  const userDetails = profileData;
+const Profile: FC<props> = ({  userPosts }) => {
+  //const userDetails = profileData;
+  const userData=useSelector((state:any)=>state.USERCRED.value) as userMetaInterface
 
   const count = Math.floor(
-    (Object.keys(profileData).length / userInterfaceCount) * 100
+    (Object.keys(userData).length / userInterfaceCount) * 100
   );
 
   const AccountBox: FC = () => {
@@ -34,9 +36,9 @@ const Profile: FC<props> = ({ profileData, userPosts }) => {
           <img
             className={style.profileImage}
             src={
-              userDetails.profile_url
-                ? userDetails.profile_url
-                : defaultImage(userDetails.username)
+              userData.profile_url
+                ? userData.profile_url
+                : defaultImage(userData.username)
             }
           ></img>
         </div>
@@ -44,33 +46,33 @@ const Profile: FC<props> = ({ profileData, userPosts }) => {
           <div className={style.topContainer}>
             <div className={style.namespace}>
               <span className={style.displayName}>
-                {userDetails.username
-                  ? userDetails.username
-                  : userDetails.display_name}
+                {userData.username
+                  ? userData.username
+                  : userData.display_name}
               </span>
             </div>
           </div>
           <div className={style.infos}>
-            <h3>{userDetails.display_name}</h3>
+            <h3>{userData.display_name}</h3>
             <span className={style.userposts}>
               {userPosts.length}
               <label>posts</label>
             </span>
             <span className={style.followers}>
-              {userDetails.followingCount}
+              {userData.meta_data.userConnections.followingCount}
               <label>following</label>{" "}
             </span>
             <span className={style.followers}>
-              {userDetails.followersCount}
+              {userData.meta_data.userConnections.followersCount}
               <label>followers</label>{" "}
             </span>
           </div>
 
           <div className={style.contact}>
-            <span>contact - {userDetails.email}</span>
+            <span>contact - {userData.email}</span>
             <span>
-              {userDetails.phone_number
-                ? `contact - ${userDetails.phone_number}`
+              {userData.phone_number
+                ? `contact - ${userData.phone_number}`
                 : null}
               <span></span>
             </span>
@@ -90,10 +92,10 @@ const Profile: FC<props> = ({ profileData, userPosts }) => {
         <div className={blogStyle.blog}>
           <div className={style.profile}>
             <div className={style.account}>
-              {count == 100 ? (
+              {count >= 100 ? (
                 <AccountBox />
               ) : (
-                <CompleteProfile data={userDetails} />
+                <CompleteProfile data={userData} />
               )}
             </div>
 
@@ -133,7 +135,6 @@ export const getServerSideProps = async (
 
   return {
     props: {
-      profileData: res.userData?.userDetails,
       userPosts: res.userData?.userPosts,
     },
   };

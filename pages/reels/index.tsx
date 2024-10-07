@@ -6,19 +6,21 @@ import {
 import React, { useState, FC } from "react";
 import ReelContainer from "@/components/reel/reel_container";
 import style from "@/styles/reels.module.css";
+import { useSelector } from "react-redux";
 
 interface Props {
   reelsData: reelVideoInterface[];
 }
 
 const Reels: FC<Props> = ({ reelsData }) => {
-  console.log(reelsData);
+
+  const userData=useSelector((state:any)=>state.USERCRED.value)
 
   return (
     <div className="container">
       <div className={style.reel_wrapper}>
         <div className={style.side_content}></div>
-        <ReelContainer reelsData={reelsData}></ReelContainer>
+        <ReelContainer reelsData={reelsData} userData={userData}></ReelContainer>
         <div className={style.side_content}></div>
       </div>
     </div>

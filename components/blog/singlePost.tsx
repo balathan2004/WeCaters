@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 import MainComment from "../comments/mainComment";
 import { userInterface } from "@/components/interfaces/shared";
 import SendData from "../fetch/sendData";
-import { ReplyContextType,ReplyContext } from "../providers/reply_provider";
+import { ReplyContextType, ReplyContext } from "../providers/reply_provider";
 import Link from "next/link";
 interface Props {
   data: postInterface;
@@ -39,7 +39,7 @@ const SinglePost: FC<Props> = ({ data, userData }) => {
 
   const totalLength = postImage.length;
   const arrowDecide = totalLength > 1;
-  const {  setReply } = useContext(ReplyContext);
+  const { setReply } = useContext(ReplyContext);
 
   const [showComment, setShowComment] = useState(false);
 
@@ -72,7 +72,7 @@ const SinglePost: FC<Props> = ({ data, userData }) => {
   };
 
   const add_like = async () => {
-    if (userData) {
+    if (userData && userData.uid != "") {
       const res = await SendData({
         route: "/api/post_action/add_like",
         data: {

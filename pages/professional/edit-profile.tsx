@@ -13,12 +13,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { ReplyContext } from "@/components/providers/reply_provider";
 import { LoadingContext } from "@/components/providers/loader_provider";
 import { InitialUserNavFun } from "@/components/features/navbar";
-import { userInitialiser } from "@/components/interfaces/shared";
+import { dummyUser } from "@/components/interfaces/shared";
+const {meta_data,...extracted}=dummyUser
 export default function Account() {
   const navi = useRouter();
   const dispatch = useDispatch();
   const userData = useSelector((state: any) => state.USERCRED.value);
-  const [loginCred, setLoginCred] = useState<userInterface>(userInitialiser);
+  const [loginCred, setLoginCred] = useState<userInterface>(extracted);
 
   const { setReply } = useContext(ReplyContext);
 
@@ -86,44 +87,3 @@ export default function Account() {
   );
 }
 
-//
-//  {loginCred.isVerified ? <VerifiedLogo /> : null}
-
-/**
- *
- *  *
- *
- * 
- *   const getCred = async () => {
-    let res = (await GetRequest({
-      route: "/api/auth/login_cred",
-    })) as userAuthResponse;
-    if (res && res.status == 200 && res.userCredentials) {
-      var userData = res.userCredentials;
-      localStorage.setItem("login_cred", JSON.stringify(userData));
-      return userData as userInterface;
-    } else {
-      return null;
-    }
-  };
-
-  const render = async () => {
-    try {
-      const jsonData = localStorage.getItem("login_cred");
-      let renderData: userInterface | null;
-      if (jsonData) {
-        renderData = JSON.parse(jsonData) as userInterface;
-      } else {
-        renderData = await getCred();
-      }
-      if (renderData) {
-        setLoginCred(renderData);
-        setShowImage(renderData.profile_url);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
- * 
- * 
- */

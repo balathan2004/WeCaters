@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userInterface } from "../interfaces/shared";
-import { userInitialiser } from "../interfaces/shared";
+import { userMetaInterface } from "../interfaces/shared";
+import { dummyUser } from "../interfaces/shared";
 
-export const InitialState:userInterface=userInitialiser
+export const InitialState:userMetaInterface=dummyUser
 
 
 const UserCredSlice = createSlice({

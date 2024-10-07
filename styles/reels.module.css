@@ -4,7 +4,6 @@
   background-color: red;
   display: flex;
   overflow-y: none;
-  position: relative;
 }
 
 .side_content {
@@ -15,39 +14,54 @@
 .reel_container {
   height: 100%;
   flex: 1;
+  position: relative;
 }
 
-.reel_container .video_container{
-    height: 100%;
-    background-color: blue;
-    position: relative;
-  } 
-
+.reel_container .video_container {
+  height: 100%;
+  background-color: blue;
+  position: relative;
+}
 
 .reel_container video {
   height: 100%;
 }
 
-.reel_container .video_details{
+.reel_container .video_details {
   position: absolute;
-
-  transform: translate(30px,-100px);
-
+  bottom: 10%;
+  left: 10%;
 }
 
-
-.reel_container .video_details .video_details_bottom{
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 20px;
-
+.reel_container .video_details .video_details_bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
 }
 
+.reel_container .video_details .video_details_bottom .video_details_topbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
 
-.reel_container .video_details .video_details_bottom img{
+.reel_container .video_details .video_details_bottom .video_details_topbar img {
   height: 50px;
   width: 50px;
   border-radius: 50%;
 }
-  
+
+
+.reel_container  .video_interactions{
+  position: absolute;
+  bottom: 20%;
+  right: 2%;
+}
+
+.reel_container  .video_interactions .icons{
+  font-size: 35px;
+  display: block;
+  margin: 2rem 0;
+}

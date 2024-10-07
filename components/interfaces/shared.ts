@@ -4,7 +4,7 @@ export interface ResponseConfig {
 }
 
 export interface userAuthResponse extends ResponseConfig {
-  userCredentials?: userInterface;
+  userCredentials?: userMetaInterface;
 }
 
 export interface SearchPageResponse extends ResponseConfig {
@@ -47,8 +47,8 @@ export interface getPostsInterface extends ResponseConfig {
   allUsernames?: { name: string; uid: string }[];
 }
 
-export interface reelsResponseInterface extends ResponseConfig{
-  reelsData:reelVideoInterface[]
+export interface reelsResponseInterface extends ResponseConfig {
+  reelsData: reelVideoInterface[];
 }
 
 export interface getSinglePostInterface extends ResponseConfig {
@@ -70,20 +70,32 @@ export interface userInterface {
   bio?: string;
 }
 
-export const userInitialiser: userInterface = {
-  account_type: "",
+export interface userMetaInterface extends userInterface {
+  meta_data: metadata;
+}
+
+export const dummyUser: userMetaInterface = {
+  account_type: "",  // Can be "personal" or "professional"
   uid: "",
   username: "",
   display_name: "",
   email: "",
   phone_number: "",
   profile_url: "",
-  company_name: "",
-  district: "chennai",
-  state: "tamil nadu",
-  isVerified: false,
-  bio: "",
+  meta_data: {
+    cred: {
+      email: "",
+      uid: "",
+      createdAt: "",
+    },
+    userConnections: {
+      following: [],
+      followingCount: 0,  // Placeholder count
+    },
+
+  }
 };
+
 
 export interface profileUserInterface extends userInterface {
   followers: string[];
@@ -137,9 +149,9 @@ export interface postVideoInterface extends Omit<postInterface, "photo_url"> {
   video_url: string | null;
 }
 
-export interface reelVideoInterface extends postVideoInterface{
-  profile_url:string;
-  display_name: string
+export interface reelVideoInterface extends postVideoInterface {
+  profile_url: string;
+  display_name: string;
 }
 
 export interface SearchableDocs {
