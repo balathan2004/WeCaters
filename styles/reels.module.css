@@ -1,30 +1,31 @@
 .reel_wrapper {
   height: calc(100vh - 80px);
   width: 100%;
-  background-color: red;
   display: flex;
-  overflow-y: none;
+  justify-content: center;
+  overflow: none;
 }
 
 .side_content {
-  flex: 2;
+  width: 30%;
   background-color: gray;
 }
 
 .reel_container {
-  height: 100%;
-  flex: 1;
+  height: 98%;
+  margin-top: 1rem;
+  width: 500px;
   position: relative;
 }
 
 .reel_container .video_container {
-  height: 100%;
-  background-color: blue;
-  position: relative;
+ height: inherit; 
 }
 
 .reel_container video {
   height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
 
 .reel_container .video_details {
@@ -53,14 +54,16 @@
   border-radius: 50%;
 }
 
-
-.reel_container  .video_interactions{
+.reel_container .video_interactions {
   position: absolute;
-  bottom: 20%;
   right: 2%;
+  bottom: 0%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent overlay */
+  backdrop-filter: blur(10px);
 }
 
-.reel_container  .video_interactions .icons{
+.reel_container .video_interactions .icons {
   font-size: 35px;
   display: block;
   margin: 2rem 0;

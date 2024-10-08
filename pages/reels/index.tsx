@@ -19,9 +19,9 @@ const Reels: FC<Props> = ({ reelsData }) => {
   return (
     <div className="container">
       <div className={style.reel_wrapper}>
-        <div className={style.side_content}></div>
+     
         <ReelContainer reelsData={reelsData} userData={userData}></ReelContainer>
-        <div className={style.side_content}></div>
+     
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useContext, FC, useState, useRef } from "react";
+import React, { useContext, FC, useState, useRef, useEffect } from "react";
 import {
   postVideoInterface,
   reelVideoInterface,
@@ -42,7 +42,7 @@ const ReelContainer: FC<Props> = ({ reelsData, userData }) => {
 
   const add_like = async () => {
     if (userData && userData.uid != "") {
-      console.log('liked')
+      console.log("liked");
       const res = await SendData({
         route: "/api/post_action/add_like",
         data: {
@@ -85,6 +85,39 @@ const ReelContainer: FC<Props> = ({ reelsData, userData }) => {
       setReply("Permission denied");
     }
   };
+  const handleKeyDown = (event: KeyboardEvent) => {
+    const { key } = event;
+
+    if (key == "ArrowDown") {
+      setCount((prev) => {
+        if (prev < reelsData.length - 1) {
+          setCurrentVideo(reelsData[prev + 1]);
+          return prev + 1;
+        } else {
+          return prev;
+        }
+      });
+    } else if (key == "ArrowUp") {
+      setCount((prev) => {
+        if (prev > 0) {
+          setCurrentVideo(reelsData[prev - 1]);
+          return prev - 1;
+        } else {
+          return prev;
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    // Attach the event listener
+    document.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup by removing the event listener when the component unmounts
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div className={style.reel_container}>
@@ -112,7 +145,11 @@ const ReelContainer: FC<Props> = ({ reelsData, userData }) => {
         </div>
       </div>
       <div className={style.video_interactions}>
-        <FontAwesomeIcon onClick={add_like} className={style.icons} icon={faHeart} />
+        <FontAwesomeIcon
+          onClick={add_like}
+          className={style.icons}
+          icon={faHeart}
+        />
         <FontAwesomeIcon className={style.icons} icon={faComment} />
         <FontAwesomeIcon className={style.icons} icon={faPaperPlane} />
       </div>
