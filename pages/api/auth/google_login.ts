@@ -3,14 +3,28 @@ import {
   firestore_admin,
 } from "@/config/firebase_admin";
 import { NextApiRequest, NextApiResponse } from "next";
-import { personalUserInterface ,userAuthResponse} from "@/components/interfaces/shared";
+import { metadata, personalUserInterface ,userAuthResponse, userMetaInterface} from "@/components/interfaces/shared";
 import { setCookie } from "cookies-next";
 export default async (req: NextApiRequest, res: NextApiResponse<userAuthResponse>) => {
   const userdata = JSON.parse(req.body) as personalUserInterface;
 
-  const value = await auth_admin.getUserByEmail(userdata.email);
+  const userRecord = await auth_admin.getUserByEmail(userdata.email);
+  const metadata:metadata={
+    cred:{
+      email:userRecord.email || "",
+      uid: userRecord.uid || "",
+      createdAt: userRecord.metadata.creationTime || "",
+    },
+    userConnections:{
+      followers: [],
+      following: [],
+      followersCount: 0,
+      followingCount: 0,
+    }
+  }
+  const refinedUserData:userMetaInterface={...userdata,meta_data:metadata}
 
-  if (value) {
+  if (userRecord) {
     if (userdata.account_type == "professional") {
       await firestore_admin
         .collection("professional_account")
@@ -40,5 +54,5 @@ export default async (req: NextApiRequest, res: NextApiResponse<userAuthResponse
     sameSite: "none",
 
   });
-  res.json({status: 200, message:"login successful",userCredentials:userdata})
+  res.json({status: 200, message:"login successful",userCredentials:refinedUserData})
 };
