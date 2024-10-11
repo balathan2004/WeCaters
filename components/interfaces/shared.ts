@@ -71,7 +71,7 @@ export interface userInterface {
 }
 
 export interface userMetaInterface extends userInterface {
-  meta_data: metadata;
+  meta_data?: metadata;
 }
 
 export const dummyUser: userMetaInterface = {
