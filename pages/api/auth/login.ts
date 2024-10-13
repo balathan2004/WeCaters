@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { setCookie } from "cookies-next";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getDoc, doc } from "firebase/firestore";
+import { metadata,userMetaInterface } from "@/components/interfaces/shared";
 import {
   userAuthResponse,
   userInterface,
@@ -18,6 +19,21 @@ export default async function (
       const { email, password } = JSON.parse(req.body);
       const uid: string = await Login(email, password);
       const userCred: userInterface = await userDocSearch(uid);
+      const metadata:metadata={
+        cred:{
+          email:userCred.email || "",
+          uid: userCred.uid || "",
+          createdAt:  "",
+        },
+        userConnections:{
+          followers: [],
+          following: [],
+          followersCount: 0,
+          followingCount: 0,
+        }
+      }
+
+      const finalizeData:userMetaInterface={...userCred,meta_data:metadata}
       setCookie("caters_client_id", userCred.uid, {
         req,
         res,
@@ -38,7 +54,7 @@ export default async function (
       res.json({
         status: 200,
         message: "Login Successful",
-        userCredentials: userCred,
+        userCredentials: finalizeData,
       });
     } catch (error: any) {
 
