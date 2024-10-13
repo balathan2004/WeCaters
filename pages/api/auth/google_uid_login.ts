@@ -3,6 +3,7 @@
   import { userAuthResponse} from "@/components/interfaces/shared";
   import { setCookie } from "cookies-next";
 import { userDocSearch } from "./login";
+import { metadata,userMetaInterface } from "@/components/interfaces/shared";
 
   export default async function(req:NextApiRequest,res:NextApiResponse<userAuthResponse>){
 
@@ -12,7 +13,20 @@ if(uid){
 
     try{
         const userData=await userDocSearch(uid)
-
+        const metadata:metadata={
+          cred:{
+            email:userData.email || "",
+            uid: userData.uid || "",
+            createdAt:  "",
+          },
+          userConnections:{
+            followers: [],
+            following: [],
+            followersCount: 0,
+            followingCount: 0,
+          }
+        }
+        const refinedUserData:userMetaInterface={...userData,meta_data:metadata}
         setCookie("caters_client_id", userData.uid, {
             req,
             res,
@@ -29,7 +43,7 @@ if(uid){
             sameSite: "none",
          
           });
-          res.json({status: 200, message:"login successful",userCredentials:userData})
+          res.json({status: 200, message:"login successful",userCredentials:refinedUserData})
         
     }catch(err: any){
         console.log(err);
