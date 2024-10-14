@@ -4,7 +4,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import {
   userAuthResponse,
   userInterface,
+  userMetaInterface,
 } from "@/components/interfaces/shared";
+import GetMetaDoc from "@/components/server/get_meta_doc";
 
 export default async (
   req: NextApiRequest,
@@ -21,12 +23,13 @@ export default async (
       await updateDoc(
         doc(firestore, "professional_account", uid),
         userData
-      ).then(() => {
-        res.json({
-          status: 200,
-          message: "changes made",
-          userCredentials: userData as userInterface,
-        });
+      )
+      const metadata=await GetMetaDoc(userData)
+      const mergedData={...userData, metadata} 
+      res.json({
+        status: 200,
+        message: "changes made",
+        userCredentials: mergedData,
       });
     }
   } catch (err) {
